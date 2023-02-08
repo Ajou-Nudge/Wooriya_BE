@@ -1,11 +1,17 @@
 package com.nudge.concent.data.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.type.descriptor.jdbc.LobTypeMappings;
 
+import java.sql.Blob;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "CompanyPost")
+@Getter
+@Setter
 public class CompanyPost {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
@@ -18,63 +24,10 @@ public class CompanyPost {
     private String coType;
     @Column(nullable = false)
     private Integer coSize;
+    @Lob
+    @Column(length = 3000)
+    private Blob img;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getCoType() {
-        return coType;
-    }
-
-    public void setCoType(String coType) {
-        this.coType = coType;
-    }
-
-    public Integer getCoSize() {
-        return coSize;
-    }
-
-    public void setCoSize(Integer coSize) {
-        this.coSize = coSize;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 
 }

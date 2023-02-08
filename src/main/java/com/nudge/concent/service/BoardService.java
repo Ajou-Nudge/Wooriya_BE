@@ -2,17 +2,19 @@ package com.nudge.concent.service;
 
 import com.nudge.concent.data.dto.CompanyPostDto;
 import com.nudge.concent.data.dto.GroupPostDto;
-import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface BoardService {
 
     CompanyPostDto getCompanyPost();
 
-    List<CompanyPostDto> getAllCompanyPost();
+    List<CompanyPostDto> getAllCompanyPost() throws UnsupportedEncodingException;
 
-    Long saveCompanyPost(CompanyPostDto companyPostDto);
+    Long saveCompanyPost(MultipartHttpServletRequest req) throws SQLException;
 
     GroupPostDto getGroupPost();
 

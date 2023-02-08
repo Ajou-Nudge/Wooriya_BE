@@ -6,11 +6,10 @@ import com.nudge.concent.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
@@ -22,16 +21,17 @@ public class Board {
         this.boardService = boardService;
     }
 
-    @PostMapping("/companypost/post")
-    public ResponseEntity<Long> postCompanyPost(@RequestBody CompanyPostDto companyPostDto) {
-        Long postId = boardService.saveCompanyPost(companyPostDto);
+    @RequestMapping(value="/companypost/post", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Long> postCompanyPost(MultipartHttpServletRequest req) throws Exception {
+        Long postId = boardService.saveCompanyPost(req);
         return ResponseEntity.status(HttpStatus.OK).body(postId);
     }
 
     @GetMapping("/companypost")
-    public ResponseEntity<List<CompanyPostDto>> getCompanyPost() {
-        List<CompanyPostDto> companyPostDtos = boardService.getAllCompanyPost();
-        return ResponseEntity.status(HttpStatus.OK).body(companyPostDtos);
+    public ResponseEntity<List<CompanyPostDto>> getCompanyPost() throws UnsupportedEncodingException {
+        List<CompanyPostDto> companyPostResponseDtos = boardService.getAllCompanyPost();
+        return ResponseEntity.status(HttpStatus.OK).body(companyPostResponseDtos);
     }
 
     @PostMapping("/grouppost/post")
