@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -34,9 +35,16 @@ public class Board {
         return ResponseEntity.status(HttpStatus.OK).body(companyPostResponseDtos);
     }
 
+    @RequestMapping(value="/imageupload", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> getImage(MultipartHttpServletRequest req) throws SQLException {
+        String urlImage = boardService.saveImage(req);
+        return ResponseEntity.status(HttpStatus.OK).body(urlImage);
+    }
+
     @PostMapping("/grouppost/post")
-    public ResponseEntity<Long> postGroupPost(@RequestBody GroupPostDto groupPostDto) {
-        Long postId = boardService.saveGroupPost(groupPostDto);
+    public ResponseEntity<Long> postGroupPost(MultipartHttpServletRequest req) throws SQLException {
+        Long postId = boardService.saveGroupPost(req);
         return ResponseEntity.status(HttpStatus.OK).body(postId);
     }
 

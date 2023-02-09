@@ -16,9 +16,11 @@ public interface BoardService {
 
     Long saveCompanyPost(MultipartHttpServletRequest req) throws SQLException;
 
+    String saveImage(MultipartHttpServletRequest req) throws SQLException;
+
     GroupPostDto getGroupPost();
 
     List<GroupPostDto> getAllGroupPost();
 
-    Long saveGroupPost(GroupPostDto groupPostDto);
+    Long saveGroupPost(MultipartHttpServletRequest req) throws SQLException;
 }

@@ -4,6 +4,7 @@ import com.nudge.concent.data.dao.CompanyPostDAO;
 import com.nudge.concent.data.dao.GroupPostDAO;
 import com.nudge.concent.data.dto.CompanyPostDto;
 import com.nudge.concent.data.dto.GroupPostDto;
+import com.nudge.concent.data.entity.CompanyImage;
 import com.nudge.concent.data.entity.CompanyPost;
 import com.nudge.concent.data.entity.GroupPost;
 import com.nudge.concent.service.BoardService;
@@ -14,7 +15,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.BufferedInputStream;
-import java.io.UnsupportedEncodingException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class BoardServiceImpl implements BoardService {
         byte imageArray [] = null;
         final String BASE_64_PREFIX = "data:image/png;base64,";
         try {
-            String base64Url = String.valueOf(req.getParameter("img"));
+            String base64Url = String.valueOf(req.getParameter("body"));
             if (base64Url.startsWith(BASE_64_PREFIX)){
                 imageArray =  Base64.getDecoder().decode(base64Url.substring(BASE_64_PREFIX.length()));
             }
@@ -85,6 +85,27 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public String saveImage(MultipartHttpServletRequest req) throws SQLException {
+        byte imageArray [] = null;
+        final String BASE_64_PREFIX = "data:image/png;base64,";
+        try {
+            String base64Url = String.valueOf(req.getParameter("img"));
+            if (base64Url.startsWith(BASE_64_PREFIX)){
+                imageArray =  Base64.getDecoder().decode(base64Url.substring(BASE_64_PREFIX.length()));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("img : " + imageArray);
+        Blob imageBlob = new SerialBlob(imageArray);
+        CompanyImage companyImage = new CompanyImage();
+        companyImage.setImg(imageBlob);
+        String iamgeUrl = companyPostDAO.insertImage(companyImage);
+        return iamgeUrl;
+    }
+
+    @Override
     public GroupPostDto getGroupPost() {
         return null;
     }
@@ -100,6 +121,12 @@ public class BoardServiceImpl implements BoardService {
             groupPostDto.setTitle(groupPost.getTitle());
             groupPostDto.setCoType(groupPost.getCoType());
             groupPostDto.setCoSize(groupPost.getCoSize());
+
+            byte[] byteImg = blobToBytes(groupPost.getImg());
+            String base64Encode = byteToBase64(byteImg);
+            base64Encode = "data:image/png;base64," + base64Encode;
+
+            groupPostDto.setImg(base64Encode);
             groupPostDtos.add(groupPostDto);
         }
         return groupPostDtos;
@@ -107,13 +134,26 @@ public class BoardServiceImpl implements BoardService {
 
 
     @Override
-    public Long saveGroupPost(GroupPostDto groupPostDto) {
-        GroupPost groupPost = new GroupPost();
-        groupPost.setTitle(groupPostDto.getTitle());
-        groupPost.setGroupName(groupPostDto.getGroupName());
-        groupPost.setCoType(groupPostDto.getCoType());
-        groupPost.setCoSize(groupPostDto.getCoSize());
+    public Long saveGroupPost(MultipartHttpServletRequest req) throws SQLException {
+        byte imageArray [] = null;
+        final String BASE_64_PREFIX = "data:image/png;base64,";
+        try {
+            String base64Url = String.valueOf(req.getParameter("body"));
+            if (base64Url.startsWith(BASE_64_PREFIX)){
+                imageArray =  Base64.getDecoder().decode(base64Url.substring(BASE_64_PREFIX.length()));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
+        Blob imageBlob = new SerialBlob(imageArray);
+        GroupPost groupPost = new GroupPost();
+        groupPost.setTitle(req.getParameter("title"));
+        groupPost.setGroupName(req.getParameter("companyName"));
+        groupPost.setCoType(req.getParameter("coType"));
+        groupPost.setCoSize(Integer.parseInt(req.getParameter("coSize")));
+        groupPost.setImg(imageBlob);
         Long postId = groupPostDAO.insertPost(groupPost);
         return postId;
     }
