@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -37,13 +38,13 @@ public class Board {
 
     @RequestMapping(value="/imageupload", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> getImage(MultipartHttpServletRequest req) throws SQLException {
+    public ResponseEntity<String> getImage(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException {
         String urlImage = boardService.saveImage(req);
         return ResponseEntity.status(HttpStatus.OK).body(urlImage);
     }
 
     @PostMapping("/grouppost/post")
-    public ResponseEntity<Long> postGroupPost(MultipartHttpServletRequest req) throws SQLException {
+    public ResponseEntity<Long> postGroupPost(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException {
         Long postId = boardService.saveGroupPost(req);
         return ResponseEntity.status(HttpStatus.OK).body(postId);
     }

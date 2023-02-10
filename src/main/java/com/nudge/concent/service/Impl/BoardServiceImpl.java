@@ -4,9 +4,9 @@ import com.nudge.concent.data.dao.CompanyPostDAO;
 import com.nudge.concent.data.dao.GroupPostDAO;
 import com.nudge.concent.data.dto.CompanyPostDto;
 import com.nudge.concent.data.dto.GroupPostDto;
-import com.nudge.concent.data.entity.CompanyImage;
 import com.nudge.concent.data.entity.CompanyPost;
 import com.nudge.concent.data.entity.GroupPost;
+import com.nudge.concent.data.entity.PostImage;
 import com.nudge.concent.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.BufferedInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -61,47 +63,39 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Long saveCompanyPost(MultipartHttpServletRequest req) throws SQLException {
-        byte imageArray [] = null;
-        final String BASE_64_PREFIX = "data:image/png;base64,";
-        try {
-            String base64Url = String.valueOf(req.getParameter("body"));
-            if (base64Url.startsWith(BASE_64_PREFIX)){
-                imageArray =  Base64.getDecoder().decode(base64Url.substring(BASE_64_PREFIX.length()));
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
-        Blob imageBlob = new SerialBlob(imageArray);
         CompanyPost companyPost = new CompanyPost();
         companyPost.setTitle(req.getParameter("title"));
         companyPost.setCompanyName(req.getParameter("companyName"));
         companyPost.setCoType(req.getParameter("coType"));
         companyPost.setCoSize(Integer.parseInt(req.getParameter("coSize")));
-        companyPost.setImg(imageBlob);
+//        companyPost.setImg(r);
         Long postId = companyPostDAO.insertPost(companyPost);
         return postId;
     }
 
     @Override
-    public String saveImage(MultipartHttpServletRequest req) throws SQLException {
-        byte imageArray [] = null;
+    public String saveImage(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException {
+        byte[] imageArray = null;
         final String BASE_64_PREFIX = "data:image/png;base64,";
+        String addrData = "";
         try {
             String base64Url = String.valueOf(req.getParameter("img"));
             if (base64Url.startsWith(BASE_64_PREFIX)){
                 imageArray =  Base64.getDecoder().decode(base64Url.substring(BASE_64_PREFIX.length()));
+                addrData = base64Url.substring(BASE_64_PREFIX.length());
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println("img : " + imageArray);
+
         Blob imageBlob = new SerialBlob(imageArray);
-        CompanyImage companyImage = new CompanyImage();
-        companyImage.setImg(imageBlob);
-        String iamgeUrl = companyPostDAO.insertImage(companyImage);
+        byte[] addr= sha256(addrData.substring(6, 16));
+
+        PostImage postImage = new PostImage();
+        postImage.setImg(imageBlob);
+        postImage.setAddress(addr.toString());
+        String iamgeUrl = companyPostDAO.insertImage(postImage);
         return iamgeUrl;
     }
 
@@ -134,7 +128,7 @@ public class BoardServiceImpl implements BoardService {
 
 
     @Override
-    public Long saveGroupPost(MultipartHttpServletRequest req) throws SQLException {
+    public Long saveGroupPost(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException {
         byte imageArray [] = null;
         final String BASE_64_PREFIX = "data:image/png;base64,";
         try {
@@ -148,6 +142,7 @@ public class BoardServiceImpl implements BoardService {
         }
 
         Blob imageBlob = new SerialBlob(imageArray);
+        byte[] hash = sha256(req.getParameter("body"));
         GroupPost groupPost = new GroupPost();
         groupPost.setTitle(req.getParameter("title"));
         groupPost.setGroupName(req.getParameter("companyName"));
@@ -189,5 +184,11 @@ public class BoardServiceImpl implements BoardService {
             e.printStackTrace();
         }
         return result;
+    }
+
+    private static byte[] sha256(String data) throws NoSuchAlgorithmException {
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        messageDigest.update(data.getBytes());
+        return messageDigest.digest();
     }
 }

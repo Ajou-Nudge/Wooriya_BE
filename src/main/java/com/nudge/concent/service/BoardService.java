@@ -5,6 +5,7 @@ import com.nudge.concent.data.dto.GroupPostDto;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,11 +17,11 @@ public interface BoardService {
 
     Long saveCompanyPost(MultipartHttpServletRequest req) throws SQLException;
 
-    String saveImage(MultipartHttpServletRequest req) throws SQLException;
+    String saveImage(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException;
 
     GroupPostDto getGroupPost();
 
     List<GroupPostDto> getAllGroupPost();
 
-    Long saveGroupPost(MultipartHttpServletRequest req) throws SQLException;
+    Long saveGroupPost(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException;
 }
