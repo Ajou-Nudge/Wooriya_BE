@@ -4,6 +4,7 @@
 |--------|-------------------|-------------------|
 | POST   | /companypost/post | postCompanyPost   |
 | POST   | /grouppost/post   | postGroupPost     |
+| POST   | /imageupload      | postPostImage     |
 | GET    | /companypost      | getAllCompanyPost |
 | GET    | /grouppost        | getAllGroupPost   |
 
@@ -53,6 +54,26 @@
 ### res.body
 ```json
 1
+```
+
+## postPostImage
+
+### URI
+
+```
+/imageupload
+```
+
+### req.body
+```formdata
+{
+  img : [base64]
+}
+```
+
+### res.body
+```json
+[B@38d41ed3
 ```
 
 ## getAllCompanyPost
