@@ -23,9 +23,8 @@ public class GroupPost {
     private String coType;
     @Column(nullable = false)
     private Integer coSize;
-    @Lob
-    @Column(length = 5000)
-    private Blob img;
+    @Column(length = 1000)
+    private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

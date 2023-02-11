@@ -17,5 +17,5 @@ public class CompanyPostDto {
     private String companyName;
     private String coType;
     private int coSize;
-    private String img;
+    private String body;
 }

@@ -12,16 +12,9 @@ import java.util.List;
 @Component
 public class CompanyPostDAOImpl implements CompanyPostDAO {
     private final CompanyPostRepository companyPostRepository;
-    private final PostImageRepository postImageRepository;
 
-    public CompanyPostDAOImpl(CompanyPostRepository companyPostRepository, PostImageRepository postImageRepository) {
+    public CompanyPostDAOImpl(CompanyPostRepository companyPostRepository) {
         this.companyPostRepository = companyPostRepository;
-        this.postImageRepository = postImageRepository;
-    }
-
-    public String insertImage(PostImage postImage) {
-        String urlImage = postImageRepository.save(postImage).getAddress();
-        return urlImage;
     }
 
     @Override

@@ -24,9 +24,8 @@ public class CompanyPost {
     private String coType;
     @Column(nullable = false)
     private Integer coSize;
-    @Lob
-    @Column(length = 20971520)
-    private Blob img;
+    @Column(length = 1000)
+    private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

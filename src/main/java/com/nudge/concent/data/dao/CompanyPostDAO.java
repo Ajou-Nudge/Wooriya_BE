@@ -10,6 +10,4 @@ public interface CompanyPostDAO {
     List<CompanyPost> selectAllPost();
 
     Long insertPost(CompanyPost companyPost);
-
-    String insertImage(PostImage postImage);
 }
