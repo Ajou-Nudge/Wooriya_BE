@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface GroupPostDAO {
     List<GroupPost> selectAllPost();
-
+    GroupPost selectPost(Long id);
     Long insertPost(GroupPost groupPost);
 }

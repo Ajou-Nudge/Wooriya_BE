@@ -24,7 +24,7 @@ public class GroupPost {
     @Column(nullable = false)
     private Integer coSize;
     @Column(length = 1000)
-    private String content;
+    private String body;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

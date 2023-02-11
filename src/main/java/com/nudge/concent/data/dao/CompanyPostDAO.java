@@ -9,5 +9,7 @@ import java.util.List;
 public interface CompanyPostDAO {
     List<CompanyPost> selectAllPost();
 
+    CompanyPost selectPost(Long id);
+
     Long insertPost(CompanyPost companyPost);
 }

@@ -31,9 +31,15 @@ public class Board {
     }
 
     @GetMapping("/companypost")
-    public ResponseEntity<List<CompanyPostDto>> getCompanyPost() throws UnsupportedEncodingException {
+    public ResponseEntity<List<CompanyPostDto>> getAllCompanyPost() throws UnsupportedEncodingException {
         List<CompanyPostDto> companyPostResponseDtos = boardService.getAllCompanyPost();
         return ResponseEntity.status(HttpStatus.OK).body(companyPostResponseDtos);
+    }
+
+    @GetMapping("/companypost/{id}")
+    public ResponseEntity<CompanyPostDto> getCompanyPost(@PathVariable Long id) {
+        CompanyPostDto companyPostDto = boardService.getCompanyPost(id);
+        return ResponseEntity.status(HttpStatus.OK).body(companyPostDto);
     }
 
     @RequestMapping(value="/imageupload", method = RequestMethod.POST)
@@ -53,5 +59,11 @@ public class Board {
     public ResponseEntity<List<GroupPostDto>> getGroupPost() {
         List<GroupPostDto> groupPostDtos = boardService.getAllGroupPost();
         return ResponseEntity.status(HttpStatus.OK).body(groupPostDtos);
+    }
+
+    @GetMapping("/grouppost/{id}")
+    public ResponseEntity<GroupPostDto> getGroupPost(@PathVariable Long id) {
+        GroupPostDto groupPostDto = boardService.getGroupPost(id);
+        return ResponseEntity.status(HttpStatus.OK).body(groupPostDto);
     }
 }

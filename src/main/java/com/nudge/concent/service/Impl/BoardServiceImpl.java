@@ -38,8 +38,17 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public CompanyPostDto getCompanyPost() {
-        return null;
+    public CompanyPostDto getCompanyPost(Long id) {
+        CompanyPost companyPost = companyPostDAO.selectPost(id);
+        CompanyPostDto companyPostDto = new CompanyPostDto();
+        companyPostDto.setId(companyPost.getId());
+        companyPostDto.setCompanyName(companyPost.getCompanyName());
+        companyPostDto.setTitle(companyPost.getTitle());
+        companyPostDto.setCoType(companyPost.getCoType());
+        companyPostDto.setCoSize(companyPost.getCoSize());
+        companyPostDto.setBody(companyPost.getBody());
+
+        return companyPostDto;
     }
 
     @Override
@@ -66,7 +75,7 @@ public class BoardServiceImpl implements BoardService {
         companyPost.setCompanyName(req.getParameter("companyName"));
         companyPost.setCoType(req.getParameter("coType"));
         companyPost.setCoSize(Integer.parseInt(req.getParameter("coSize")));
-        companyPost.setContent(req.getParameter("body"));
+        companyPost.setBody(req.getParameter("body"));
         Long postId = companyPostDAO.insertPost(companyPost);
         return postId;
     }
@@ -98,8 +107,17 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public GroupPostDto getGroupPost() {
-        return null;
+    public GroupPostDto getGroupPost(Long id) {
+        GroupPost groupPost = groupPostDAO.selectPost(id);
+        GroupPostDto groupPostDto = new GroupPostDto();
+        groupPostDto.setId(groupPost.getId());
+        groupPostDto.setGroupName(groupPost.getGroupName());
+        groupPostDto.setTitle(groupPost.getTitle());
+        groupPostDto.setCoType(groupPost.getCoType());
+        groupPostDto.setCoSize(groupPost.getCoSize());
+        groupPostDto.setBody(groupPost.getBody());
+
+        return groupPostDto;
     }
 
     @Override
@@ -126,7 +144,7 @@ public class BoardServiceImpl implements BoardService {
         groupPost.setGroupName(req.getParameter("groupName"));
         groupPost.setCoType(req.getParameter("coType"));
         groupPost.setCoSize(Integer.parseInt(req.getParameter("coSize")));
-        groupPost.setContent(req.getParameter("body"));
+        groupPost.setBody(req.getParameter("body"));
         Long postId = groupPostDAO.insertPost(groupPost);
         return postId;
     }

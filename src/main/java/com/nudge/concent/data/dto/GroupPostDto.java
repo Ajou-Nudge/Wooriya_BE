@@ -14,5 +14,5 @@ public class GroupPostDto {
     private String groupName;
     private String coType;
     private int coSize;
-    private String img;
+    private String body;
 }

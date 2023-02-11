@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface BoardService {
 
-    CompanyPostDto getCompanyPost();
+    CompanyPostDto getCompanyPost(Long id);
 
     List<CompanyPostDto> getAllCompanyPost() throws UnsupportedEncodingException;
 
@@ -19,7 +19,7 @@ public interface BoardService {
 
     String saveImage(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException;
 
-    GroupPostDto getGroupPost();
+    GroupPostDto getGroupPost(Long id);
 
     List<GroupPostDto> getAllGroupPost();
 
