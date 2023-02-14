@@ -15,7 +15,7 @@ public interface BoardService {
 
     List<CompanyPostDto> getAllCompanyPost() throws UnsupportedEncodingException;
 
-    Long saveCompanyPost(MultipartHttpServletRequest req) throws SQLException;
+    Long saveCompanyPost(CompanyPostDto companyPostDto) throws SQLException;
 
     String saveImage(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException;
 
@@ -23,5 +23,5 @@ public interface BoardService {
 
     List<GroupPostDto> getAllGroupPost();
 
-    Long saveGroupPost(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException;
+    Long saveGroupPost(GroupPostDto groupPostDto) throws SQLException, NoSuchAlgorithmException;
 }

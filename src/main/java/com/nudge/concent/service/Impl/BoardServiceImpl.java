@@ -69,13 +69,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Long saveCompanyPost(MultipartHttpServletRequest req) {
+    public Long saveCompanyPost(CompanyPostDto companyPostDto) {
         CompanyPost companyPost = new CompanyPost();
-        companyPost.setTitle(req.getParameter("title"));
-        companyPost.setCompanyName(req.getParameter("companyName"));
-        companyPost.setCoType(req.getParameter("coType"));
-        companyPost.setCoSize(Integer.parseInt(req.getParameter("coSize")));
-        companyPost.setBody(req.getParameter("body"));
+        companyPost.setTitle(companyPostDto.getTitle());
+        companyPost.setCompanyName(companyPostDto.getCompanyName());
+        companyPost.setCoType(companyPostDto.getCoType());
+        companyPost.setCoSize(companyPostDto.getCoSize());
+        companyPost.setBody(companyPostDto.getBody());
         Long postId = companyPostDAO.insertPost(companyPost);
         return postId;
     }
@@ -138,13 +138,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Long saveGroupPost(MultipartHttpServletRequest req) {
+    public Long saveGroupPost(GroupPostDto groupPostDto) {
         GroupPost groupPost = new GroupPost();
-        groupPost.setTitle(req.getParameter("title"));
-        groupPost.setGroupName(req.getParameter("groupName"));
-        groupPost.setCoType(req.getParameter("coType"));
-        groupPost.setCoSize(Integer.parseInt(req.getParameter("coSize")));
-        groupPost.setBody(req.getParameter("body"));
+        groupPost.setTitle(groupPostDto.getTitle());
+        groupPost.setGroupName(groupPostDto.getGroupName());
+        groupPost.setCoType(groupPostDto.getCoType());
+        groupPost.setCoSize(groupPostDto.getCoSize());
+        groupPost.setBody(groupPostDto.getBody());
         Long postId = groupPostDAO.insertPost(groupPost);
         return postId;
     }

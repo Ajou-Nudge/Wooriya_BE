@@ -23,10 +23,9 @@ public class Board {
         this.boardService = boardService;
     }
 
-    @RequestMapping(value="/companypost/post", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<Long> postCompanyPost(MultipartHttpServletRequest req) throws Exception {
-        Long postId = boardService.saveCompanyPost(req);
+    @PostMapping("/companypost/post")
+    public ResponseEntity<Long> postCompanyPost(@RequestBody CompanyPostDto companyPostDto) throws Exception {
+        Long postId = boardService.saveCompanyPost(companyPostDto);
         return ResponseEntity.status(HttpStatus.OK).body(postId);
     }
 
@@ -50,8 +49,8 @@ public class Board {
     }
 
     @PostMapping("/grouppost/post")
-    public ResponseEntity<Long> postGroupPost(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException {
-        Long postId = boardService.saveGroupPost(req);
+    public ResponseEntity<Long> postGroupPost(GroupPostDto groupPostDto) throws SQLException, NoSuchAlgorithmException {
+        Long postId = boardService.saveGroupPost(groupPostDto);
         return ResponseEntity.status(HttpStatus.OK).body(postId);
     }
 
