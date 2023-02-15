@@ -2,6 +2,7 @@ package com.nudge.concent.service;
 
 import com.nudge.concent.data.dto.CompanyPostDto;
 import com.nudge.concent.data.dto.GroupPostDto;
+import com.nudge.concent.data.dto.PostImgaeDto;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.UnsupportedEncodingException;
@@ -18,6 +19,8 @@ public interface BoardService {
     Long saveCompanyPost(CompanyPostDto companyPostDto) throws SQLException;
 
     String saveImage(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException;
+
+    String getImage(String address) throws SQLException;
 
     GroupPostDto getGroupPost(Long id);
 

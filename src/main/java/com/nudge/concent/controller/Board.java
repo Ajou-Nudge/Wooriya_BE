@@ -2,8 +2,10 @@ package com.nudge.concent.controller;
 
 import com.nudge.concent.data.dto.CompanyPostDto;
 import com.nudge.concent.data.dto.GroupPostDto;
+import com.nudge.concent.data.dto.PostImgaeDto;
 import com.nudge.concent.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,9 +45,15 @@ public class Board {
 
     @RequestMapping(value="/imageupload", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> getImage(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException {
+    public ResponseEntity<String>postImage(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException {
         String urlImage = boardService.saveImage(req);
         return ResponseEntity.status(HttpStatus.OK).body(urlImage);
+    }
+
+    @GetMapping("/image/{address}")
+    public String getImage(@PathVariable String address) throws SQLException {
+        String base64Image = boardService.getImage(address);
+        return base64Image;
     }
 
     @PostMapping("/grouppost/post")

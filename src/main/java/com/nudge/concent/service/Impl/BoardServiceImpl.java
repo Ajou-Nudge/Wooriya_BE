@@ -5,6 +5,7 @@ import com.nudge.concent.data.dao.GroupPostDAO;
 import com.nudge.concent.data.dao.PostDAO;
 import com.nudge.concent.data.dto.CompanyPostDto;
 import com.nudge.concent.data.dto.GroupPostDto;
+import com.nudge.concent.data.dto.PostImgaeDto;
 import com.nudge.concent.data.entity.CompanyPost;
 import com.nudge.concent.data.entity.GroupPost;
 import com.nudge.concent.data.entity.PostImage;
@@ -21,6 +22,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -86,10 +88,10 @@ public class BoardServiceImpl implements BoardService {
         final String BASE_64_PREFIX = "data:image/png;base64,";
         String addrData = "";
         try {
-            String base64Url = String.valueOf(req.getParameter("img"));
+            String base64Url = req.getParameter("img").substring(BASE_64_PREFIX.length());
             if (base64Url.startsWith(BASE_64_PREFIX)){
-                imageArray =  Base64.getDecoder().decode(base64Url.substring(BASE_64_PREFIX.length()));
-                addrData = base64Url.substring(BASE_64_PREFIX.length());
+                imageArray =  Base64.getDecoder().decode(base64Url);
+                addrData = base64Url;
             }
         }
         catch (Exception e){
@@ -97,13 +99,22 @@ public class BoardServiceImpl implements BoardService {
         }
 
         Blob imageBlob = new SerialBlob(imageArray);
-        byte[] addr = sha256(addrData.substring(6, 16));
+        String addr = encrypt(addrData);
 
         PostImage postImage = new PostImage();
         postImage.setImg(imageBlob);
-        postImage.setAddress(addr.toString());
+        postImage.setAddress(addr);
+
         String imgAddr = postDAO.insertImage(postImage);
         return imgAddr;
+    }
+
+    @Override
+    public String getImage(String address) throws SQLException {
+        String base64Image = postDAO.selectImage(address);
+        final String BASE_64_PREFIX = "data:image/png;base64,";
+        String base64Url = new String(BASE_64_PREFIX).concat(base64Image);
+        return base64Url;
     }
 
     @Override
@@ -149,9 +160,17 @@ public class BoardServiceImpl implements BoardService {
         return postId;
     }
 
-    private static byte[] sha256(String data) throws NoSuchAlgorithmException {
-        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-        messageDigest.update(data.getBytes());
-        return messageDigest.digest();
+    public String encrypt(String text) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(text.getBytes());
+        return bytesToHex(md.digest());
+    }
+
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder builder = new StringBuilder();
+        for (byte b : bytes) {
+            builder.append(String.format("%02x", b));
+        }
+        return builder.toString();
     }
 }

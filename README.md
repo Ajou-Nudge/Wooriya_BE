@@ -73,9 +73,17 @@
 }
 ```
 
+## getPostImane
+
+### URI
+
+```
+/image/{address}
+```
+
 ### res.body
 ```json
-[B@38d41ed3
+data:image/png;base64,[base64]
 ```
 
 ## getAllCompanyPost
