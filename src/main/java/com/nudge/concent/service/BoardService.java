@@ -21,7 +21,7 @@ public interface BoardService {
 
     String saveImage(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException;
 
-    Blob getImage(String address) throws SQLException;
+    String getImage(String address) throws SQLException;
 
     GroupPostDto getGroupPost(Long id);
 

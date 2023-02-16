@@ -52,9 +52,9 @@ public class Board {
     }
 
     @GetMapping("/image/{address}")
-    public ResponseEntity<Blob> getImage(@PathVariable String address) throws SQLException {
-        Blob blobImage = boardService.getImage(address);
-        return ResponseEntity.status(HttpStatus.OK).body(blobImage);
+    public String getImage(@PathVariable String address) throws SQLException {
+        String base64Url = boardService.getImage(address);
+        return base64Url;
     }
 
     @PostMapping("/grouppost/post")

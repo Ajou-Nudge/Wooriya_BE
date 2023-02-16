@@ -8,5 +8,5 @@ import java.sql.SQLException;
 public interface PostDAO {
     String insertImage(PostImage postImage);
 
-    Blob selectImage(String address) throws SQLException;
+    String selectImage(String address) throws SQLException;
 }

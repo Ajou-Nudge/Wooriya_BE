@@ -108,8 +108,10 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Blob getImage(String address) throws SQLException {
-        Blob base64Url = postDAO.selectImage(address);
+    public String getImage(String address) throws SQLException {
+        String base64Image = postDAO.selectImage(address);
+        final String BASE_64_PREFIX = "data:image/png;base64,";
+        String base64Url = new String(BASE_64_PREFIX).concat(base64Image);
         return base64Url;
     }
 
