@@ -17,14 +17,13 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.BufferedInputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -89,17 +88,16 @@ public class BoardServiceImpl implements BoardService {
         String addrData = "";
         try {
             String base64Url = req.getParameter("img").substring(BASE_64_PREFIX.length());
-            if (base64Url.startsWith(BASE_64_PREFIX)){
-                imageArray =  Base64.getDecoder().decode(base64Url);
-                addrData = base64Url;
-            }
+            imageArray = Base64.getDecoder().decode(base64Url);
+            addrData = base64Url;
         }
         catch (Exception e){
             e.printStackTrace();
         }
 
+        System.out.println(imageArray);
         Blob imageBlob = new SerialBlob(imageArray);
-        String addr = encrypt(addrData);
+        String addr = randomString();
 
         PostImage postImage = new PostImage();
         postImage.setImg(imageBlob);
@@ -160,17 +158,18 @@ public class BoardServiceImpl implements BoardService {
         return postId;
     }
 
-    public String encrypt(String text) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        md.update(text.getBytes());
-        return bytesToHex(md.digest());
-    }
-
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder builder = new StringBuilder();
-        for (byte b : bytes) {
-            builder.append(String.format("%02x", b));
+    public String randomString() {
+        int leftLimit = 97;
+        int rightLimit = 122;
+        int targetStringLength = 10;
+        Random random = new Random();
+        StringBuilder buffer = new StringBuilder(targetStringLength);
+        for (int i = 0; i < targetStringLength; i++) {
+            int randomLimitedInt = leftLimit + (int)
+                    (random.nextFloat() * (rightLimit - leftLimit + 1));
+            buffer.append((char) randomLimitedInt);
         }
-        return builder.toString();
+        String generatedString = buffer.toString();
+        return generatedString;
     }
 }

@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PostImageRepository extends JpaRepository<PostImage,Long> {
-    List<PostImage> getByAddress(String address);
+    PostImage getByAddress(String address);
 }

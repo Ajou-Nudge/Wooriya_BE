@@ -51,9 +51,9 @@ public class Board {
     }
 
     @GetMapping("/image/{address}")
-    public String getImage(@PathVariable String address) throws SQLException {
+    public ResponseEntity<String> getImage(@PathVariable String address) throws SQLException {
         String base64Image = boardService.getImage(address);
-        return base64Image;
+        return ResponseEntity.status(HttpStatus.OK).body(base64Image);
     }
 
     @PostMapping("/grouppost/post")

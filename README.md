@@ -73,12 +73,17 @@
 }
 ```
 
+### res.body
+```json
+[randomString]
+```
+
 ## getPostImane
 
 ### URI
 
 ```
-/image/{address}
+/image/{randomString}
 ```
 
 ### res.body

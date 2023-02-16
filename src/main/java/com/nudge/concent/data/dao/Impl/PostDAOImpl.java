@@ -28,7 +28,7 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public String selectImage(String address) throws SQLException {
-        Blob blob = new SerialBlob(postImageRepository.getByAddress(address).get(0).getImg());
+        Blob blob = new SerialBlob(postImageRepository.getByAddress(address).getImg());
         byte[] base64Image = Base64.getEncoder().encode(blob.getBytes(1, (int)blob.length()));
         String base64Url = new String(base64Image);
         return base64Url;
