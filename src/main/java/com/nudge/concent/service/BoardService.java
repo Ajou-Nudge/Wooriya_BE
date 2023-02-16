@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface BoardService {
 
     String saveImage(MultipartHttpServletRequest req) throws SQLException, NoSuchAlgorithmException;
 
-    String getImage(String address) throws SQLException;
+    Blob getImage(String address) throws SQLException;
 
     GroupPostDto getGroupPost(Long id);
 

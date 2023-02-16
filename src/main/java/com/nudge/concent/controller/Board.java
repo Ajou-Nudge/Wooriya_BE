@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -51,9 +52,9 @@ public class Board {
     }
 
     @GetMapping("/image/{address}")
-    public ResponseEntity<String> getImage(@PathVariable String address) throws SQLException {
-        String base64Image = boardService.getImage(address);
-        return ResponseEntity.status(HttpStatus.OK).body(base64Image);
+    public ResponseEntity<Blob> getImage(@PathVariable String address) throws SQLException {
+        Blob blobImage = boardService.getImage(address);
+        return ResponseEntity.status(HttpStatus.OK).body(blobImage);
     }
 
     @PostMapping("/grouppost/post")
