@@ -2,8 +2,6 @@ package com.nudge.concent.data.dao.Impl;
 
 import com.nudge.concent.data.dao.CompanyPostDAO;
 import com.nudge.concent.data.entity.CompanyPost;
-import com.nudge.concent.data.entity.PostImage;
-import com.nudge.concent.data.repository.PostImageRepository;
 import com.nudge.concent.data.repository.CompanyPostRepository;
 import org.springframework.stereotype.Component;
 

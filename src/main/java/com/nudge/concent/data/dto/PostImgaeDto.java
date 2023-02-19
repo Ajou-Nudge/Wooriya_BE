@@ -9,5 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class PostImgaeDto {
-    private String address;
+    private String path;
+    private String fileName;
 }
