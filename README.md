@@ -69,13 +69,13 @@
 ### req.body
 ```formdata
 {
-  img : [base64]
+  img : [FILE]
 }
 ```
 
 ### res.body
 ```json
-[randomString]
+[pathString]
 ```
 
 ## getPostImane
@@ -83,12 +83,12 @@
 ### URI
 
 ```
-/image/{randomString}
+/image/{pathString}
 ```
 
 ### res.body
 ```json
-data:image/png;base64,[base64]
+[FILE]
 ```
 
 ## getAllCompanyPost

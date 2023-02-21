@@ -18,13 +18,13 @@ public class S3Controller {
         this.metadataService = metadataService;
     }
 
-    @PostMapping("/upload")
+    @PostMapping("/imageupload")
         public String upload(@RequestParam("file") MultipartFile file) throws IOException {
             String path = metadataService.upload(file);
             return path;
         }
 
-        @GetMapping(value="/download/{path}", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
+        @GetMapping(value="/image/{path}", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
         @ResponseBody
         public HttpEntity<byte[]> download(@PathVariable String path) throws IOException {
             S3Object s3Object = metadataService.download(path);
