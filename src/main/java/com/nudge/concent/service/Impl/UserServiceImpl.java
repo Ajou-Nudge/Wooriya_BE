@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +47,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .findByMemberId(userLoginDto.getMemberId())
                 .orElseThrow(() -> new UsernameNotFoundException("아이디 혹은 비밀번호를 확인하세요."));
 
-        System.out.println(userLoginDto.getPassword() + " / " + member.getPassword());
         boolean matches = passwordEncoder.matches(userLoginDto.getPassword(), member.getPassword());
         if (!matches) throw new BadCredentialsException("아이디 혹은 비밀번호를 확인하세요.");
 
