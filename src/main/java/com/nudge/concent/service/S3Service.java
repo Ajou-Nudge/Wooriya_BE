@@ -12,7 +12,8 @@ public interface S3Service {
             String path,
             String fileName,
             Optional<Map<String, String>> optionalMetaData,
-            InputStream inputStream);
+            InputStream inputStream
+    );
 
     public S3Object download(String path, String fileName);
 }

@@ -18,7 +18,7 @@ public class S3Controller {
         this.metadataService = metadataService;
     }
 
-    @PostMapping("/imageupload")
+        @PostMapping("/imageupload")
         public String upload(@RequestParam("img") MultipartFile img) throws IOException {
             String path = metadataService.upload(img);
             return path;
