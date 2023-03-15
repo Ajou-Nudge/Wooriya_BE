@@ -29,9 +29,9 @@ public class SecurityConfig {
                 .and()
                     .authorizeRequests()
                     .requestMatchers("/**").permitAll()
-                    .requestMatchers("/issuer/**").hasRole("ISSUER")
-                    .requestMatchers("/holder/**").hasRole("HOLDER")
-                    .requestMatchers("/verifier/**").hasRole("VERIFIER")
+//                    .requestMatchers("/issuer/**").hasRole("ISSUER")
+//                    .requestMatchers("/holder/**").hasRole("HOLDER")
+//                    .requestMatchers("/verifier/**").hasRole("VERIFIER")
                     .anyRequest().authenticated()
                 .and()
                     .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

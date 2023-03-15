@@ -36,16 +36,17 @@ public class JwtTokenProvider {
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
-        Date accessTokenExpiresIn = new Date(now + 86400000);
+        Date accessTokenExpiration = new Date(now + 3600000); // 1h
+        Date refreshTokenExpiration = new Date(now + 1209600000); // 14d
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
-                .setExpiration(accessTokenExpiresIn)
+                .setExpiration(accessTokenExpiration)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + 86400000))
+                .setExpiration(refreshTokenExpiration)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 

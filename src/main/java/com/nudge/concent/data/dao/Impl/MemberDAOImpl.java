@@ -1,5 +1,6 @@
 package com.nudge.concent.data.dao.Impl;
 
+import com.nudge.concent.config.security.JwtTokenProvider;
 import com.nudge.concent.config.security.SecurityUtil;
 import com.nudge.concent.data.dao.MemberDAO;
 import com.nudge.concent.data.dto.UserInfoDto;
