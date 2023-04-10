@@ -10,6 +10,7 @@ import com.nudge.wooriya.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 
@@ -62,6 +63,28 @@ public class BoardServiceImpl implements BoardService {
         companyPost.setCoType(companyPostDto.getCoType());
         companyPost.setCoSize(companyPostDto.getCoSize());
         companyPost.setBody(companyPostDto.getBody());
+        companyPost.setCreatedAt(LocalDateTime.now());
+        companyPost.setUpdatedAt(LocalDateTime.now());
+        Long postId = companyPostDAO.insertPost(companyPost);
+        return postId;
+    }
+
+    public void deleteCompanyPost(Long id) {
+        companyPostDAO.deletePost(id);
+    }
+
+    @Override
+    public Long updateCompanyPost(CompanyPostDto companyPostDto, Long id) {
+        CompanyPost companyPost = new CompanyPost();
+        companyPost.setId(id);
+        companyPost.setTitle(companyPostDto.getTitle());
+        companyPost.setCompanyName(companyPostDto.getCompanyName());
+        companyPost.setCoType(companyPostDto.getCoType());
+        companyPost.setCoSize(companyPostDto.getCoSize());
+        companyPost.setBody(companyPostDto.getBody());
+        companyPost.setCreatedAt(companyPostDAO.selectPost(id).getCreatedAt());
+        companyPost.setUpdatedAt(LocalDateTime.now());
+
         Long postId = companyPostDAO.insertPost(companyPost);
         return postId;
     }
@@ -105,6 +128,26 @@ public class BoardServiceImpl implements BoardService {
         groupPost.setCoType(groupPostDto.getCoType());
         groupPost.setCoSize(groupPostDto.getCoSize());
         groupPost.setBody(groupPostDto.getBody());
+        Long postId = groupPostDAO.insertPost(groupPost);
+        return postId;
+    }
+
+    public void deleteGroupPost(Long id) {
+        groupPostDAO.deletePost(id);
+    }
+
+    @Override
+    public Long updateGroupPost(GroupPostDto groupPostDto, Long id) {
+        GroupPost groupPost = new GroupPost();
+        groupPost.setId(id);
+        groupPost.setTitle(groupPostDto.getTitle());
+        groupPost.setGroupName(groupPostDto.getGroupName());
+        groupPost.setCoType(groupPostDto.getCoType());
+        groupPost.setCoSize(groupPostDto.getCoSize());
+        groupPost.setBody(groupPostDto.getBody());
+        groupPost.setCreatedAt(groupPostDAO.selectPost(id).getCreatedAt());
+        groupPost.setUpdatedAt(LocalDateTime.now());
+
         Long postId = groupPostDAO.insertPost(groupPost);
         return postId;
     }

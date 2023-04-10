@@ -8,4 +8,6 @@ public interface GroupPostDAO {
     List<GroupPost> selectAllPost();
     GroupPost selectPost(Long id);
     Long insertPost(GroupPost groupPost);
+    void deletePost(Long id);
+    Long updatePost(GroupPost groupPost);
 }

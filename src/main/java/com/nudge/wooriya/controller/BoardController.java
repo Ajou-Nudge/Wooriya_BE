@@ -28,6 +28,17 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(postId);
     }
 
+    @DeleteMapping("/companypost/delete/{id}")
+    public void deleteCompanyPost(@PathVariable Long id) {
+        boardService.deleteCompanyPost(id);
+    }
+
+    @PostMapping("/companypost/update/{id}")
+    public ResponseEntity<Long> updateCompanyPost(@RequestBody CompanyPostDto companyPostDto, @PathVariable Long id) throws Exception {
+        Long postId = boardService.updateCompanyPost(companyPostDto, id);
+        return ResponseEntity.status(HttpStatus.OK).body(postId);
+    }
+
     @GetMapping("/companypost")
     public ResponseEntity<List<CompanyPostDto>> getAllCompanyPost() throws UnsupportedEncodingException {
         List<CompanyPostDto> companyPostResponseDtos = boardService.getAllCompanyPost();
@@ -43,6 +54,17 @@ public class BoardController {
     @PostMapping("/grouppost/post")
     public ResponseEntity<Long> postGroupPost(GroupPostDto groupPostDto) throws SQLException, NoSuchAlgorithmException {
         Long postId = boardService.saveGroupPost(groupPostDto);
+        return ResponseEntity.status(HttpStatus.OK).body(postId);
+    }
+
+    @DeleteMapping("/grouppost/delete/{id}")
+    public void deleteGroupPost(@PathVariable Long id) {
+        boardService.deleteGroupPost(id);
+    }
+
+    @PostMapping("/grouppost/update/{id}")
+    public ResponseEntity<Long> updateGroupPost(@RequestBody GroupPostDto groupPostDto, @PathVariable Long id) throws Exception {
+        Long postId = boardService.updateGroupPost(groupPostDto, id);
         return ResponseEntity.status(HttpStatus.OK).body(postId);
     }
 

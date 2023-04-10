@@ -32,4 +32,16 @@ public class CompanyPostDAOImpl implements CompanyPostDAO {
         Long postId = companyPostRepository.save(companyPost).getId();
         return postId;
     }
+
+    @Override
+    public void deletePost(Long id) {
+        CompanyPost companyPost = selectPost(id);
+        companyPostRepository.delete(companyPost);
+    }
+
+    @Override
+    public Long updatePost(CompanyPost companyPost) {
+        Long postId = companyPostRepository.save(companyPost).getId();
+        return postId;
+    }
 }

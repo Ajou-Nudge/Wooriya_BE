@@ -16,9 +16,17 @@ public interface BoardService {
 
     Long saveCompanyPost(CompanyPostDto companyPostDto) throws SQLException;
 
+    void deleteCompanyPost(Long id);
+
+    Long updateCompanyPost(CompanyPostDto companyPostDto, Long id);
+
     GroupPostDto getGroupPost(Long id);
 
     List<GroupPostDto> getAllGroupPost();
 
     Long saveGroupPost(GroupPostDto groupPostDto) throws SQLException, NoSuchAlgorithmException;
+
+    void deleteGroupPost(Long id);
+
+    Long updateGroupPost(GroupPostDto groupPostDto, Long id);
 }

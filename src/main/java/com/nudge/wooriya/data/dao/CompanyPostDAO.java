@@ -10,4 +10,8 @@ public interface CompanyPostDAO {
     CompanyPost selectPost(Long id);
 
     Long insertPost(CompanyPost companyPost);
+
+    void deletePost(Long id);
+
+    Long updatePost(CompanyPost companyPost);
 }

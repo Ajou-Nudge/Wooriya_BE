@@ -1,26 +1,30 @@
-# REST API
+# API Docs
 
-| Method | URI               | Description        |
-|--------|-------------------|--------------------|
-| POST   | /companypost/post | postCompanyPost    |
-| POST   | /grouppost/post   | postGroupPost      |
-| POST   | /imageupload      | postPostImage      |
-| GET    | /companypost      | getAllCompanyPost  |
-| GET    | /grouppost        | getAllGroupPost    |
-| GET    | /companypost/{id} | getCompanyPostById |
-| GET    | /grouppost/{id}   | getGroupPostById   |
+| Method | URI                      | Description           |
+|--------|--------------------------|-----------------------|
+| POST   | /companypost/post        | postCompanyPost       |
+| POST   | /grouppost/post          | postGroupPost         |
+| POST   | /companypost/update/{id} | updateCompanyPost     |
+| POST   | /grouppost/update/{id}   | updateGroupPost       |
+| POST   | /imageupload             | postPostImage         |
+| GET    | /image/{pathString}      | gettPostImage         |
+| GET    | /companypost             | getAllCompanyPost     |
+| GET    | /grouppost               | getAllGroupPost       |
+| GET    | /companypost/{id}        | getCompanyPostById    |
+| GET    | /grouppost/{id}          | getGroupPostById      |
+| DELETE | /companypost/delete/{id} | deleteCompanyPostById |
+| DELETE | /grouppost/delete/{id}   | deleteCompanyPostById |
 
-# Issuer
 
-## postCompanyPost
+## [POST] postCompanyPost
 
-### URI
+URI
 
 ```
 /companypost/post
 ```
 
-### req.body
+req.body
 ```json
 {
   "title" : "test",
@@ -30,20 +34,20 @@
 }
 ```
 
-### res.body
+res.body
 ```json
 1
 ```
 
-## postGroupPost
+## [POST] postGroupPost
 
-### URI
+URI
 
 ```
 /grouppost/post
 ```
 
-### req.body
+req.body
 ```json
 {
   "title" : "test",
@@ -53,53 +57,98 @@
 }
 ```
 
-### res.body
+res.body
 ```json
 1
 ```
 
-## postPostImage
+## [POST] updateCompanyPost
+URI
 
-### URI
+```
+/companypost/update/{id}
+```
+
+req.body
+```json
+{
+  "title" : "testModify",
+  "companyName" : "testGroupName",
+  "coType" : "test",
+  "coSize" : 100
+}
+```
+
+res.body
+```json
+1
+```
+
+## [POST] updateGroupPost
+
+URI
+
+```
+/grouppost/update/{id}
+```
+
+req.body
+```json
+{
+  "title" : "testModify",
+  "groupName" : "testGroupName",
+  "coType" : "test",
+  "coSize" : 100
+}
+```
+
+res.body
+```json
+1
+```
+
+## [POST] postPostImage
+
+URI
 
 ```
 /imageupload
 ```
 
-### req.body
+req.body
 ```formdata
 {
   img : [FILE]
 }
 ```
 
-### res.body
+res.body
 ```json
 [pathString]
 ```
 
-## getPostImane
+## [GET] getPostImage
 
-### URI
+URI
 
 ```
 /image/{pathString}
 ```
 
-### res.body
+res.body
 ```json
 [FILE]
 ```
 
-## getAllCompanyPost
+## [GET] getAllCompanyPost
 
-### URI
+URI
 
 ```
 /companypost
 ```
 
-### res.body
+res.body
 
 ```json
 [
@@ -120,15 +169,15 @@
 ]
 ```
 
-## getAllGroupPost
+## [GET] getAllGroupPost
 
-### URI
+URI
 
 ```
 /grouppost
 ```
 
-### res.body
+res.body
 
 ```json
 [
@@ -156,15 +205,15 @@
 ]
 ```
 
-## getCompanyPostById
+## [GET] getCompanyPostById
 
-### URI
+URI
 
 ```
 /grouppost/{id}
 ```
 
-### res.body
+res.body
 
 ```json
 {
@@ -177,15 +226,15 @@
 }
 ```
 
-## getGroupPostById
+## [GET] getGroupPostById
 
-### URI
+URI
 
 ```
 /grouppost/{id}
 ```
 
-### res.body
+res.body
 
 ```json
 {
@@ -197,3 +246,20 @@
   "body": "testBody"
 }
 ```
+
+## [DELETE] deleteCompanyPostById
+
+URI
+
+```
+/companypost/delete/{id}
+```
+
+## [DELETE] deleteGroupPostById
+
+URI
+
+```
+/grouppost/delete/{id}
+```
+
