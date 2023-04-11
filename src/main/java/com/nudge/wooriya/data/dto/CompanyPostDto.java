@@ -11,6 +11,7 @@ import lombok.*;
 public class CompanyPostDto {
     private Long id;
     private String title;
+    private String authorId;
     private String companyName;
     private String coType;
     private int coSize;

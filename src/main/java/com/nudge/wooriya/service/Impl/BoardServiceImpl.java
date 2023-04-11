@@ -1,5 +1,6 @@
 package com.nudge.wooriya.service.Impl;
 
+import com.nudge.wooriya.config.security.SecurityUtil;
 import com.nudge.wooriya.data.dao.CompanyPostDAO;
 import com.nudge.wooriya.data.dao.GroupPostDAO;
 import com.nudge.wooriya.data.dto.CompanyPostDto;
@@ -31,6 +32,7 @@ public class BoardServiceImpl implements BoardService {
         companyPostDto.setId(companyPost.getId());
         companyPostDto.setCompanyName(companyPost.getCompanyName());
         companyPostDto.setTitle(companyPost.getTitle());
+        companyPostDto.setAuthorId(companyPost.getAuthorId());
         companyPostDto.setCoType(companyPost.getCoType());
         companyPostDto.setCoSize(companyPost.getCoSize());
         companyPostDto.setBody(companyPost.getBody());
@@ -47,6 +49,7 @@ public class BoardServiceImpl implements BoardService {
             companyPostDto.setId(companyPost.getId());
             companyPostDto.setCompanyName(companyPost.getCompanyName());
             companyPostDto.setTitle(companyPost.getTitle());
+            companyPostDto.setAuthorId(companyPost.getAuthorId());
             companyPostDto.setCoType(companyPost.getCoType());
             companyPostDto.setCoSize(companyPost.getCoSize());
 
@@ -59,6 +62,7 @@ public class BoardServiceImpl implements BoardService {
     public Long saveCompanyPost(CompanyPostDto companyPostDto) {
         CompanyPost companyPost = new CompanyPost();
         companyPost.setTitle(companyPostDto.getTitle());
+        companyPost.setAuthorId(companyPostDto.getAuthorId());
         companyPost.setCompanyName(companyPostDto.getCompanyName());
         companyPost.setCoType(companyPostDto.getCoType());
         companyPost.setCoSize(companyPostDto.getCoSize());
@@ -69,15 +73,25 @@ public class BoardServiceImpl implements BoardService {
         return postId;
     }
 
-    public void deleteCompanyPost(Long id) {
-        companyPostDAO.deletePost(id);
+    public long deleteCompanyPost(Long id) {
+        if(!SecurityUtil.getCurrentMemberId().getMemberId().equals(companyPostDAO.selectPost(id).getAuthorId())) {
+            return -1L;
+        }
+
+        Long postId = companyPostDAO.deletePost(id);
+        return postId;
     }
 
     @Override
     public Long updateCompanyPost(CompanyPostDto companyPostDto, Long id) {
+        if(!SecurityUtil.getCurrentMemberId().getMemberId().equals(companyPostDto.getAuthorId())) {
+            return -1L;
+        }
+
         CompanyPost companyPost = new CompanyPost();
         companyPost.setId(id);
         companyPost.setTitle(companyPostDto.getTitle());
+        companyPost.setAuthorId(companyPostDto.getAuthorId());
         companyPost.setCompanyName(companyPostDto.getCompanyName());
         companyPost.setCoType(companyPostDto.getCoType());
         companyPost.setCoSize(companyPostDto.getCoSize());
@@ -96,6 +110,7 @@ public class BoardServiceImpl implements BoardService {
         groupPostDto.setId(groupPost.getId());
         groupPostDto.setGroupName(groupPost.getGroupName());
         groupPostDto.setTitle(groupPost.getTitle());
+        groupPostDto.setAuthorId(groupPost.getAuthorId());
         groupPostDto.setCoType(groupPost.getCoType());
         groupPostDto.setCoSize(groupPost.getCoSize());
         groupPostDto.setBody(groupPost.getBody());
@@ -112,6 +127,7 @@ public class BoardServiceImpl implements BoardService {
             groupPostDto.setId(groupPost.getId());
             groupPostDto.setGroupName(groupPost.getGroupName());
             groupPostDto.setTitle(groupPost.getTitle());
+            groupPostDto.setAuthorId(groupPost.getAuthorId());
             groupPostDto.setCoType(groupPost.getCoType());
             groupPostDto.setCoSize(groupPost.getCoSize());
 
@@ -124,6 +140,7 @@ public class BoardServiceImpl implements BoardService {
     public Long saveGroupPost(GroupPostDto groupPostDto) {
         GroupPost groupPost = new GroupPost();
         groupPost.setTitle(groupPostDto.getTitle());
+        groupPost.setAuthorId(groupPostDto.getAuthorId());
         groupPost.setGroupName(groupPostDto.getGroupName());
         groupPost.setCoType(groupPostDto.getCoType());
         groupPost.setCoSize(groupPostDto.getCoSize());
@@ -132,15 +149,25 @@ public class BoardServiceImpl implements BoardService {
         return postId;
     }
 
-    public void deleteGroupPost(Long id) {
-        groupPostDAO.deletePost(id);
+    public Long deleteGroupPost(Long id) {
+        if(!SecurityUtil.getCurrentMemberId().getMemberId().equals(companyPostDAO.selectPost(id).getAuthorId())) {
+            return -1L;
+        }
+
+        Long postId = groupPostDAO.deletePost(id);
+        return postId;
     }
 
     @Override
     public Long updateGroupPost(GroupPostDto groupPostDto, Long id) {
+        if(!SecurityUtil.getCurrentMemberId().getMemberId().equals(groupPostDto.getAuthorId())) {
+            return -1L;
+        }
+
         GroupPost groupPost = new GroupPost();
         groupPost.setId(id);
         groupPost.setTitle(groupPostDto.getTitle());
+        groupPost.setAuthorId(groupPostDto.getAuthorId());
         groupPost.setGroupName(groupPostDto.getGroupName());
         groupPost.setCoType(groupPostDto.getCoType());
         groupPost.setCoSize(groupPostDto.getCoSize());

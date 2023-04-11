@@ -28,9 +28,8 @@ public class SecurityConfig {
                 .and()
                     .authorizeRequests()
                     .requestMatchers("/**").permitAll()
-//                    .requestMatchers("/issuer/**").hasRole("ISSUER")
-//                    .requestMatchers("/holder/**").hasRole("HOLDER")
-//                    .requestMatchers("/verifier/**").hasRole("VERIFIER")
+                    .requestMatchers("/comapnypost/**").hasRole("COMPANY")
+                    .requestMatchers("/grouppost/**").hasRole("GROUP")
                     .anyRequest().authenticated()
                 .and()
                     .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

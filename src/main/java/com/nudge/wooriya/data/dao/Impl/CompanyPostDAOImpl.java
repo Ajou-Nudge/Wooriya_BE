@@ -34,9 +34,10 @@ public class CompanyPostDAOImpl implements CompanyPostDAO {
     }
 
     @Override
-    public void deletePost(Long id) {
-        CompanyPost companyPost = selectPost(id);
+    public Long deletePost(Long id) {
+        CompanyPost companyPost = companyPostRepository.getReferenceById(id);
         companyPostRepository.delete(companyPost);
+        return id;
     }
 
     @Override

@@ -11,6 +11,7 @@ import lombok.*;
 public class GroupPostDto {
     private Long id;
     private String title;
+    private String authorId;
     private String groupName;
     private String coType;
     private int coSize;

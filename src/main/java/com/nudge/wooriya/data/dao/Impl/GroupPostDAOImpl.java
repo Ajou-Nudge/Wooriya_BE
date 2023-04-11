@@ -34,9 +34,10 @@ public class GroupPostDAOImpl implements GroupPostDAO {
     }
 
     @Override
-    public void deletePost(Long id) {
-        GroupPost groupPost = selectPost(id);
+    public Long deletePost(Long id) {
+        GroupPost groupPost = groupPostRepository.getReferenceById(id);
         groupPostRepository.delete(groupPost);
+        return id;
     }
 
     @Override

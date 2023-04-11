@@ -17,6 +17,8 @@ public class GroupPost {
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
+    private String authorId;
+    @Column(nullable = false)
     private String groupName;
     @Column(nullable = false)
     private String coType;

@@ -29,8 +29,9 @@ public class BoardController {
     }
 
     @DeleteMapping("/companypost/delete/{id}")
-    public void deleteCompanyPost(@PathVariable Long id) {
-        boardService.deleteCompanyPost(id);
+    public ResponseEntity<Long> deleteCompanyPost(@PathVariable Long id) {
+        Long postId = boardService.deleteCompanyPost(id);
+        return ResponseEntity.status(HttpStatus.OK).body(postId);
     }
 
     @PostMapping("/companypost/update/{id}")
@@ -58,8 +59,9 @@ public class BoardController {
     }
 
     @DeleteMapping("/grouppost/delete/{id}")
-    public void deleteGroupPost(@PathVariable Long id) {
-        boardService.deleteGroupPost(id);
+    public ResponseEntity<Long> deleteGroupPost(@PathVariable Long id) {
+        Long postId = boardService.deleteGroupPost(id);
+        return ResponseEntity.status(HttpStatus.OK).body(postId);
     }
 
     @PostMapping("/grouppost/update/{id}")

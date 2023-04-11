@@ -11,7 +11,7 @@ public interface CompanyPostDAO {
 
     Long insertPost(CompanyPost companyPost);
 
-    void deletePost(Long id);
+    Long deletePost(Long id);
 
     Long updatePost(CompanyPost companyPost);
 }

@@ -17,6 +17,8 @@ public class CompanyPost {
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
+    private String authorId;
+    @Column(nullable = false)
     private String companyName;
     @Column(nullable = false)
     private String coType;

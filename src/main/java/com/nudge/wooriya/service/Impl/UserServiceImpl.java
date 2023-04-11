@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Member member = new Member();
         member.setMemberId(userJoinDto.getMemberId());
         member.setPassword(passwordEncoder.encode(userJoinDto.getPassword()));
-        member.getRoles().add(userJoinDto.getRole());
+        member.setRole(userJoinDto.getRole());
         return memberDAO.join(member);
     }
 
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return User.builder()
                 .username(member.getUsername())
                 .password(passwordEncoder.encode(member.getPassword()))
-                .roles(member.getRoles().toArray(new String[0]))
+                .roles(member.getRole())
                 .build();
     }
 }
