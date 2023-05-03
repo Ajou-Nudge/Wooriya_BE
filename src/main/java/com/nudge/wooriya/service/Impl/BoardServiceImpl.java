@@ -62,7 +62,7 @@ public class BoardServiceImpl implements BoardService {
     public Long saveCompanyPost(CompanyPostDto companyPostDto) {
         CompanyPost companyPost = new CompanyPost();
         companyPost.setTitle(companyPostDto.getTitle());
-        companyPost.setAuthorId(companyPostDto.getAuthorId());
+        companyPost.setAuthorId(SecurityUtil.getCurrentMemberId().getEmail());
         companyPost.setCompanyName(companyPostDto.getCompanyName());
         companyPost.setCoType(companyPostDto.getCoType());
         companyPost.setCoSize(companyPostDto.getCoSize());
@@ -74,7 +74,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     public long deleteCompanyPost(Long id) {
-        if(!SecurityUtil.getCurrentMemberId().getMemberId().equals(companyPostDAO.selectPost(id).getAuthorId())) {
+        if(!SecurityUtil.getCurrentMemberId().getEmail().equals(companyPostDAO.selectPost(id).getAuthorId())) {
             return -1L;
         }
 
@@ -84,14 +84,14 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Long updateCompanyPost(CompanyPostDto companyPostDto, Long id) {
-        if(!SecurityUtil.getCurrentMemberId().getMemberId().equals(companyPostDto.getAuthorId())) {
+        if(!SecurityUtil.getCurrentMemberId().getEmail().equals(companyPostDto.getAuthorId())) {
             return -1L;
         }
 
         CompanyPost companyPost = new CompanyPost();
         companyPost.setId(id);
         companyPost.setTitle(companyPostDto.getTitle());
-        companyPost.setAuthorId(companyPostDto.getAuthorId());
+        companyPost.setAuthorId(SecurityUtil.getCurrentMemberId().getEmail());
         companyPost.setCompanyName(companyPostDto.getCompanyName());
         companyPost.setCoType(companyPostDto.getCoType());
         companyPost.setCoSize(companyPostDto.getCoSize());
@@ -140,7 +140,7 @@ public class BoardServiceImpl implements BoardService {
     public Long saveGroupPost(GroupPostDto groupPostDto) {
         GroupPost groupPost = new GroupPost();
         groupPost.setTitle(groupPostDto.getTitle());
-        groupPost.setAuthorId(groupPostDto.getAuthorId());
+        groupPost.setAuthorId(SecurityUtil.getCurrentMemberId().getEmail());
         groupPost.setGroupName(groupPostDto.getGroupName());
         groupPost.setCoType(groupPostDto.getCoType());
         groupPost.setCoSize(groupPostDto.getCoSize());
@@ -150,7 +150,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     public Long deleteGroupPost(Long id) {
-        if(!SecurityUtil.getCurrentMemberId().getMemberId().equals(companyPostDAO.selectPost(id).getAuthorId())) {
+        if(!SecurityUtil.getCurrentMemberId().getEmail().equals(companyPostDAO.selectPost(id).getAuthorId())) {
             return -1L;
         }
 
@@ -160,7 +160,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Long updateGroupPost(GroupPostDto groupPostDto, Long id) {
-        if(!SecurityUtil.getCurrentMemberId().getMemberId().equals(groupPostDto.getAuthorId())) {
+        if(!SecurityUtil.getCurrentMemberId().getEmail().equals(groupPostDto.getAuthorId())) {
             return -1L;
         }
 

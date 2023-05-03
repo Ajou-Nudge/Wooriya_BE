@@ -8,8 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Builder
 @NoArgsConstructor
@@ -18,13 +16,35 @@ import java.util.stream.Collectors;
 public class Member implements UserDetails {
     @Id
     @Column(updatable = false, unique = true, nullable = false)
-    private String memberId;
+    private String email;
 
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
     private String role;
+
+    @Column(nullable = true)
+    private String userName;
+
+    @Column(nullable = true)
+    private String userNum;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserNum() {
+        return userNum;
+    }
+
+    public void setUserNum(String userNum) {
+        this.userNum = userNum;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -36,8 +56,12 @@ public class Member implements UserDetails {
         return authorities;
     }
 
-    public String getMemberId() {
-        return memberId;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getRole() {
@@ -55,12 +79,9 @@ public class Member implements UserDetails {
 
     @Override
     public String getUsername() {
-        return memberId;
+        return email;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
-    }
 
     public void setPassword(String password) {
         this.password = password;

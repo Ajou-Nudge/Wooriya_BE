@@ -24,13 +24,13 @@ public class SecurityConfig {
         http
                 .httpBasic().disable()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .cors()
                 .and()
-                    .authorizeRequests()
-                    .requestMatchers("/**").permitAll()
-                    .requestMatchers("/comapnypost/**").hasRole("COMPANY")
-                    .requestMatchers("/grouppost/**").hasRole("GROUP")
-                    .anyRequest().authenticated()
+                    .authorizeHttpRequests()
+                    .requestMatchers("/imgupload").authenticated()
+                    .requestMatchers("/comapnypost/post", "/comapnypost/update/{id}", "/comapnypost/delete/{id}").hasRole("COMPANY")
+                    .requestMatchers("/grouppost/post",  "/grouppost/update/{id}", "/grouppost/delete/{id}").hasRole("GROUP")
+                    .anyRequest().permitAll()
                 .and()
                     .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();
