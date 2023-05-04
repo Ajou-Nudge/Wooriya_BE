@@ -7,6 +7,8 @@ import com.nudge.wooriya.data.dto.CompanyPostDto;
 import com.nudge.wooriya.data.dto.GroupPostDto;
 import com.nudge.wooriya.data.entity.CompanyPost;
 import com.nudge.wooriya.data.entity.GroupPost;
+import com.nudge.wooriya.data.entity.Member;
+import com.nudge.wooriya.data.repository.UserRepository;
 import com.nudge.wooriya.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +21,12 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService {
     private final CompanyPostDAO companyPostDAO;
     private final GroupPostDAO groupPostDAO;
+    private final UserRepository userRepository;
     @Autowired
-    public BoardServiceImpl(CompanyPostDAO companyPostDAO, GroupPostDAO groupPostDAO) {
+    public BoardServiceImpl(CompanyPostDAO companyPostDAO, GroupPostDAO groupPostDAO, UserRepository userRepository) {
         this.companyPostDAO = companyPostDAO;
         this.groupPostDAO = groupPostDAO;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -59,11 +63,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Long saveCompanyPost(CompanyPostDto companyPostDto) {
+    public Long saveCompanyPost(CompanyPostDto companyPostDto) throws Exception {
+        Member member = userRepository.findByEmail(SecurityUtil.getCurrentMemberId().getEmail()).orElseThrow(() -> new Exception("member not found"));
         CompanyPost companyPost = new CompanyPost();
         companyPost.setTitle(companyPostDto.getTitle());
-        companyPost.setAuthorId(SecurityUtil.getCurrentMemberId().getEmail());
-        companyPost.setCompanyName(companyPostDto.getCompanyName());
+        companyPost.setAuthorId(member.getEmail());
+        companyPost.setCompanyName(member.getUserName());
         companyPost.setCoType(companyPostDto.getCoType());
         companyPost.setCoSize(companyPostDto.getCoSize());
         companyPost.setBody(companyPostDto.getBody());
@@ -91,12 +96,9 @@ public class BoardServiceImpl implements BoardService {
         CompanyPost companyPost = new CompanyPost();
         companyPost.setId(id);
         companyPost.setTitle(companyPostDto.getTitle());
-        companyPost.setAuthorId(SecurityUtil.getCurrentMemberId().getEmail());
-        companyPost.setCompanyName(companyPostDto.getCompanyName());
         companyPost.setCoType(companyPostDto.getCoType());
         companyPost.setCoSize(companyPostDto.getCoSize());
         companyPost.setBody(companyPostDto.getBody());
-        companyPost.setCreatedAt(companyPostDAO.selectPost(id).getCreatedAt());
         companyPost.setUpdatedAt(LocalDateTime.now());
 
         Long postId = companyPostDAO.insertPost(companyPost);
@@ -137,11 +139,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Long saveGroupPost(GroupPostDto groupPostDto) {
+    public Long saveGroupPost(GroupPostDto groupPostDto) throws Exception {
+        Member member = userRepository.findByEmail(SecurityUtil.getCurrentMemberId().getEmail()).orElseThrow(() -> new Exception("member not found"));
         GroupPost groupPost = new GroupPost();
         groupPost.setTitle(groupPostDto.getTitle());
-        groupPost.setAuthorId(SecurityUtil.getCurrentMemberId().getEmail());
-        groupPost.setGroupName(groupPostDto.getGroupName());
+        groupPost.setAuthorId(member.getEmail());
+        groupPost.setGroupName(member.getUserName());
         groupPost.setCoType(groupPostDto.getCoType());
         groupPost.setCoSize(groupPostDto.getCoSize());
         groupPost.setBody(groupPostDto.getBody());
@@ -167,12 +170,9 @@ public class BoardServiceImpl implements BoardService {
         GroupPost groupPost = new GroupPost();
         groupPost.setId(id);
         groupPost.setTitle(groupPostDto.getTitle());
-        groupPost.setAuthorId(groupPostDto.getAuthorId());
-        groupPost.setGroupName(groupPostDto.getGroupName());
         groupPost.setCoType(groupPostDto.getCoType());
         groupPost.setCoSize(groupPostDto.getCoSize());
         groupPost.setBody(groupPostDto.getBody());
-        groupPost.setCreatedAt(groupPostDAO.selectPost(id).getCreatedAt());
         groupPost.setUpdatedAt(LocalDateTime.now());
 
         Long postId = groupPostDAO.insertPost(groupPost);

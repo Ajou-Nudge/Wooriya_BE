@@ -14,7 +14,7 @@ public interface BoardService {
 
     List<CompanyPostDto> getAllCompanyPost() throws UnsupportedEncodingException;
 
-    Long saveCompanyPost(CompanyPostDto companyPostDto) throws SQLException;
+    Long saveCompanyPost(CompanyPostDto companyPostDto) throws Exception;
 
     long deleteCompanyPost(Long id);
 
@@ -24,7 +24,7 @@ public interface BoardService {
 
     List<GroupPostDto> getAllGroupPost();
 
-    Long saveGroupPost(GroupPostDto groupPostDto) throws SQLException, NoSuchAlgorithmException;
+    Long saveGroupPost(GroupPostDto groupPostDto) throws Exception;
 
     Long deleteGroupPost(Long id);
 

@@ -1,3 +1,20 @@
+# CHANGELOG 230504
+
+### req.body 변경
+[POST] postCompanyPost
+[POST] postGroupPost
+[POST] updateCompanyPost
+[POST] updateGroupPost
+[POST] postUserJoin
+[POST] postUserLogin
+
+### res.body 변경
+[GET] getAllCompanyPost
+[GET] getAllGroupPost
+[GET] getUserInfo
+[GET] getCompanyPostById
+[GET] getGroupPostById
+
 # API Docs
 
 | Method | URI                      | Description           |
@@ -31,10 +48,9 @@ req.body
 ```json
 {
   "title" : "test",
-  "authorName" : "testname",
-  "companyName" : "testCoName",
   "coType" : "test",
-  "coSize" : 100
+  "coSize" : 100,
+  "body" : "testBody"
 }
 ```
 
@@ -55,10 +71,9 @@ req.body
 ```json
 {
   "title" : "test",
-  "authorName" : "testname",
-  "groupName" : "testGroupName",
   "coType" : "test",
-  "coSize" : 100
+  "coSize" : 100,
+  "body" : "testBody"
 }
 ```
 
@@ -78,10 +93,10 @@ req.body
 ```json
 {
   "title" : "testModify",
-  "authorName" : "testname",
   "companyName" : "testGroupName",
   "coType" : "test",
-  "coSize" : 100
+  "coSize" : 100,
+  "body" : "testBody"
 }
 ```
 
@@ -102,10 +117,9 @@ req.body
 ```json
 {
   "title" : "testModify",
-  "authorName" : "testname",
-  "groupName" : "testGroupName",
   "coType" : "test",
-  "coSize" : 100
+  "coSize" : 100,
+  "body" : "testBody"
 }
 ```
 
@@ -145,9 +159,11 @@ URI
 req.body
 ```json
 {
-    "memberId" : "testId",
+    "email" : "testId",
     "password" : "testPw",
-    "role" : "COMPANY"
+    "role" : "COMPANY",
+    "userName" : "testName",
+    "userNum" : 11111111
 }
 ```
 
@@ -167,7 +183,7 @@ URI
 req.body
 ```json
 {
-    "memberId" : "testId",
+    "email" : "testId",
     "password" : "testPw"
 }
 ```
@@ -209,18 +225,20 @@ res.body
   {
     "id": 1,
     "title": "test",
-    "authorName" : "testname",
+    "authorId" : "testname",
     "companyName": "testCoName",
     "coType": "test",
-    "coSize": 100
+    "coSize": 100,
+    "body" : "testBody"
   },
   {
     "id": 2,
     "title": "test",
-    "authorName" : "testname",
+    "authorId" : "testname",
     "companyName": "testCoName",
     "coType": "test",
-    "coSize": 100
+    "coSize": 100,
+    "body" : "testBody"
   }
 ]
 ```
@@ -240,26 +258,29 @@ res.body
   {
     "id": 1,
     "title": "test",
-    "authorName" : "testname",
+    "authorId" : "testname",
     "groupName": "testGroupName",
     "coType": "test",
-    "coSize": 100
+    "coSize": 100,
+    "body": "testBody"
   },
   {
     "id": 2,
     "title": "test",
-    "authorName" : "testname",
+    "authorId" : "testname",
     "groupName": "testGroupName",
     "coType": "test",
-    "coSize": 100
+    "coSize": 100,
+    "body": "testBody"
   },
   {
     "id": 3,
     "title": "test",
-    "authorName" : "testname",
+    "authorId" : "testname",
     "groupName": "testGroupName",
     "coType": "test",
-    "coSize": 100
+    "coSize": 100,
+    "body": "testBody"
   }
 ]
 ```
@@ -278,7 +299,7 @@ res.body
 {
   "id": 3,
   "title": "testTitle",
-  "authorName" : "testname",
+  "authorId" : "testname",
   "companyName": "testCompanyName",
   "coType": "testCoType",
   "coSize": 100,
@@ -300,7 +321,7 @@ res.body
 {
   "id": 1,
   "title": "testTitle",
-  "authorName" : "testname",
+  "authorId" : "testname",
   "groupName": "testGroupName",
   "coType": "testCoType",
   "coSize": 100,
@@ -320,7 +341,7 @@ res.body
 
 ```json
 {
-    "memberId": "testId",
+    "email": "testId",
     "memberRole": "COMPANY"
 }
 ```
