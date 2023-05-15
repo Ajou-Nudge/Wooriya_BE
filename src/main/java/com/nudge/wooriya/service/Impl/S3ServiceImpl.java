@@ -1,13 +1,14 @@
 package com.nudge.wooriya.service.Impl;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
-import com.nudge.wooriya.data.repository.PostImageMetaRepository;
 import com.nudge.wooriya.service.S3Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -21,8 +22,8 @@ public class S3ServiceImpl implements S3Service {
     @Autowired
     private AmazonS3 amazonS3;
 
-    @Autowired
-    private PostImageMetaRepository postImageMetaRepository;
+    @Value("${aws.s3.bucket.name}")
+    private String bucketName;
 
     @Override
     public PutObjectResult upload(
@@ -41,6 +42,12 @@ public class S3ServiceImpl implements S3Service {
         return amazonS3.putObject(path, fileName, inputStream, objectMetadata);
     }
 
+    @Override
+    public void delete(String path, String fileName) {
+        amazonS3.deleteObject(new DeleteObjectRequest(bucketName, path + fileName));
+    }
+
+    @Override
     public S3Object download(String path, String fileName) {
         return amazonS3.getObject(path, fileName);
     }

@@ -15,6 +15,9 @@ public class PostImageMeta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "POST_NUM")
+    private Long postNum;
+
     @Column(name = "FILE_NAME")
     private String fileName;
 

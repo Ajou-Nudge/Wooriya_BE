@@ -15,5 +15,7 @@ public interface S3Service {
             InputStream inputStream
     );
 
+    void delete(String path, String fileName);
+
     public S3Object download(String path, String fileName);
 }

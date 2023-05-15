@@ -10,5 +10,8 @@ import java.util.List;
 public interface MetadataService {
     public String upload(MultipartFile file) throws IOException;
     public S3Object download(String path);
+
+    void delete(String path);
+
     public List<PostImageMeta> list();
 }

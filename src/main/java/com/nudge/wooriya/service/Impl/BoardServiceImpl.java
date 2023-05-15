@@ -22,11 +22,13 @@ public class BoardServiceImpl implements BoardService {
     private final CompanyPostDAO companyPostDAO;
     private final GroupPostDAO groupPostDAO;
     private final UserRepository userRepository;
+    private final MetadataServiceImpl metadataService;
     @Autowired
-    public BoardServiceImpl(CompanyPostDAO companyPostDAO, GroupPostDAO groupPostDAO, UserRepository userRepository) {
+    public BoardServiceImpl(CompanyPostDAO companyPostDAO, GroupPostDAO groupPostDAO, UserRepository userRepository, MetadataServiceImpl metadataService) {
         this.companyPostDAO = companyPostDAO;
         this.groupPostDAO = groupPostDAO;
         this.userRepository = userRepository;
+        this.metadataService = metadataService;
     }
 
     @Override
@@ -75,6 +77,9 @@ public class BoardServiceImpl implements BoardService {
         companyPost.setCreatedAt(LocalDateTime.now());
         companyPost.setUpdatedAt(LocalDateTime.now());
         Long postId = companyPostDAO.insertPost(companyPost);
+
+        metadataService.list().stream().filter(data -> data.getPostNum() == null).forEach(data -> data.setPostNum(postId));
+
         return postId;
     }
 
@@ -83,6 +88,7 @@ public class BoardServiceImpl implements BoardService {
             return -1L;
         }
 
+        metadataService.list().stream().filter(data -> data.getPostNum() == id ? true : false).forEach(data -> metadataService.delete(data.getFilePath()));
         Long postId = companyPostDAO.deletePost(id);
         return postId;
     }

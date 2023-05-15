@@ -193,7 +193,9 @@ res.body
 {
     "grantType": "Bearer",
     "accessToken": "",
-    "refreshToken": ""
+    "refreshToken": "",
+    "email": "testemail@email.com",
+    "memberRole": "ROLE"
 }
 ```
 

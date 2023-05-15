@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -35,7 +33,7 @@ public class BoardController {
     }
 
     @PostMapping("/companypost/update/{id}")
-    public ResponseEntity<Long> updateCompanyPost(@RequestBody CompanyPostDto companyPostDto, @PathVariable Long id) throws Exception {
+    public ResponseEntity<Long> updateCompanyPost(@RequestBody CompanyPostDto companyPostDto, @PathVariable Long id) {
         Long postId = boardService.updateCompanyPost(companyPostDto, id);
         return ResponseEntity.status(HttpStatus.OK).body(postId);
     }
@@ -53,7 +51,7 @@ public class BoardController {
     }
 
     @PostMapping("/grouppost/post")
-    public ResponseEntity<Long> postGroupPost(GroupPostDto groupPostDto) throws SQLException, NoSuchAlgorithmException {
+    public ResponseEntity<Long> postGroupPost(GroupPostDto groupPostDto) throws Exception {
         Long postId = boardService.saveGroupPost(groupPostDto);
         return ResponseEntity.status(HttpStatus.OK).body(postId);
     }
@@ -65,7 +63,7 @@ public class BoardController {
     }
 
     @PostMapping("/grouppost/update/{id}")
-    public ResponseEntity<Long> updateGroupPost(@RequestBody GroupPostDto groupPostDto, @PathVariable Long id) throws Exception {
+    public ResponseEntity<Long> updateGroupPost(@RequestBody GroupPostDto groupPostDto, @PathVariable Long id) {
         Long postId = boardService.updateGroupPost(groupPostDto, id);
         return ResponseEntity.status(HttpStatus.OK).body(postId);
     }

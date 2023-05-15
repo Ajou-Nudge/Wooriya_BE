@@ -48,7 +48,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getUsername(), member.getPassword(), member.getAuthorities());
         TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-
+        tokenInfo.setEmail(member.getEmail());
+        tokenInfo.setMemberRole(member.getRole());
         return tokenInfo;
     }
 
