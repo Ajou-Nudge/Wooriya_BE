@@ -1,20 +1,3 @@
-# CHANGELOG 230504
-
-### req.body 변경
-[POST] postCompanyPost
-[POST] postGroupPost
-[POST] updateCompanyPost
-[POST] updateGroupPost
-[POST] postUserJoin
-[POST] postUserLogin
-
-### res.body 변경
-[GET] getAllCompanyPost
-[GET] getAllGroupPost
-[GET] getUserInfo
-[GET] getCompanyPostById
-[GET] getGroupPostById
-
 # API Docs
 
 | Method | URI                      | Description           |

@@ -8,6 +8,8 @@ import com.nudge.wooriya.data.dto.GroupPostDto;
 import com.nudge.wooriya.data.entity.CompanyPost;
 import com.nudge.wooriya.data.entity.GroupPost;
 import com.nudge.wooriya.data.entity.Member;
+import com.nudge.wooriya.data.entity.PostImageMeta;
+import com.nudge.wooriya.data.repository.PostImageMetaRepository;
 import com.nudge.wooriya.data.repository.UserRepository;
 import com.nudge.wooriya.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +25,15 @@ public class BoardServiceImpl implements BoardService {
     private final GroupPostDAO groupPostDAO;
     private final UserRepository userRepository;
     private final MetadataServiceImpl metadataService;
+    private final PostImageMetaRepository postImageMetaRepository;
+
     @Autowired
-    public BoardServiceImpl(CompanyPostDAO companyPostDAO, GroupPostDAO groupPostDAO, UserRepository userRepository, MetadataServiceImpl metadataService) {
+    public BoardServiceImpl(CompanyPostDAO companyPostDAO, GroupPostDAO groupPostDAO, UserRepository userRepository, MetadataServiceImpl metadataService, PostImageMetaRepository postImageMetaRepository) {
         this.companyPostDAO = companyPostDAO;
         this.groupPostDAO = groupPostDAO;
         this.userRepository = userRepository;
         this.metadataService = metadataService;
+        this.postImageMetaRepository = postImageMetaRepository;
     }
 
     @Override
@@ -78,8 +83,9 @@ public class BoardServiceImpl implements BoardService {
         companyPost.setUpdatedAt(LocalDateTime.now());
         Long postId = companyPostDAO.insertPost(companyPost);
 
-        metadataService.list().stream().filter(data -> data.getPostNum() == null).forEach(data -> data.setPostNum(postId));
-
+        List<PostImageMeta> postImageMetas = metadataService.list().stream().filter(data -> data.getPostNum() == null && companyPost.getBody().contains(data.getFilePath())).toList();
+        postImageMetas.forEach(data -> data.setPostNum(postId));
+        postImageMetaRepository.saveAll(postImageMetas);
         return postId;
     }
 
@@ -88,7 +94,7 @@ public class BoardServiceImpl implements BoardService {
             return -1L;
         }
 
-        metadataService.list().stream().filter(data -> data.getPostNum() == id ? true : false).forEach(data -> metadataService.delete(data.getFilePath()));
+        metadataService.list().stream().filter(data -> data.getPostNum().equals(id)).forEach(data -> metadataService.delete(data.getFilePath()));
         Long postId = companyPostDAO.deletePost(id);
         return postId;
     }

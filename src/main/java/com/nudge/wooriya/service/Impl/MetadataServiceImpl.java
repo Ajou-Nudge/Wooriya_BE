@@ -58,6 +58,7 @@ public class MetadataServiceImpl implements MetadataService {
     public void delete(String path) {
         final String pathHeader = bucketName + "/";
         PostImageMeta postImageMeta = postImageMetaRepository.findByFilePath(pathHeader + path);
+        postImageMetaRepository.delete(postImageMeta);
         amazonS3Service.delete(postImageMeta.getFilePath(),postImageMeta.getFileName());
     }
 
