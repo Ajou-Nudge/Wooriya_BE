@@ -30,6 +30,17 @@ public class Member implements UserDetails {
     @Column(nullable = true)
     private String userNum;
 
+    @Column(nullable = true)
+    private boolean isVerify;
+
+    public boolean isVerify() {
+        return isVerify;
+    }
+
+    public void setVerify(boolean verify) {
+        isVerify = verify;
+    }
+
     public String getUserName() {
         return userName;
     }

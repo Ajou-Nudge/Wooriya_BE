@@ -12,7 +12,6 @@ import com.nudge.wooriya.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.AlreadyBuiltException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,18 +53,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Member join(UserJoinDto userJoinDto) {
+    public Exception join(UserJoinDto userJoinDto) throws Exception {
 
-        boolean isExist = userRepository.existsByEmail(userJoinDto.getEmail());
-        if (isExist) throw new AlreadyBuiltException("이미 존재하는 아이디입니다.");
-
-        Member member = new Member();
-        member.setEmail(userJoinDto.getEmail());
-        member.setPassword(passwordEncoder.encode(userJoinDto.getPassword()));
-        member.setRole(userJoinDto.getRole());
-        member.setUserName(userJoinDto.getUserName());
-        member.setUserNum(userJoinDto.getUserNum());
-        return memberDAO.join(member);
+        Member member = userRepository.findByEmail(userJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
+        if(member != null && member.isVerify()) {
+            member.setPassword(passwordEncoder.encode(userJoinDto.getPassword()));
+            member.setRole(userJoinDto.getRole());
+            member.setUserName(userJoinDto.getUserName());
+            member.setUserNum(userJoinDto.getUserNum());
+            memberDAO.join(member);
+            return new Exception("회원가입 완료");
+        }
+        else {
+            return new Exception("이메일 인증을 진행해주세요");
+        }
     }
 
     @Override

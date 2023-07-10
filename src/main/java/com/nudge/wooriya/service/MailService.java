@@ -8,4 +8,8 @@ import com.nudge.wooriya.data.entity.Member;
 
 public interface MailService {
     String sendMail(String mailAddress);
+
+    String sendConfirmCode(String mailAddress);
+
+    String verifyConfirmCode(String confirmCode) throws Exception;
 }
