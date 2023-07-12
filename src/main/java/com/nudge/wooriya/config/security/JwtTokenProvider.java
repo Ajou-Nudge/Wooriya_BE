@@ -25,6 +25,9 @@ public class JwtTokenProvider {
 
     private final Key key;
 
+    @Value("${jwt.expirationtime}")
+    private int jwtExpirationTime;
+
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
@@ -71,6 +74,24 @@ public class JwtTokenProvider {
 
         UserDetails principal = new User(claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+    }
+
+    public String createEmailVerificationToken(String userName, String email) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + jwtExpirationTime);
+
+        return Jwts.builder()
+                .setSubject(userName)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .claim("email", email)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String getUserNameFromEmailVerificationToken(String token) {
+        Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+        return claimsJws.getBody().getSubject();
     }
 
     public boolean validateToken(String token) {
