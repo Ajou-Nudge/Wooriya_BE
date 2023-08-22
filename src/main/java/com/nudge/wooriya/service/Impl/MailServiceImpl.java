@@ -41,8 +41,7 @@ public class MailServiceImpl implements MailService {
     @Override
     public String sendConfirmCode(String mailAddress) {
 
-        Optional<Member> existMember = userRepository.findByEmail(mailAddress);
-        boolean isExist = existMember.get().isVerify();
+        boolean isExist = userRepository.existsByEmail(mailAddress);
         Member member = new Member();
 
         if (isExist) throw new AlreadyBuiltException("이미 가입된 이메일입니다.");

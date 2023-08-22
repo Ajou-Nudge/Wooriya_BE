@@ -6,10 +6,10 @@
 | POST   | /grouppost/post          | postGroupPost         |
 | POST   | /companypost/update/{id} | updateCompanyPost     |
 | POST   | /grouppost/update/{id}   | updateGroupPost       |
-| POST   | /imageupload             | postPostImage         |
+| POST   | /img/upload              | postPostImage         |
 | POST   | /user/join               | postUserJoin          |
 | POST   | /user/login              | postUserLogin         |
-| GET    | /image/{pathString}      | gettPostImage         |
+| GET    | /img/{pathString}        | gettPostImage         |
 | GET    | /companypost             | getAllCompanyPost     |
 | GET    | /grouppost               | getAllGroupPost       |
 | GET    | /companypost/{id}        | getCompanyPostById    |

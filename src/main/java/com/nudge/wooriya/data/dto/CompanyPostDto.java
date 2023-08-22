@@ -15,5 +15,6 @@ public class CompanyPostDto {
     private String companyName;
     private String coType;
     private int coSize;
+    private String category;
     private String body;
 }

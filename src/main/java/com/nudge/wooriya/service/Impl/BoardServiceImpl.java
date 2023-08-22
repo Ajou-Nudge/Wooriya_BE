@@ -46,6 +46,7 @@ public class BoardServiceImpl implements BoardService {
         companyPostDto.setAuthorId(companyPost.getAuthorId());
         companyPostDto.setCoType(companyPost.getCoType());
         companyPostDto.setCoSize(companyPost.getCoSize());
+        companyPostDto.setCategory(companyPost.getCategory());
         companyPostDto.setBody(companyPost.getBody());
 
         return companyPostDto;
@@ -63,6 +64,8 @@ public class BoardServiceImpl implements BoardService {
             companyPostDto.setAuthorId(companyPost.getAuthorId());
             companyPostDto.setCoType(companyPost.getCoType());
             companyPostDto.setCoSize(companyPost.getCoSize());
+            companyPostDto.setCategory(companyPost.getCategory());
+            companyPostDto.setBody(companyPost.getBody());
 
             companyPostDtos.add(companyPostDto);
         }
@@ -78,6 +81,7 @@ public class BoardServiceImpl implements BoardService {
         companyPost.setCompanyName(member.getUserName());
         companyPost.setCoType(companyPostDto.getCoType());
         companyPost.setCoSize(companyPostDto.getCoSize());
+        companyPost.setCategory(companyPost.getCategory());
         companyPost.setBody(companyPostDto.getBody());
         companyPost.setCreatedAt(LocalDateTime.now());
         companyPost.setUpdatedAt(LocalDateTime.now());
@@ -94,7 +98,8 @@ public class BoardServiceImpl implements BoardService {
             return -1L;
         }
 
-        metadataService.list().stream().filter(data -> data.getPostNum().equals(id)).forEach(data -> metadataService.delete(data.getFilePath()));
+
+        metadataService.list().stream().filter(data -> data.getPostNum().equals(id)).forEach(data -> metadataService.postDelete(data.getFilePath()));
         Long postId = companyPostDAO.deletePost(id);
         return postId;
     }
@@ -110,6 +115,7 @@ public class BoardServiceImpl implements BoardService {
         companyPost.setTitle(companyPostDto.getTitle());
         companyPost.setCoType(companyPostDto.getCoType());
         companyPost.setCoSize(companyPostDto.getCoSize());
+        companyPost.setCategory(companyPostDto.getCategory());
         companyPost.setBody(companyPostDto.getBody());
         companyPost.setUpdatedAt(LocalDateTime.now());
 
@@ -127,6 +133,7 @@ public class BoardServiceImpl implements BoardService {
         groupPostDto.setAuthorId(groupPost.getAuthorId());
         groupPostDto.setCoType(groupPost.getCoType());
         groupPostDto.setCoSize(groupPost.getCoSize());
+        groupPostDto.setCategory(groupPost.getCategory());
         groupPostDto.setBody(groupPost.getBody());
 
         return groupPostDto;
@@ -144,6 +151,8 @@ public class BoardServiceImpl implements BoardService {
             groupPostDto.setAuthorId(groupPost.getAuthorId());
             groupPostDto.setCoType(groupPost.getCoType());
             groupPostDto.setCoSize(groupPost.getCoSize());
+            groupPostDto.setCategory(groupPost.getCategory());
+            groupPostDto.setBody(groupPost.getBody());
 
             groupPostDtos.add(groupPostDto);
         }
@@ -159,16 +168,18 @@ public class BoardServiceImpl implements BoardService {
         groupPost.setGroupName(member.getUserName());
         groupPost.setCoType(groupPostDto.getCoType());
         groupPost.setCoSize(groupPostDto.getCoSize());
+        groupPost.setCategory(groupPostDto.getCategory());
         groupPost.setBody(groupPostDto.getBody());
         Long postId = groupPostDAO.insertPost(groupPost);
         return postId;
     }
 
     public Long deleteGroupPost(Long id) {
-        if(!SecurityUtil.getCurrentMemberId().getEmail().equals(companyPostDAO.selectPost(id).getAuthorId())) {
+        if(!SecurityUtil.getCurrentMemberId().getEmail().equals(groupPostDAO.selectPost(id).getAuthorId())) {
             return -1L;
         }
 
+        metadataService.list().stream().filter(data -> data.getPostNum().equals(id)).forEach(data -> metadataService.postDelete(data.getFilePath()));
         Long postId = groupPostDAO.deletePost(id);
         return postId;
     }
@@ -184,6 +195,7 @@ public class BoardServiceImpl implements BoardService {
         groupPost.setTitle(groupPostDto.getTitle());
         groupPost.setCoType(groupPostDto.getCoType());
         groupPost.setCoSize(groupPostDto.getCoSize());
+        groupPost.setCategory(groupPostDto.getCategory());
         groupPost.setBody(groupPostDto.getBody());
         groupPost.setUpdatedAt(LocalDateTime.now());
 

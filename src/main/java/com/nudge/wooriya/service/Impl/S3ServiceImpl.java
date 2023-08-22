@@ -22,8 +22,11 @@ public class S3ServiceImpl implements S3Service {
     @Autowired
     private AmazonS3 amazonS3;
 
-    @Value("${aws.s3.bucket.name}")
-    private String bucketName;
+    @Value("${aws.s3.postbucket.name}")
+    private String postBucketName;
+
+    @Value("${aws.s3.signbucket.name}")
+    private String signBucketName;
 
     @Override
     public PutObjectResult upload(
@@ -43,8 +46,13 @@ public class S3ServiceImpl implements S3Service {
     }
 
     @Override
-    public void delete(String path, String fileName) {
-        amazonS3.deleteObject(new DeleteObjectRequest(bucketName, path + fileName));
+    public void postDelete(String path, String fileName) {
+        amazonS3.deleteObject(new DeleteObjectRequest(postBucketName, path + fileName));
+    }
+
+    @Override
+    public void signDelete(String path, String fileName) {
+        amazonS3.deleteObject(new DeleteObjectRequest(signBucketName, path + fileName));
     }
 
     @Override
