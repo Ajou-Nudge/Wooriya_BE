@@ -1,54 +1,32 @@
-# API Docs
+# Wooriya_BE
 
-| Method | URI                      | Description           |
-|--------|--------------------------|-----------------------|
-| POST   | /companypost/post        | postCompanyPost       |
-| POST   | /grouppost/post          | postGroupPost         |
-| POST   | /companypost/update/{id} | updateCompanyPost     |
-| POST   | /grouppost/update/{id}   | updateGroupPost       |
-| POST   | /img/upload              | postPostImage         |
-| POST   | /user/join               | postUserJoin          |
-| POST   | /user/login              | postUserLogin         |
-| GET    | /img/{pathString}        | gettPostImage         |
-| GET    | /companypost             | getAllCompanyPost     |
-| GET    | /grouppost               | getAllGroupPost       |
-| GET    | /companypost/{id}        | getCompanyPostById    |
-| GET    | /grouppost/{id}          | getGroupPostById      |
-| GET    | /user/info               | getUserInfo           |
-| DELETE | /companypost/delete/{id} | deleteCompanyPostById |
-| DELETE | /grouppost/delete/{id}   | deleteCompanyPostById |
+## API Docs
+
+| Method | URI                                                     | Description                      |
+|--------|---------------------------------------------------------|----------------------------------|
+| POST   | [/companypost/post](#post-companypostpost)              | make post for company            |
+| POST   | [/grouppost/post](#post-grouppostpost)                  | make post for group              |
+| POST   | [/companypost/update/{id}](#post-companypostupdateid)   | update post for company          |
+| POST   | [/grouppost/update/{id}](#post-grouppostupdateid)       | update post for group            |
+| GET    | [/companypost](#get-companypost)                        | get all posts for company        |
+| GET    | [/grouppost](#get-grouppost)                            | get all posts for group          |
+| GET    | [/companypost/{id}](#get-companypostid)                 | get post for company using id    |
+| GET    | [/grouppost/{id}](#get-grouppostid)                     | get post for group using id      |
+| DELETE | [/companypost/delete/{id}](#delete-companypostdeleteid) | delete post for company using id |
+| DELETE | [/grouppost/delete/{id}](#delete-grouppostdeleteid)     | delete post for group using id   |
+| POST   | [/img/upload](#post-imgupload)                          | upload image for post            |
+| POST   | [/sign/upload](#post-signupload)                        | upload image for signature       |
+| GET    | [/img/{pathString}](#get-imgpathstring)                 | get image for post               |
+| GET    | [/sign/{pathString}](#get-signpathstring)               | get image for signature          |
+| GET    | [/sign/delete/{pathString}](#get-signdeletepathstring)  | delete image for signature       |
+| POST   | [/user/join](#post-userjoin)                            | user register                    |
+| POST   | [/user/login](#post-userlogin)                          | user login                       |
+| GET    | [/user/info](#get-userinfo)                             | get user info                    |
 
 
-## [POST] postCompanyPost
+### [POST] /companypost/post
 
-URI
-
-```
-/companypost/post
-```
-
-req.body
-```json
-{
-  "title" : "test",
-  "coType" : "test",
-  "coSize" : 100,
-  "body" : "testBody"
-}
-```
-
-res.body
-```json
-1
-```
-
-## [POST] postGroupPost
-
-URI
-
-```
-/grouppost/post
-```
+make a post for company
 
 req.body
 ```json
@@ -65,12 +43,28 @@ res.body
 1
 ```
 
-## [POST] updateCompanyPost
-URI
+### [POST] /grouppost/post
 
+make post for group
+
+req.body
+```json
+{
+  "title" : "test",
+  "coType" : "test",
+  "coSize" : 100,
+  "body" : "testBody"
+}
 ```
-/companypost/update/{id}
+
+res.body
+```json
+1
 ```
+
+### [POST] /companypost/update/{id}
+
+update post for company
 
 req.body
 ```json
@@ -88,13 +82,9 @@ res.body
 1
 ```
 
-## [POST] updateGroupPost
+### [POST] /grouppost/update/{id}
 
-URI
-
-```
-/grouppost/update/{id}
-```
+update post for group
 
 req.body
 ```json
@@ -111,97 +101,9 @@ res.body
 1
 ```
 
-## [POST] postPostImage
+### [GET] /companypost
 
-URI
-
-```
-/imageupload
-```
-
-req.body
-```formdata
-{
-  img : [FILE]
-}
-```
-
-res.body
-```json
-[pathString]
-```
-
-## [POST] postUserJoin
-
-URI
-
-```
-/user/join
-```
-
-req.body
-```json
-{
-    "email" : "testId",
-    "password" : "testPw",
-    "role" : "COMPANY",
-    "userName" : "testName",
-    "userNum" : 11111111
-}
-```
-
-res.body
-```json
-COMPANY
-```
-
-## [POST] postUserLogin
-
-URI
-
-```
-/user/login
-```
-
-req.body
-```json
-{
-    "email" : "testId",
-    "password" : "testPw"
-}
-```
-
-res.body
-```json
-{
-    "grantType": "Bearer",
-    "accessToken": "",
-    "refreshToken": "",
-    "email": "testemail@email.com",
-    "memberRole": "ROLE"
-}
-```
-
-## [GET] getPostImage
-
-URI
-
-```
-/image/{pathString}
-```
-
-res.body
-```json
-[FILE]
-```
-
-## [GET] getAllCompanyPost
-
-URI
-
-```
-/companypost
-```
+get all posts for company
 
 res.body
 
@@ -228,13 +130,9 @@ res.body
 ]
 ```
 
-## [GET] getAllGroupPost
+### [GET] /grouppost
 
-URI
-
-```
-/grouppost
-```
+get all posts for group
 
 res.body
 
@@ -270,13 +168,9 @@ res.body
 ]
 ```
 
-## [GET] getCompanyPostById
+### [GET] /companypost/{id}
 
-URI
-
-```
-/grouppost/{id}
-```
+get post for company using id
 
 res.body
 
@@ -292,13 +186,9 @@ res.body
 }
 ```
 
-## [GET] getGroupPostById
+### [GET] /grouppost/{id}
 
-URI
-
-```
-/grouppost/{id}
-```
+get post for group using id
 
 res.body
 
@@ -314,13 +204,119 @@ res.body
 }
 ```
 
-## [GET] getUserInfo
+### [DELETE] /companypost/delete/{id}
 
-URI
+delete post for company using id
 
+### [DELETE] /grouppost/delete/{id}
+
+delete post for group using id
+
+### [POST] /img/upload
+
+upload image for post
+
+req.body
+```formdata
+{
+  img : [FILE]
+}
 ```
-/user/info
+
+res.body
+```json
+[pathString]
 ```
+
+### [POST] /sign/upload
+
+upload image for signature
+
+req.body
+```formdata
+{
+  img : [FILE]
+}
+```
+
+res.body
+```json
+[pathString]
+```
+
+### [GET] /img/{pathString}
+
+get image for post
+
+res.body
+```json
+[FILE]
+```
+
+### [GET] /sign/{pathString}
+
+get image for signature
+
+res.body
+```json
+[FILE]
+```
+
+### [GET] /sign/delete/{pathString}
+
+delete image for signature
+
+res.body
+```json
+삭제 완료
+```
+
+### [POST] /user/login
+
+user login
+
+req.body
+```json
+{
+    "email" : "testId",
+    "password" : "testPw"
+}
+```
+
+res.body
+```json
+{
+    "grantType": "Bearer",
+    "accessToken": "",
+    "refreshToken": "",
+    "email": "testemail@email.com",
+    "memberRole": "ROLE"
+}
+```
+
+### [POST] /user/join
+
+user register
+
+req.body
+```json
+{
+    "email" : "testId",
+    "password" : "testPw",
+    "role" : "COMPANY",
+    "userName" : "testName",
+    "userNum" : 11111111
+}
+```
+
+res.body
+```json
+COMPANY
+```
+
+### [GET] /user/info
+
+get user info
 
 res.body
 
@@ -329,21 +325,5 @@ res.body
     "email": "testId",
     "memberRole": "COMPANY"
 }
-```
-
-## [DELETE] deleteCompanyPostById
-
-URI
-
-```
-/companypost/delete/{id}
-```
-
-## [DELETE] deleteGroupPostById
-
-URI
-
-```
-/grouppost/delete/{id}
 ```
 
