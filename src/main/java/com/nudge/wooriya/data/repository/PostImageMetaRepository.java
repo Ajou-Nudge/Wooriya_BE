@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface PostImageMetaRepository extends JpaRepository<PostImageMeta, Long> {
-    PostImageMeta findByFilePath(String filePath);
+    PostImageMeta findByS3Url(String s3Url);
 }

@@ -2,26 +2,24 @@
 
 ## API Docs
 
-| Method | URI                                                     | Description                      |
-|--------|---------------------------------------------------------|----------------------------------|
-| POST   | [/companypost/post](#post-companypostpost)              | make post for company            |
-| POST   | [/grouppost/post](#post-grouppostpost)                  | make post for group              |
-| POST   | [/companypost/update/{id}](#post-companypostupdateid)   | update post for company          |
-| POST   | [/grouppost/update/{id}](#post-grouppostupdateid)       | update post for group            |
-| GET    | [/companypost](#get-companypost)                        | get all posts for company        |
-| GET    | [/grouppost](#get-grouppost)                            | get all posts for group          |
-| GET    | [/companypost/{id}](#get-companypostid)                 | get post for company using id    |
-| GET    | [/grouppost/{id}](#get-grouppostid)                     | get post for group using id      |
-| DELETE | [/companypost/delete/{id}](#delete-companypostdeleteid) | delete post for company using id |
-| DELETE | [/grouppost/delete/{id}](#delete-grouppostdeleteid)     | delete post for group using id   |
-| POST   | [/img/upload](#post-imgupload)                          | upload image for post            |
-| POST   | [/sign/upload](#post-signupload)                        | upload image for signature       |
-| GET    | [/img/{pathString}](#get-imgpathstring)                 | get image for post               |
-| GET    | [/sign/{pathString}](#get-signpathstring)               | get image for signature          |
-| GET    | [/sign/delete/{pathString}](#get-signdeletepathstring)  | delete image for signature       |
-| POST   | [/user/join](#post-userjoin)                            | user register                    |
-| POST   | [/user/login](#post-userlogin)                          | user login                       |
-| GET    | [/user/info](#get-userinfo)                             | get user info                    |
+| Method | URI                                           | Description                                   |
+|--------|-----------------------------------------------|-----------------------------------------------|
+| POST   | [/companypost/post](#post-companypostpost)    | make post for company                         |
+| POST   | [/grouppost/post](#post-grouppostpost)        | make post for group                           |
+| POST   | [/companypost/update/{id}](#post-companypostupdateid) | update post for company                       |
+| POST   | [/grouppost/update/{id}](#post-grouppostupdateid) | update post for group                         |
+| GET    | [/companypost](#get-companypost)              | get all posts for company                     |
+| GET    | [/grouppost](#get-grouppost)                  | get all posts for group                       |
+| GET    | [/companypost/{id}](#get-companypostid)       | get post for company using id                 |
+| GET    | [/grouppost/{id}](#get-grouppostid)           | get post for group using id                   |
+| DELETE | [/companypost/delete/{id}](#delete-companypostdeleteid) | delete post for company using id              |
+| DELETE | [/grouppost/delete/{id}](#delete-grouppostdeleteid) | delete post for group using id                |
+| POST   | [/img/upload](#post-imgupload)                | upload image url and create metadata for post |
+| POST   | [/sign/upload](#post-signupload)              | upload image url and create metadata for signature                |
+| GET    | [/sign/delete](#get-signdelete)  | delete image metadata for signature           |
+| POST   | [/user/join](#post-userjoin)                  | user register                                 |
+| POST   | [/user/login](#post-userlogin)                | user login                                    |
+| GET    | [/user/info](#get-userinfo)                   | get user info                                 |
 
 
 ### [POST] /companypost/post
@@ -214,61 +212,50 @@ delete post for group using id
 
 ### [POST] /img/upload
 
-upload image for post
+upload image url and create metadata for post
 
 req.body
-```formdata
+```json
 {
-  img : [FILE]
+  "s3Url" : [S3 URL]
 }
 ```
 
 res.body
 ```json
-[pathString]
+[S3 URL]
 ```
 
 ### [POST] /sign/upload
 
-upload image for signature
+upload image url and create metadata for signature
 
 req.body
-```formdata
+```json
 {
-  img : [FILE]
+  "s3Url" : [S3 URL]
 }
 ```
 
 res.body
 ```json
-[pathString]
+[S3 URL]
 ```
 
-### [GET] /img/{pathString}
+### [POST] /sign/delete
 
-get image for post
+delete image metadata for signature
+
+req.body
+```json
+{
+  "s3Url" : [S3 URL]
+}
+```
 
 res.body
 ```json
-[FILE]
-```
-
-### [GET] /sign/{pathString}
-
-get image for signature
-
-res.body
-```json
-[FILE]
-```
-
-### [GET] /sign/delete/{pathString}
-
-delete image for signature
-
-res.body
-```json
-삭제 완료
+"삭제 완료"
 ```
 
 ### [POST] /user/login

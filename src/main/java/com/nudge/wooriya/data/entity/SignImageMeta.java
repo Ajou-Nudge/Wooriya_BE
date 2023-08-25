@@ -3,14 +3,14 @@ package com.nudge.wooriya.data.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+
 @NoArgsConstructor
 @Entity
 @Table(name = "SignImage_META")
 @Getter
 @Setter
 public class SignImageMeta {
-    private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -18,18 +18,18 @@ public class SignImageMeta {
     @Column(name = "MEMBER_EMAIL")
     private Long memberEmail;
 
-    @Column(name = "FILE_NAME")
-    private String fileName;
+    @Column(name = "S3_URL")
+    private String s3Url;
 
-    @Column(name = "FILE_PATH")
-    private String filePath;
+    @Column(name = "TIMESTAMP")
+    private Date timestamp;
 
-    @Column(name = "VERSION")
-    private String version;
+    @Column(name = "AUTHOR")
+    private String author;
 
-    public SignImageMeta(String fileName, String filePath, String version) {
-        this.fileName = fileName;
-        this.filePath = filePath;
-        this.version = version;
+    public SignImageMeta(String s3Url, Date timestamp, String author) {
+        this.s3Url = s3Url;
+        this.timestamp = timestamp;
+        this.author = author;
     }
 }

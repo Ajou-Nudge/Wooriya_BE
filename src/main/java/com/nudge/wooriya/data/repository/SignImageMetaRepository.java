@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SignImageMetaRepository extends JpaRepository<SignImageMeta, Long> {
-    SignImageMeta findByFilePath(String filePath);
+    SignImageMeta findByS3Url(String s3Url);
 }

@@ -87,7 +87,7 @@ public class BoardServiceImpl implements BoardService {
         companyPost.setUpdatedAt(LocalDateTime.now());
         Long postId = companyPostDAO.insertPost(companyPost);
 
-        List<PostImageMeta> postImageMetas = metadataService.list().stream().filter(data -> data.getPostNum() == null && companyPost.getBody().contains(data.getFilePath())).toList();
+        List<PostImageMeta> postImageMetas = metadataService.list().stream().filter(data -> data.getPostNum() == null && companyPost.getBody().contains(data.getS3Url())).toList();
         postImageMetas.forEach(data -> data.setPostNum(postId));
         postImageMetaRepository.saveAll(postImageMetas);
         return postId;
@@ -98,8 +98,7 @@ public class BoardServiceImpl implements BoardService {
             return -1L;
         }
 
-
-        metadataService.list().stream().filter(data -> data.getPostNum().equals(id)).forEach(data -> metadataService.postDelete(data.getFilePath()));
+        metadataService.list().stream().filter(data -> data.getPostNum().equals(id)).forEach(data -> metadataService.postDelete(data.getS3Url()));
         Long postId = companyPostDAO.deletePost(id);
         return postId;
     }
@@ -179,7 +178,7 @@ public class BoardServiceImpl implements BoardService {
             return -1L;
         }
 
-        metadataService.list().stream().filter(data -> data.getPostNum().equals(id)).forEach(data -> metadataService.postDelete(data.getFilePath()));
+        metadataService.list().stream().filter(data -> data.getPostNum().equals(id)).forEach(data -> metadataService.postDelete(data.getS3Url()));
         Long postId = groupPostDAO.deletePost(id);
         return postId;
     }

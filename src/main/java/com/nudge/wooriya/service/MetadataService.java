@@ -10,19 +10,13 @@ import java.util.List;
 
 public interface MetadataService {
 
-    String postUpload(MultipartFile file) throws IOException;
+    String postUpload(String s3Url);
 
-    S3Object postDownload(String path);
+    void postDelete(String s3Url);
 
-    void postDelete(String path);
+    List<PostImageMeta> list();
 
-    public List<PostImageMeta> list();
+    String signUpload(String s3Url);
 
-    String signUpload(MultipartFile file) throws IOException;
-
-    S3Object signDownload(String path);
-
-    void signDelete(String path);
-
-    SignImageMeta signMeta(String path);
+    void signDelete(String s3Url);
 }
