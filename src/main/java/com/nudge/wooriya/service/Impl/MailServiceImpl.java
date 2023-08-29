@@ -12,9 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import java.util.Optional;
-
-
 @Service
 @Slf4j
 public class MailServiceImpl implements MailService {

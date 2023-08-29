@@ -21,10 +21,6 @@ dependencies {
 	annotationProcessor('org.projectlombok:lombok')
 	testAnnotationProcessor('org.projectlombok:lombok')
 	implementation("org.mariadb.jdbc:mariadb-java-client")
-	dependencies {
-		implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-	}
-
 	//security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	// jwt
