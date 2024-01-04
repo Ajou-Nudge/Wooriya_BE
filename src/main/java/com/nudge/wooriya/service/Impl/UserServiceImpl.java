@@ -21,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -37,55 +37,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public TokenInfo login(UserLoginDto userLoginDto) {
-        Member member = userRepository
-                .findByEmail(userLoginDto.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("아이디 혹은 비밀번호를 확인하세요."));
-
-        boolean matches = passwordEncoder.matches(userLoginDto.getPassword(), member.getPassword());
-        if (!matches) throw new BadCredentialsException("아이디 혹은 비밀번호를 확인하세요.");
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getUsername(), member.getPassword(), member.getAuthorities());
-        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-        tokenInfo.setEmail(member.getEmail());
-        tokenInfo.setMemberRole(member.getRole());
-        return tokenInfo;
-    }
-
-    @Override
-    public Exception join(UserJoinDto userJoinDto) throws Exception {
-
-        Member member = userRepository.findByEmail(userJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
-        if(member != null && member.isVerify()) {
-            member.setPassword(passwordEncoder.encode(userJoinDto.getPassword()));
-            member.setRole(userJoinDto.getRole());
-            member.setUserName(userJoinDto.getUserName());
-            member.setUserNum(userJoinDto.getUserNum());
-            memberDAO.join(member);
-            return new Exception("회원가입 완료");
-        }
-        else {
-            return new Exception("이메일 인증을 진행해주세요");
-        }
-    }
-
-    @Override
     public UserInfoDto info() {
         return memberDAO.info();
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email)
-                .map(this::createUserDetails)
-                .orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
-    }
-
-    private UserDetails createUserDetails(Member member) {
-        return User.builder()
-                .username(member.getUsername())
-                .password(passwordEncoder.encode(member.getPassword()))
-                .roles(member.getRole())
-                .build();
-    }
 }
