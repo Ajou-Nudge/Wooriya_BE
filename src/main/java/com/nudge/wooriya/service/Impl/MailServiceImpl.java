@@ -121,23 +121,21 @@ public class MailServiceImpl implements MailService {
                 "            <div class=\"header\">\n" +
                 "                <img src=\"logo.svg\" alt=\"Logo\" width=\"100\" />\n" +
                 "                <h1>\n" +
-                "                    (변동사항) 제휴 제안자님 (변동사항), 우리야에서 제휴 제안이\n" +
+                "                    김선우님, 넛지에서 제휴(협찬) 제안이\n" +
                 "                    왔어요!\n" +
                 "                </h1>\n" +
                 "            </div>\n" +
                 "            <div class=\"body-content\">\n" +
                 "                <p>\n" +
                 "                    <strong\n" +
-                "                        >(변동사항)  제휴 제안자님, 어디 단체의\n" +
-                "                        누구누구(변동사항)</strong\n" +
-                "                    >로부터 제휴 제안이 왔어요!!!\n" +
+                "                        >김선우 님, 넛지(기업)</strong\n" +
+                "                    >로부터 제휴(협찬) 제안이 도착했어요!\n" +
                 "                    <br />\n" +
-                "                    제휴 제안자의 요청 사항은 다음과 같아요\n" +
+                "                    전달해주신 내용은 다음과 같아요\n" +
                 "                </p>\n" +
                 "                <p>\n" +
                 "                    <strong\n" +
-                "                        >(변동사항) 사용자가 입력한 제휴 요청 사항\n" +
-                "                        (변동사항)</strong\n" +
+                "                        >안녕하세요 제휴 제안드립니다.</strong\n" +
                 "                    >\n" +
                 "                </p>\n" +
                 "                <div class=\"button-container\">\n" +
@@ -155,8 +153,8 @@ public class MailServiceImpl implements MailService {
                 "            </div>\n" +
                 "\n" +
                 "            <div class=\"footer\">\n" +
-                "                <p>Nuge | 넛지 이메일</p>\n" +
-                "                <p>대표: 민정근 | Phone: 정근님 번호 | Email: 정근님 번호</p>\n" +
+                "                <p>Nudge | nudge335@gmail.com</p>\n" +
+                "                <p>대표: 민정근 | Phone: 010-5561-3356 | Email: nudge335@gmail.com</p>\n" +
                 "            </div>\n" +
                 "        </div>\n" +
                 "    </body>\n" +
