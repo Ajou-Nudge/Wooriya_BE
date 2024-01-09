@@ -119,7 +119,6 @@ public class MailServiceImpl implements MailService {
                 "    <body>\n" +
                 "        <div class=\"email-container\">\n" +
                 "            <div class=\"header\">\n" +
-                "                <img src=\"logo.svg\" alt=\"Logo\" width=\"100\" />\n" +
                 "                <h1>\n" +
                 "                    김선우님, 넛지에서 제휴(협찬) 제안이\n" +
                 "                    왔어요!\n" +
