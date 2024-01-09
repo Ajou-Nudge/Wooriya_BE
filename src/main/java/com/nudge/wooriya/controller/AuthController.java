@@ -51,11 +51,9 @@ public class AuthController {
         public ResponseEntity<Object> getAccessToken(@RequestParam("code") String code) {
             System.out.println("code = " + code);
 
-            // 1. header 생성
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8");
 
-            // 2. body 생성
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("grant_type", "authorization_code");
             params.add("client_id", clientId);
