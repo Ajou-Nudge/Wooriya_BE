@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
@@ -59,6 +60,7 @@ public class MailServiceImpl implements MailService {
             emailConfirm.setEmail(confirmcodeDto.getEmail());
             emailConfirm.setConfirmCode(confirmCode);
             emailConfirm.setIsVerify(false);
+            emailConfirm.setTimestamp(LocalDateTime.now());
 
             try {
                 SimpleMailMessage message = new SimpleMailMessage();
@@ -184,7 +186,7 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public Boolean verifyConfirmCode(ConfirmCodeDto confirmCodeDto) throws Exception {
-        EmailConfirm emailConfirm = emailConfirmRepository.findByEmail(confirmCodeDto.getEmail()).orElseThrow(() -> new Exception("member not found"));
+        EmailConfirm emailConfirm = emailConfirmRepository.findById(confirmCodeDto.getEmail()).orElseThrow(() -> new Exception("member not found"));
         if(emailConfirm.getConfirmCode().equals(confirmCodeDto.getConfirmCode())) {
             emailConfirm.setIsVerify(true);
             return true;

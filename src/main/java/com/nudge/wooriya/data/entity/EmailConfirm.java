@@ -7,6 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,4 +26,7 @@ public class EmailConfirm {
 
     @Column(nullable = false)
     private Boolean isVerify;
+
+    @Column(nullable = false)
+    private LocalDateTime timestamp;
 }

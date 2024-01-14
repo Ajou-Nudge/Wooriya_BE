@@ -31,9 +31,7 @@ public class SecurityConfig {
                 .cors()
                 .and()
                     .authorizeHttpRequests()
-                    .requestMatchers("/imgupload").authenticated()
-                    .requestMatchers("/comapnypost/post", "/comapnypost/update/{id}", "/comapnypost/delete/{id}").hasRole("COMPANY")
-                    .requestMatchers("/grouppost/post",  "/grouppost/update/{id}", "/grouppost/delete/{id}").hasRole("GROUP")
+                    .requestMatchers("/proposal-post/post", "/proposal-post/update/{id}", "/proposal-post/delete/{id}").hasRole("ORG")
                     .anyRequest().permitAll()
                 .and()
                     .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

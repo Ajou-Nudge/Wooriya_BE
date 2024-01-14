@@ -79,7 +79,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Exception companyJoin(CompanyJoinDto companyJoinDto) throws Exception {
-        EmailConfirm emailConfirm = emailConfirmRepository.findByEmail(companyJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
+        EmailConfirm emailConfirm = emailConfirmRepository.findById(companyJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
         if(emailConfirm != null) {
             Company company = new Company();
             company.setEmail(companyJoinDto.getEmail());
@@ -92,6 +92,7 @@ public class AuthServiceImpl implements AuthService {
             company.setHistory(companyJoinDto.getHistory());
             company.setGreetings(companyJoinDto.getGreetings());
             companyDAO.join(company);
+            emailConfirmRepository.deleteById(companyJoinDto.getEmail());
             return new Exception("회원가입 완료");
         }
         else {
@@ -101,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Exception organizationJoin(OrganizationJoinDto organizationJoinDto) throws Exception {
-        EmailConfirm emailConfirm = emailConfirmRepository.findByEmail(organizationJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
+        EmailConfirm emailConfirm = emailConfirmRepository.findById(organizationJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
         if(emailConfirm != null) {
             Organization organization = new Organization();
             organization.setEmail(organizationJoinDto.getEmail());
@@ -113,6 +114,7 @@ public class AuthServiceImpl implements AuthService {
             organization.setKind(organizationJoinDto.getKind());
             organization.setHistory(organizationJoinDto.getHistory());
             organizationDAO.join(organization);
+            emailConfirmRepository.deleteById(organizationJoinDto.getEmail());
             return new Exception("회원가입 완료");
         }
         else {
