@@ -1,13 +1,14 @@
 package com.nudge.wooriya.service;
 
+import com.nudge.wooriya.data.dto.ConfirmCodeDto;
 import jakarta.mail.MessagingException;
 
 public interface MailService {
     String sendMail(String mailAddress);
 
-    String sendConfirmCode(String mailAddress);
+    Boolean sendConfirmCode(ConfirmCodeDto confirmcodeDto);
 
     Boolean sendProposalMail(String mailAddress) throws MessagingException;
 
-    String verifyConfirmCode(String confirmCode) throws Exception;
+    Boolean verifyConfirmCode(ConfirmCodeDto confirmCodeDto) throws Exception;
 }

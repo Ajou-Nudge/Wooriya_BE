@@ -2,65 +2,96 @@ package com.nudge.wooriya.service.Impl;
 
 import com.nudge.wooriya.config.security.JwtTokenProvider;
 import com.nudge.wooriya.config.security.TokenInfo;
-import com.nudge.wooriya.data.dao.MemberDAO;
-import com.nudge.wooriya.data.dto.UserJoinDto;
-import com.nudge.wooriya.data.dto.UserLoginDto;
-import com.nudge.wooriya.data.entity.Member;
-import com.nudge.wooriya.data.repository.UserRepository;
+import com.nudge.wooriya.data.dao.CompanyDAO;
+import com.nudge.wooriya.data.dao.OrganizationDAO;
+import com.nudge.wooriya.data.dto.CompanyJoinDto;
+import com.nudge.wooriya.data.dto.LoginDto;
+import com.nudge.wooriya.data.dto.OrganizationJoinDto;
+import com.nudge.wooriya.data.entity.Company;
+import com.nudge.wooriya.data.entity.EmailConfirm;
+import com.nudge.wooriya.data.entity.Organization;
+import com.nudge.wooriya.data.repository.CompanyRepository;
+import com.nudge.wooriya.data.repository.EmailConfirmRepository;
+import com.nudge.wooriya.data.repository.OrganizationRepository;
 import com.nudge.wooriya.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthServiceImpl implements AuthService, UserDetailsService {
+public class AuthServiceImpl implements AuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final MemberDAO memberDAO;
-    private final UserRepository userRepository;
+    private final CompanyDAO companyDAO;
+    private final OrganizationDAO organizationDAO;
+    private final CompanyRepository companyRepository;
+    private final OrganizationRepository organizationRepository;
+    private final EmailConfirmRepository emailConfirmRepository;
 
     @Autowired
-    public AuthServiceImpl(PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider, MemberDAO memberDAO, UserRepository userRepository) {
+    public AuthServiceImpl(PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider, CompanyDAO companyDAO, OrganizationDAO organizationDAO,
+                           CompanyRepository companyRepository,
+                           OrganizationRepository organizationRepository,
+                           EmailConfirmRepository emailConfirmRepository) {
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.memberDAO = memberDAO;
-        this.userRepository = userRepository;
+        this.companyDAO = companyDAO;
+        this.organizationDAO = organizationDAO;
+        this.companyRepository = companyRepository;
+        this.organizationRepository = organizationRepository;
+        this.emailConfirmRepository = emailConfirmRepository;
     }
 
     @Override
-    public TokenInfo login(UserLoginDto userLoginDto) {
-        Member member = userRepository
-                .findByEmail(userLoginDto.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("아이디 혹은 비밀번호를 확인하세요."));
+    public TokenInfo login(LoginDto loginDto) {
+        if(!loginDto.getIsCompany()) {
+            Organization organization = organizationRepository
+                    .findByEmail(loginDto.getEmail())
+                    .orElseThrow(() -> new UsernameNotFoundException("아이디 혹은 비밀번호를 확인하세요."));
+            Boolean matches = passwordEncoder.matches(loginDto.getPassword(), organization.getPassword());
+            if (!matches) throw new BadCredentialsException("아이디 혹은 비밀번호를 확인하세요.");
 
-        boolean matches = passwordEncoder.matches(userLoginDto.getPassword(), member.getPassword());
-        if (!matches) throw new BadCredentialsException("아이디 혹은 비밀번호를 확인하세요.");
+            Authentication authentication = new UsernamePasswordAuthenticationToken(organization.getUsername(), organization.getPassword(), organization.getAuthorities());
+            TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+            tokenInfo.setEmail(organization.getEmail());
+            tokenInfo.setMemberRole(organization.getRole());
+            return tokenInfo;
+        }
+        else {
+            Company company = companyRepository
+                    .findByEmail(loginDto.getEmail())
+                    .orElseThrow(() -> new UsernameNotFoundException("아이디 혹은 비밀번호를 확인하세요."));
+            Boolean matches = passwordEncoder.matches(loginDto.getPassword(), company.getPassword());
+            if (!matches) throw new BadCredentialsException("아이디 혹은 비밀번호를 확인하세요.");
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getUsername(), member.getPassword(), member.getAuthorities());
-        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-        tokenInfo.setEmail(member.getEmail());
-        tokenInfo.setMemberRole(member.getRole());
-        return tokenInfo;
+            Authentication authentication = new UsernamePasswordAuthenticationToken(company.getUsername(), company.getPassword(), company.getAuthorities());
+            TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+            tokenInfo.setEmail(company.getEmail());
+            tokenInfo.setMemberRole(company.getRole());
+            return tokenInfo;
+        }
     }
 
     @Override
-    public Exception join(UserJoinDto userJoinDto) throws Exception {
-
-        Member member = userRepository.findByEmail(userJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
-        if(member != null && member.isVerify()) {
-            member.setPassword(passwordEncoder.encode(userJoinDto.getPassword()));
-            member.setRole(userJoinDto.getRole());
-            member.setUserName(userJoinDto.getUserName());
-            member.setUserNum(userJoinDto.getUserNum());
-            memberDAO.join(member);
+    public Exception companyJoin(CompanyJoinDto companyJoinDto) throws Exception {
+        EmailConfirm emailConfirm = emailConfirmRepository.findByEmail(companyJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
+        if(emailConfirm != null) {
+            Company company = new Company();
+            company.setEmail(companyJoinDto.getEmail());
+            company.setPassword(passwordEncoder.encode(companyJoinDto.getPassword()));
+            company.setCompanyName(companyJoinDto.getCompanyName());
+            company.setCompanyNum(companyJoinDto.getCompanyNum());
+            company.setRepresentativeName(companyJoinDto.getRepresentativeName());
+            company.setRepresentativeNum(companyJoinDto.getRepresentativeNum());
+            company.setKind(companyJoinDto.getKind());
+            company.setHistory(companyJoinDto.getHistory());
+            company.setGreetings(companyJoinDto.getGreetings());
+            companyDAO.join(company);
             return new Exception("회원가입 완료");
         }
         else {
@@ -69,17 +100,38 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email)
-                .map(this::createUserDetails)
-                .orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
+    public Exception organizationJoin(OrganizationJoinDto organizationJoinDto) throws Exception {
+        EmailConfirm emailConfirm = emailConfirmRepository.findByEmail(organizationJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
+        if(emailConfirm != null) {
+            Organization organization = new Organization();
+            organization.setEmail(organizationJoinDto.getEmail());
+            organization.setPassword(passwordEncoder.encode(organizationJoinDto.getPassword()));
+            organization.setOrganizationName(organizationJoinDto.getOrganizationName());
+            organization.setRepresentativeName(organizationJoinDto.getRepresentativeName());
+            organization.setRepresentativeNum(organizationJoinDto.getRepresentativeNum());
+            organization.setOrganizationEmail(organizationJoinDto.getOrganizationEmail());
+            organization.setKind(organizationJoinDto.getKind());
+            organization.setHistory(organizationJoinDto.getHistory());
+            organizationDAO.join(organization);
+            return new Exception("회원가입 완료");
+        }
+        else {
+            return new Exception("이메일 인증을 진행해주세요");
+        }
     }
 
-    private UserDetails createUserDetails(Member member) {
-        return User.builder()
-                .username(member.getUsername())
-                .password(passwordEncoder.encode(member.getPassword()))
-                .roles(member.getRole())
-                .build();
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//        return userRepository.findByEmail(email)
+//                .map(this::createUserDetails)
+//                .orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
+//    }
+//
+//    private UserDetails createUserDetails(Member member) {
+//        return User.builder()
+//                .username(member.getUsername())
+//                .password(passwordEncoder.encode(member.getPassword()))
+//                .roles(member.getRole())
+//                .build();
+//    }
 }

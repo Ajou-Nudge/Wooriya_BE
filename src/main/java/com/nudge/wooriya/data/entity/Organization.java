@@ -7,21 +7,22 @@ import com.nudge.wooriya.enums.OrganizationKind;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Organization {
+@Setter
+@Getter
+public class Organization implements UserDetails {
     @Id
     @Column(updatable = false, unique = true, nullable = false)
     private String email;
@@ -41,21 +42,46 @@ public class Organization {
     @Column(nullable = false)
     private String organizationEmail;
 
-    @Column(nullable = true)
-    private boolean isVerify;
-
     @Column(nullable = false)
     private OrganizationKind kind;
 
     @Column(nullable = false)
     private OrganizationHistory history;
 
-    public boolean isVerify() {
-        return isVerify;
+    public String getRole() {
+        return "ROLE_ORG";
     }
 
-    public void setVerify(boolean verify) {
-        isVerify = verify;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(
+                new SimpleGrantedAuthority("ROLE_ORG"),
+                new SimpleGrantedAuthority("ROLE_USER")
+        );
     }
 
+    @Override
+    public String getUsername() {
+        return organizationName;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }

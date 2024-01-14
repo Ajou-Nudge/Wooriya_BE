@@ -1,31 +1,37 @@
 package com.nudge.wooriya.service.Impl;
 
 import com.nudge.wooriya.config.security.JwtTokenProvider;
-import com.nudge.wooriya.data.dao.MemberDAO;
-import com.nudge.wooriya.data.entity.Member;
-import com.nudge.wooriya.data.repository.UserRepository;
+import com.nudge.wooriya.data.dto.ConfirmCodeDto;
+import com.nudge.wooriya.data.entity.EmailConfirm;
+import com.nudge.wooriya.data.repository.CompanyRepository;
+import com.nudge.wooriya.data.repository.EmailConfirmRepository;
+import com.nudge.wooriya.data.repository.OrganizationRepository;
 import com.nudge.wooriya.service.MailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.config.annotation.AlreadyBuiltException;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+
+import java.util.Random;
 
 @Service
 @Slf4j
 public class MailServiceImpl implements MailService {
     @Autowired
-    private UserRepository userRepository;
+    private EmailConfirmRepository emailConfirmRepository;
+    @Autowired
+    private OrganizationRepository organizationRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
     @Autowired
     private JavaMailSender mailSender;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
-    @Autowired
-    private MemberDAO memberDAO;
 
     @Override
     public String sendMail(String mailAddress) {
@@ -39,32 +45,36 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public String sendConfirmCode(String mailAddress) {
+    public Boolean sendConfirmCode(ConfirmCodeDto confirmcodeDto) {
 
-        boolean isExist = userRepository.existsByEmail(mailAddress);
-        Member member = new Member();
+        boolean isCompanyExist = companyRepository.existsByEmail(confirmcodeDto.getEmail());
+        boolean isOrganizationExist = organizationRepository.existsByEmail(confirmcodeDto.getEmail());
 
-        if (isExist) throw new AlreadyBuiltException("이미 가입된 이메일입니다.");
-        else {
-            member.setEmail(mailAddress);
-            member.setPassword("password");
-            member.setRole("role");
-            member.setVerify(false);
-            memberDAO.join(member);
+        if (isCompanyExist && isOrganizationExist) {
+            return false;
         }
+        else {
+            EmailConfirm emailConfirm = new EmailConfirm();
+            String confirmCode = generateConfirmCode();
+            emailConfirm.setEmail(confirmcodeDto.getEmail());
+            emailConfirm.setConfirmCode(confirmCode);
+            emailConfirm.setIsVerify(false);
 
-        String emailVerificationToken = jwtTokenProvider.createEmailVerificationToken(member.getUserName(), member.getEmail());
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("Wooriya <test@wooriya.com>");
-        message.setTo(mailAddress);
-        message.setSubject("[Wooriya] 회원가입 이메일 인증");
-        message.setText("[Wooriya] 회원가입을 계속하려면, 해당 링크를 클릭해서 이메일 주소 인증을 완료해주세요!\n"
-                +"http://localhost:8080/user/join/confirm-mail/"+emailVerificationToken);
-        mailSender.send(message);
-
-        System.out.println("Confirm Code: " + emailVerificationToken);
-        return "인증코드 전송 완료";
+            try {
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setFrom("Wooriya <test@wooriya.com>");
+                message.setTo(confirmcodeDto.getEmail());
+                message.setSubject("[Wooriya] 회원가입 이메일 인증");
+                message.setText("[Wooriya] 회원가입을 계속하려면 웹으로 돌아가 해당 인증코드를 입력해주세요!\n"
+                        +confirmCode);
+                mailSender.send(message);
+            } catch (MailException e) {
+                System.err.println(e);
+                return false;
+            }
+            emailConfirmRepository.save(emailConfirm);
+            return true;
+        }
     }
 
     @Override
@@ -173,13 +183,27 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public String verifyConfirmCode(String confirmCode) throws Exception {
+    public Boolean verifyConfirmCode(ConfirmCodeDto confirmCodeDto) throws Exception {
+        EmailConfirm emailConfirm = emailConfirmRepository.findByEmail(confirmCodeDto.getEmail()).orElseThrow(() -> new Exception("member not found"));
+        if(emailConfirm.getConfirmCode().equals(confirmCodeDto.getConfirmCode())) {
+            emailConfirm.setIsVerify(true);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-        String userName = jwtTokenProvider.getUserNameFromEmailVerificationToken(confirmCode);
+    private static String generateConfirmCode() {
+        int codeLength = 6;
+        StringBuilder generatedCode = new StringBuilder();
 
-        Member member = userRepository.findByUserName(userName).orElseThrow(() -> new Exception("member not found"));
-        member.setVerify(true);
-        memberDAO.join(member);
-        return "이메일 인증 완료";
+        Random random = new Random();
+
+        for (int i = 0; i < codeLength; i++) {
+            int randomDigit = random.nextInt(10);
+            generatedCode.append(randomDigit);
+        }
+
+        return generatedCode.toString();
     }
 }

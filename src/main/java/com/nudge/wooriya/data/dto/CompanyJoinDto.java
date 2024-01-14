@@ -2,8 +2,6 @@ package com.nudge.wooriya.data.dto;
 
 import com.nudge.wooriya.enums.CompanyHistory;
 import com.nudge.wooriya.enums.CompanyKind;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +9,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class UserJoinDto {
+public class CompanyJoinDto {
     private String email;
 
     private String password;

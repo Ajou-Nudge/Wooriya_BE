@@ -6,15 +6,19 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.nudge.wooriya.enums.CompanyKind;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Company {
+@Getter
+@Setter
+public class Company implements UserDetails {
     @Id
     @Column(updatable = false, unique = true, nullable = false)
     private String email;
@@ -34,13 +38,49 @@ public class Company {
     @Column(nullable = false)
     private String representativeNum;
 
-    @Column(nullable = true)
-    private boolean isVerify;
-
     @Column(nullable = false)
     private CompanyKind kind;
 
     @Column(nullable = false)
     private CompanyHistory history;
 
+    @Column(nullable = true)
+    private String greetings;
+
+    public String getRole() {
+        return "ROLE_COMPANY";
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(
+                new SimpleGrantedAuthority("ROLE_COMPANY"),
+                new SimpleGrantedAuthority("ROLE_USER")
+        );
+    }
+
+    @Override
+    public String getUsername() {
+        return companyName;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }

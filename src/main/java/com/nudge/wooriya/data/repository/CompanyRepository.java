@@ -1,17 +1,16 @@
 package com.nudge.wooriya.data.repository;
 
+import com.nudge.wooriya.data.entity.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.nudge.wooriya.data.entity.Member;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<Member, Long> {
-    Optional<Member> findByEmail(String email);
+public interface CompanyRepository extends JpaRepository<Company, Long> {
+    Optional<Company> findByEmail(String email);
 
     boolean existsByEmail(String email);
 
-    Optional<Member> findByUserName(String userName);
+    Optional<Company> findByCompanyName(String userName);
 }

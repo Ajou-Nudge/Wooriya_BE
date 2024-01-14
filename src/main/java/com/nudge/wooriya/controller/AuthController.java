@@ -1,9 +1,7 @@
 package com.nudge.wooriya.controller;
 
 import com.nudge.wooriya.config.security.TokenInfo;
-import com.nudge.wooriya.data.dto.UserInfoDto;
-import com.nudge.wooriya.data.dto.UserJoinDto;
-import com.nudge.wooriya.data.dto.UserLoginDto;
+import com.nudge.wooriya.data.dto.*;
 import com.nudge.wooriya.service.AuthService;
 import com.nudge.wooriya.service.MailService;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +31,8 @@ public class AuthController {
     private String redirectUri;
 
     @PostMapping("/login")
-    public TokenInfo login(@RequestBody UserLoginDto userLoginDto) {
-        TokenInfo tokenInfo = authService.login(userLoginDto);
+    public TokenInfo login(@RequestBody LoginDto loginDto) {
+        TokenInfo tokenInfo = authService.login(loginDto);
         return tokenInfo;
     }
 
@@ -75,22 +73,28 @@ public class AuthController {
             return response;
         }
 
-    @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody UserJoinDto userJoinDto) throws Exception {
-        authService.join(userJoinDto);
-        return ResponseEntity.status(HttpStatus.OK).body(userJoinDto.getRole());
+    @PostMapping("/join/company")
+    public ResponseEntity<Boolean> companyJoin(@RequestBody CompanyJoinDto companyJoinDto) throws Exception {
+        authService.companyJoin(companyJoinDto);
+        return ResponseEntity.status(HttpStatus.OK).body(true);
     }
 
-    @PostMapping("/join/confirmcode")
-    public ResponseEntity<String> confirmCode(@RequestBody String mailAddress) {
-        String result = mailService.sendConfirmCode(mailAddress);
+    @PostMapping("/join/organization")
+    public ResponseEntity<Boolean> organizationJoin(@RequestBody OrganizationJoinDto organizationJoinDto) throws Exception {
+        authService.organizationJoin(organizationJoinDto);
+        return ResponseEntity.status(HttpStatus.OK).body(true);
+    }
+
+    @PostMapping("/join/confirmcode/send")
+    public ResponseEntity<Boolean> confirmCode(@RequestBody ConfirmCodeDto confirmcodeDto) {
+        Boolean result = mailService.sendConfirmCode(confirmcodeDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping(value="/join/confirm-mail/{confirmCode}")
-    public ResponseEntity<?> verifyConfirmCode(@PathVariable String confirmCode) throws Exception {
-        String result = mailService.verifyConfirmCode(confirmCode);
+    @PostMapping(value="/join/confirmcode/verify")
+    public ResponseEntity<?> verifyConfirmCode(@RequestBody ConfirmCodeDto confirmCodeDto) throws Exception {
+        Boolean result = mailService.verifyConfirmCode(confirmCodeDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

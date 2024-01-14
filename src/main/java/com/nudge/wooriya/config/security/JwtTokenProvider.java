@@ -76,24 +76,6 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
-    public String createEmailVerificationToken(String userName, String email) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + jwtExpirationTime);
-
-        return Jwts.builder()
-                .setSubject(userName)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .claim("email", email)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-    }
-
-    public String getUserNameFromEmailVerificationToken(String token) {
-        Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-        return claimsJws.getBody().getSubject();
-    }
-
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
