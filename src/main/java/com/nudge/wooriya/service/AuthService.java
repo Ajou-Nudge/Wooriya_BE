@@ -1,10 +1,7 @@
 package com.nudge.wooriya.service;
 
 import com.nudge.wooriya.config.security.TokenInfo;
-import com.nudge.wooriya.data.dto.CompanyJoinDto;
-import com.nudge.wooriya.data.dto.LoginDto;
-import com.nudge.wooriya.data.dto.OrganizationJoinDto;
-import com.nudge.wooriya.data.dto.UserJoinDto;
+import com.nudge.wooriya.data.dto.*;
 
 public interface AuthService {
 
@@ -13,4 +10,6 @@ public interface AuthService {
     Exception companyJoin(CompanyJoinDto companyJoinDto) throws Exception;
 
     Exception organizationJoin(OrganizationJoinDto organizationJoinDto) throws Exception;
+
+    UserInfoDto info();
 }

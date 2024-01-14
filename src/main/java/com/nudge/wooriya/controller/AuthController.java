@@ -98,4 +98,10 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
+    @GetMapping("/info")
+    public UserInfoDto info() {
+        UserInfoDto userInfoDto = authService.info();
+        return userInfoDto;
+    }
 }

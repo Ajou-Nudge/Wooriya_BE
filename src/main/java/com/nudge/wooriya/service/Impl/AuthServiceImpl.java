@@ -1,12 +1,14 @@
 package com.nudge.wooriya.service.Impl;
 
 import com.nudge.wooriya.config.security.JwtTokenProvider;
+import com.nudge.wooriya.config.security.SecurityUtil;
 import com.nudge.wooriya.config.security.TokenInfo;
 import com.nudge.wooriya.data.dao.CompanyDAO;
 import com.nudge.wooriya.data.dao.OrganizationDAO;
 import com.nudge.wooriya.data.dto.CompanyJoinDto;
 import com.nudge.wooriya.data.dto.LoginDto;
 import com.nudge.wooriya.data.dto.OrganizationJoinDto;
+import com.nudge.wooriya.data.dto.UserInfoDto;
 import com.nudge.wooriya.data.entity.Company;
 import com.nudge.wooriya.data.entity.EmailConfirm;
 import com.nudge.wooriya.data.entity.Organization;
@@ -113,6 +115,7 @@ public class AuthServiceImpl implements AuthService {
             organization.setOrganizationEmail(organizationJoinDto.getOrganizationEmail());
             organization.setKind(organizationJoinDto.getKind());
             organization.setHistory(organizationJoinDto.getHistory());
+            organization.setGreetings(organizationJoinDto.getGreetings());
             organizationDAO.join(organization);
             emailConfirmRepository.deleteById(organizationJoinDto.getEmail());
             return new Exception("회원가입 완료");
@@ -120,6 +123,12 @@ public class AuthServiceImpl implements AuthService {
         else {
             return new Exception("이메일 인증을 진행해주세요");
         }
+    }
+
+    @Override
+    public UserInfoDto info() {
+         UserInfoDto userInfoDto = SecurityUtil.getCurrentMemberId();
+        return userInfoDto;
     }
 
 //    @Override

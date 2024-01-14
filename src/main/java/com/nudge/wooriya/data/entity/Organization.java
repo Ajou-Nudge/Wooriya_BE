@@ -48,6 +48,9 @@ public class Organization implements UserDetails {
     @Column(nullable = false)
     private OrganizationHistory history;
 
+    @Column(nullable = true)
+    private String greetings;
+
     public String getRole() {
         return "ROLE_ORG";
     }
@@ -62,7 +65,7 @@ public class Organization implements UserDetails {
 
     @Override
     public String getUsername() {
-        return organizationName;
+        return email;
     }
 
     @Override

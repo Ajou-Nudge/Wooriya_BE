@@ -61,7 +61,7 @@ public class Company implements UserDetails {
 
     @Override
     public String getUsername() {
-        return companyName;
+        return email;
     }
 
     @Override
