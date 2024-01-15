@@ -15,6 +15,5 @@ import java.util.Set;
 @Builder
 public class ProposalRequestDto {
     private Long postId;
-    private String companyEmail;
     private String message;
 }

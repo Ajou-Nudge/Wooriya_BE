@@ -1,6 +1,7 @@
 package com.nudge.wooriya.service.Impl;
 
 import com.nudge.wooriya.config.security.JwtTokenProvider;
+import com.nudge.wooriya.config.security.SecurityUtil;
 import com.nudge.wooriya.data.dto.ConfirmCodeDto;
 import com.nudge.wooriya.data.dto.ProposalRequestDto;
 import com.nudge.wooriya.data.entity.Company;
@@ -98,7 +99,7 @@ public class MailServiceImpl implements MailService {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
 
         ProposalPost proposalPost = proposalPostRepository.findById(proposalRequestDto.getPostId()).orElseThrow(() -> new Exception("post not found"));
-        Company company = companyRepository.findById(proposalRequestDto.getCompanyEmail()).orElseThrow(() -> new Exception("company not found"));
+        Company company = companyRepository.findById(SecurityUtil.getCurrentMemberId().getEmail()).orElseThrow(() -> new Exception("company not found"));
         String organizationName = organizationRepository.findById(proposalPost.getAuthor()).get().getOrganizationName();
 
         String htmlContent = readHtmlTemplate("src/main/resources/static/proposalMail.html");

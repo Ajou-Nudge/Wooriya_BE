@@ -4,8 +4,10 @@ import com.nudge.wooriya.config.security.SecurityUtil;
 import com.nudge.wooriya.data.dto.ProposalPostRequestDto;
 import com.nudge.wooriya.data.dto.ProposalPostResponseDto;
 import com.nudge.wooriya.data.dto.ProposalRequestDto;
+import com.nudge.wooriya.data.entity.Notification;
 import com.nudge.wooriya.data.entity.Proposal;
 import com.nudge.wooriya.data.entity.ProposalPost;
+import com.nudge.wooriya.data.repository.NotificationRepository;
 import com.nudge.wooriya.data.repository.PostImageMetaRepository;
 import com.nudge.wooriya.data.repository.ProposalPostRepository;
 import com.nudge.wooriya.data.repository.ProposalRepository;
@@ -17,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -26,15 +27,18 @@ public class BoardServiceImpl implements BoardService {
     private final ProposalPostRepository proposalPostRepository;
     private final ProposalRepository proposalRepository;
     private final MailService mailService;
+    private final NotificationRepository notificationRepository;
 
     @Autowired
     public BoardServiceImpl(MetadataServiceImpl metadataService, PostImageMetaRepository postImageMetaRepository, ProposalPostRepository proposalPostRepository,
-                            ProposalRepository proposalRepository, MailService mailService) {
+                            ProposalRepository proposalRepository, MailService mailService,
+                            NotificationRepository notificationRepository) {
         this.proposalPostRepository = proposalPostRepository;
         this.metadataService = metadataService;
         this.postImageMetaRepository = postImageMetaRepository;
         this.proposalRepository = proposalRepository;
         this.mailService = mailService;
+        this.notificationRepository = notificationRepository;
     }
 
     @Override
@@ -130,13 +134,23 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Boolean sendProposal(ProposalRequestDto proposalRequestDto) throws Exception {
         Proposal proposal = new Proposal();
-        proposal.setCompanyEmail(proposalRequestDto.getCompanyEmail());
+        proposal.setCompanyEmail(SecurityUtil.getCurrentMemberId().getEmail());
         proposal.setMessage(proposalRequestDto.getMessage());
         proposal.setPostId(proposalRequestDto.getPostId());
         proposal.setCreatedAt(LocalDateTime.now());
         proposal.setUpdatedAt(LocalDateTime.now());
+        Long proposalId = proposalRepository.save(proposal).getId();
 
-        proposalRepository.save(proposal);
+        ProposalPost proposalPost = proposalPostRepository.findById(proposalRequestDto.getPostId())
+                .orElseThrow(() -> new Exception("post not found"));
+
+        Notification notification = new Notification();
+        notification.setProposalId(proposalId);
+        notification.setReceiver(proposalPost.getAuthor());
+        notification.setMessage("제안 도착 어쩌고 확인 어쩌고");
+        notification.setIsRead(false);
+        notificationRepository.save(notification);
+
         mailService.sendProposalMail(proposalRequestDto);
         return true;
     }

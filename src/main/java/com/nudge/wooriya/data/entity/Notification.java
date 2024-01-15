@@ -11,20 +11,20 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class Proposal {
+public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String companyEmail;
+    private Long proposalId;
 
     @Column(nullable = false)
-    private Long postId;
+    private String receiver;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String message;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    @Column(nullable = false)
+    private Boolean isRead;
 }
