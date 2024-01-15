@@ -14,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class ProposalPostResponseDto {
+    private Long id;
     private String title;
     private String author;
     private Set<AffiliateKind> affiliateKinds;

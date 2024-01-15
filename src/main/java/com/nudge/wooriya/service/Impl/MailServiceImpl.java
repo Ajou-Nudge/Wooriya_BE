@@ -2,27 +2,40 @@ package com.nudge.wooriya.service.Impl;
 
 import com.nudge.wooriya.config.security.JwtTokenProvider;
 import com.nudge.wooriya.data.dto.ConfirmCodeDto;
+import com.nudge.wooriya.data.dto.ProposalRequestDto;
+import com.nudge.wooriya.data.entity.Company;
 import com.nudge.wooriya.data.entity.EmailConfirm;
+import com.nudge.wooriya.data.entity.Organization;
+import com.nudge.wooriya.data.entity.ProposalPost;
 import com.nudge.wooriya.data.repository.CompanyRepository;
 import com.nudge.wooriya.data.repository.EmailConfirmRepository;
 import com.nudge.wooriya.data.repository.OrganizationRepository;
+import com.nudge.wooriya.data.repository.ProposalPostRepository;
 import com.nudge.wooriya.service.MailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
 @Slf4j
 public class MailServiceImpl implements MailService {
+    @Autowired
+    private ProposalPostRepository proposalPostRepository;
     @Autowired
     private EmailConfirmRepository emailConfirmRepository;
     @Autowired
@@ -80,104 +93,25 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public Boolean sendProposalMail(String mailAddress) throws MessagingException {
-        String htmlBody = "<!DOCTYPE html>\n" +
-                "<html>\n" +
-                "    <head>\n" +
-                "        <style>\n" +
-                "            .email-container {\n" +
-                "                font-family: Arial, sans-serif;\n" +
-                "                max-width: 600px;\n" +
-                "                margin: 0 auto;\n" +
-                "                border: 1px solid #ddd;\n" +
-                "                padding: 20px;\n" +
-                "            }\n" +
-                "            .header {\n" +
-                "                text-align: center;\n" +
-                "                padding-bottom: 20px;\n" +
-                "            }\n" +
-                "            .body-content {\n" +
-                "                font-size: 14px;\n" +
-                "                line-height: 1.6;\n" +
-                "                color: #333;\n" +
-                "            }\n" +
-                "            .footer {\n" +
-                "                font-size: 12px;\n" +
-                "                text-align: center;\n" +
-                "                color: #666;\n" +
-                "                border-top: 1px solid #ddd;\n" +
-                "                padding-top: 20px;\n" +
-                "            }\n" +
-                "            .button-link {\n" +
-                "                display: inline-block;\n" +
-                "                padding: 10px 20px;\n" +
-                "                margin: 5px 0;\n" +
-                "                background-color: #007bff;\n" +
-                "                color: white;\n" +
-                "                text-decoration: none;\n" +
-                "                border-radius: 5px;\n" +
-                "                font-weight: bold;\n" +
-                "            }\n" +
-                "            .button-link:hover {\n" +
-                "                background-color: #0056b3;\n" +
-                "            }\n" +
-                "            .button-container {\n" +
-                "                text-align: center;\n" +
-                "                margin-top: 20px;\n" +
-                "                margin-bottom: 20px;\n" +
-                "            }\n" +
-                "        </style>\n" +
-                "    </head>\n" +
-                "    <body>\n" +
-                "        <div class=\"email-container\">\n" +
-                "            <div class=\"header\">\n" +
-                "                <h1>\n" +
-                "                    김선우님, 넛지에서 제휴(협찬) 제안이\n" +
-                "                    왔어요!\n" +
-                "                </h1>\n" +
-                "            </div>\n" +
-                "            <div class=\"body-content\">\n" +
-                "                <p>\n" +
-                "                    <strong\n" +
-                "                        >김선우 님, 넛지(기업)</strong\n" +
-                "                    >로부터 제휴(협찬) 제안이 도착했어요!\n" +
-                "                    <br />\n" +
-                "                    전달해주신 내용은 다음과 같아요\n" +
-                "                </p>\n" +
-                "                <p>\n" +
-                "                    <strong\n" +
-                "                        >안녕하세요 제휴 제안드립니다.</strong\n" +
-                "                    >\n" +
-                "                </p>\n" +
-                "                <div class=\"button-container\">\n" +
-                "                    <a\n" +
-                "                        href=\"http://localhost:3000/organization/1\"\n" +
-                "                        class=\"button-link\"\n" +
-                "                        >게시한 글 확인하러 가기</a\n" +
-                "                    >\n" +
-                "                    <a\n" +
-                "                        href=\"http://localhost:3000/organization/1\"\n" +
-                "                        class=\"button-link\"\n" +
-                "                        >제휴 현황 확인하러 가기</a\n" +
-                "                    >\n" +
-                "                </div>\n" +
-                "            </div>\n" +
-                "\n" +
-                "            <div class=\"footer\">\n" +
-                "                <p>Nudge | nudge335@gmail.com</p>\n" +
-                "                <p>대표: 민정근 | Phone: 010-5561-3356 | Email: nudge335@gmail.com</p>\n" +
-                "            </div>\n" +
-                "        </div>\n" +
-                "    </body>\n" +
-                "</html>\n";
-
+    public Boolean sendProposalMail(ProposalRequestDto proposalRequestDto) throws Exception {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
 
+        ProposalPost proposalPost = proposalPostRepository.findById(proposalRequestDto.getPostId()).orElseThrow(() -> new Exception("post not found"));
+        Company company = companyRepository.findById(proposalRequestDto.getCompanyEmail()).orElseThrow(() -> new Exception("company not found"));
+        String organizationName = organizationRepository.findById(proposalPost.getAuthor()).get().getOrganizationName();
+
+        String htmlContent = readHtmlTemplate("src/main/resources/static/proposalMail.html");
+
+        String processedHtmlContent = htmlContent
+                .replace("{organizationName}",organizationName)
+                .replace("{companyName}", company.getCompanyName())
+                .replace("{message}", proposalRequestDto.getMessage());
+
         helper.setFrom("Wooriya <test@wooriya.com>");
-        helper.setTo(mailAddress);
+        helper.setTo(proposalPost.getAuthor());
         helper.setSubject("[Wooriya] 제휴 제안");
-        helper.setText(htmlBody, true);
+        helper.setText(processedHtmlContent, true);
 
         mailSender.send(mimeMessage);
 
@@ -207,5 +141,10 @@ public class MailServiceImpl implements MailService {
         }
 
         return generatedCode.toString();
+    }
+
+    private String readHtmlTemplate(String templatePath) throws IOException {
+        Path path = Paths.get(templatePath);
+        return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
     }
 }

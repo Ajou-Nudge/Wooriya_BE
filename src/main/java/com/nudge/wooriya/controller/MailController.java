@@ -20,8 +20,8 @@ public class MailController {
         return mailService.sendMail(mailAddress);
     }
 
-    @PostMapping("/proposal")
-    public ResponseEntity<Boolean> sendProposalMail(@RequestBody String mailAddress) throws MessagingException {
-        return ResponseEntity.status(HttpStatus.OK).body(mailService.sendProposalMail(mailAddress));
-    }
+//    @PostMapping("/proposal")
+//    public ResponseEntity<Boolean> sendProposalMail(@RequestBody String mailAddress) throws MessagingException {
+//        return ResponseEntity.status(HttpStatus.OK).body(mailService.sendProposalMail(mailAddress));
+//    }
 }

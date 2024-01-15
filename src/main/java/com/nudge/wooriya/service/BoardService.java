@@ -2,6 +2,7 @@ package com.nudge.wooriya.service;
 
 import com.nudge.wooriya.data.dto.ProposalPostRequestDto;
 import com.nudge.wooriya.data.dto.ProposalPostResponseDto;
+import com.nudge.wooriya.data.dto.ProposalRequestDto;
 import com.nudge.wooriya.data.entity.ProposalPost;
 
 import java.io.UnsupportedEncodingException;
@@ -18,4 +19,6 @@ public interface BoardService {
     Long deleteProposalPost(Long id) throws Exception;
 
     Long updateProposalPost(ProposalPostRequestDto proposalPostRequestDto, Long id) throws Exception;
+
+    Boolean sendProposal(ProposalRequestDto proposalRequestDto) throws Exception;
 }

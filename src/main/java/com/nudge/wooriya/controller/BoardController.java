@@ -2,6 +2,7 @@ package com.nudge.wooriya.controller;
 
 import com.nudge.wooriya.data.dto.ProposalPostRequestDto;
 import com.nudge.wooriya.data.dto.ProposalPostResponseDto;
+import com.nudge.wooriya.data.dto.ProposalRequestDto;
 import com.nudge.wooriya.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,5 +48,11 @@ public class BoardController {
     public ResponseEntity<ProposalPostResponseDto> getCompanyPost(@PathVariable Long id) throws Exception {
         ProposalPostResponseDto proposalPostResponseDto = boardService.getProposalPost(id);
         return ResponseEntity.status(HttpStatus.OK).body(proposalPostResponseDto);
+    }
+
+    @PostMapping("proposal-post/send")
+    public ResponseEntity<Boolean> sendProposal(@RequestBody ProposalRequestDto proposalRequestDto) throws Exception {
+        Boolean result = boardService.sendProposal(proposalRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

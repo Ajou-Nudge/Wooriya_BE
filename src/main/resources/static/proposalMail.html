@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .email-container {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+        .body-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .footer {
+            font-size: 12px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px 0;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .button-link:hover {
+            background-color: #0056b3;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="header">
+        <img src="logo.svg" alt="Logo" width="100" />
+        <h1>
+            {organizationName}님, {companyName}에서 제휴(협찬) 제안이 왔어요!
+        </h1>
+    </div>
+    <div class="body-content">
+        <p>
+            <strong>{organizationName} 님, {companyName}(기업)</strong>
+            로부터 제휴(협찬) 제안이 도착했어요!
+            <br />
+            전달해주신 내용은 다음과 같아요
+        </p>
+        <p>
+            <strong>{message}</strong>
+        </p>
+        <div class="button-container">
+            <a href="http://localhost:3000/organization/1" class="button-link">게시한 글 확인하러 가기</a>
+            <a href="http://localhost:3000/organization/1" class="button-link">제휴 현황 확인하러 가기</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Nudge | nudge335@gmail.com</p>
+        <p>대표: 민정근 | Phone: 010-5561-3356 | Email: nudge335@gmail.com</p>
+    </div>
+</div>
+</body>
+</html>
