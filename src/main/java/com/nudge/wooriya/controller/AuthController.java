@@ -4,6 +4,7 @@ import com.nudge.wooriya.config.security.TokenInfo;
 import com.nudge.wooriya.data.dto.*;
 import com.nudge.wooriya.service.AuthService;
 import com.nudge.wooriya.service.MailService;
+//import com.nudge.wooriya.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,12 +24,7 @@ import java.net.URISyntaxException;
 public class AuthController {
     private final AuthService authService;
     private final MailService mailService;
-
-    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
-    private String clientId;
-
-    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
-    private String redirectUri;
+//    private final OAuthService oAuthService;
 
     @PostMapping("/login")
     public TokenInfo login(@RequestBody LoginDto loginDto) {
@@ -36,42 +32,11 @@ public class AuthController {
         return tokenInfo;
     }
 
-    @GetMapping("/login/oauth2")
-    public ResponseEntity<Object> oAuth2Login() throws URISyntaxException {
-        String uri = "https://kauth.kakao.com/oauth/authorize?client_id="+clientId+"&redirect_uri="+redirectUri+"&response_type=code";
-        URI redirectUri = new URI(uri);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(redirectUri);
-        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
-    }
-
-    @GetMapping("/login/oauth2/code/kakao")
-        public ResponseEntity<Object> getAccessToken(@RequestParam("code") String code) {
-            System.out.println("code = " + code);
-
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded;charset=utf-8");
-
-            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            params.add("grant_type", "authorization_code");
-            params.add("client_id", clientId);
-            params.add("redirect_uri", redirectUri);
-            params.add("code", code);
-
-            HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, httpHeaders);
-
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<Object> response = restTemplate.exchange(
-                    "https://kauth.kakao.com/oauth/token",
-                    HttpMethod.POST,
-                    httpEntity,
-                    Object.class
-            );
-
-            System.out.println("response = " + response);
-
-            return response;
-        }
+//    @GetMapping("/login/oauth2/code/google")
+//    public ResponseEntity<Boolean> getAccessToken(@RequestParam("code") String code) {
+//        oAuthService.login(code);
+//        return ResponseEntity.status(HttpStatus.OK).body(true);
+//    }
 
     @PostMapping("/join/company")
     public ResponseEntity<Boolean> companyJoin(@RequestBody CompanyJoinDto companyJoinDto) throws Exception {
@@ -88,14 +53,12 @@ public class AuthController {
     @PostMapping("/join/confirmcode/send")
     public ResponseEntity<Boolean> confirmCode(@RequestBody ConfirmCodeDto confirmcodeDto) {
         Boolean result = mailService.sendConfirmCode(confirmcodeDto);
-
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping(value="/join/confirmcode/verify")
     public ResponseEntity<?> verifyConfirmCode(@RequestBody ConfirmCodeDto confirmCodeDto) throws Exception {
         Boolean result = mailService.verifyConfirmCode(confirmCodeDto);
-
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

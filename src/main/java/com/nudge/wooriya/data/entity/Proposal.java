@@ -25,6 +25,12 @@ public class Proposal {
     @Column(nullable = true)
     private String message;
 
+    @Column(nullable = true)
+    private Boolean isApproved;
+
+    @Column(nullable = false)
+    private String organizationEmail;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

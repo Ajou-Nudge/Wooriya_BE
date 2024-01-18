@@ -1,8 +1,7 @@
 package com.nudge.wooriya.controller;
 
-import com.nudge.wooriya.data.dto.NotificationResponseDto;
-import com.nudge.wooriya.data.dto.ProfileDto;
-import com.nudge.wooriya.data.dto.ProposalPostResponseDto;
+import com.nudge.wooriya.data.dto.*;
+import com.nudge.wooriya.data.entity.Proposal;
 import com.nudge.wooriya.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,4 +37,21 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @PostMapping("/proposal/select")
+    public ResponseEntity<Boolean> selectProposal(@RequestBody ProposalSelectDto proposalSelectDto) throws Exception {
+        Boolean result = userService.selectProposal(proposalSelectDto);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @GetMapping("/proposal/send")
+    public ResponseEntity<List<ProposalProfileDto>> sendProposal() throws Exception {
+        List<ProposalProfileDto> proposals = userService.sendProposal();
+        return ResponseEntity.status(HttpStatus.OK).body(proposals);
+    }
+
+    @GetMapping("/proposal/receive")
+    public ResponseEntity<List<ProposalProfileDto>> receiveProposal() throws Exception {
+        List<ProposalProfileDto> proposals = userService.receiveProposal();
+        return ResponseEntity.status(HttpStatus.OK).body(proposals);
+    }
 }

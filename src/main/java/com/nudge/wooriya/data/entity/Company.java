@@ -7,10 +7,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.nudge.wooriya.enums.CompanyKind;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 
 @Builder
 @NoArgsConstructor
@@ -18,7 +20,7 @@ import java.util.Collection;
 @Entity
 @Getter
 @Setter
-public class Company implements UserDetails {
+public class Company implements UserDetails, OAuth2User {
     @Id
     @Column(updatable = false, unique = true, nullable = false)
     private String email;
@@ -47,8 +49,19 @@ public class Company implements UserDetails {
     @Column(nullable = true)
     private String greetings;
 
+    @Column(nullable = true)
+    private String provider;
+
+    @Column(nullable = true)
+    private String providerId;
+
     public String getRole() {
         return "ROLE_COMPANY";
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return null;
     }
 
     @Override
@@ -82,5 +95,10 @@ public class Company implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    @Override
+    public String getName() {
+        return email;
     }
 }

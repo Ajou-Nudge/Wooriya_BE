@@ -1,26 +1,13 @@
 package com.nudge.wooriya.service.Impl;
 
-import com.nudge.wooriya.config.security.JwtTokenProvider;
 import com.nudge.wooriya.config.security.SecurityUtil;
-import com.nudge.wooriya.config.security.TokenInfo;
-import com.nudge.wooriya.data.dao.CompanyDAO;
-import com.nudge.wooriya.data.dao.OrganizationDAO;
 import com.nudge.wooriya.data.dto.*;
 import com.nudge.wooriya.data.entity.*;
 import com.nudge.wooriya.data.repository.*;
-import com.nudge.wooriya.service.AuthService;
 import com.nudge.wooriya.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,15 +18,18 @@ public class UserServiceImpl implements UserService {
     private final OrganizationRepository organizationRepository;
     private final ProposalRepository proposalRepository;
     private final NotificationRepository notificationRepository;
+    private final ProposalPostRepository proposalPostRepository;
 
     @Autowired
     public UserServiceImpl(CompanyRepository companyRepository, OrganizationRepository organizationRepository,
                            ProposalRepository proposalRepository,
-                           NotificationRepository notificationRepository) {
+                           NotificationRepository notificationRepository,
+                           ProposalPostRepository proposalPostRepository) {
         this.companyRepository = companyRepository;
         this.organizationRepository = organizationRepository;
         this.proposalRepository = proposalRepository;
         this.notificationRepository = notificationRepository;
+        this.proposalPostRepository = proposalPostRepository;
     }
 
     @Override
@@ -47,7 +37,7 @@ public class UserServiceImpl implements UserService {
         boolean isCompanyExist = companyRepository.existsByEmail(email);
 
         if (isCompanyExist) {
-            Company company = companyRepository.findById(email).orElseThrow(() -> new Exception("member not found"));
+            Company company = companyRepository.findById(email).orElseThrow(() -> new Exception("company not found"));
             ProfileDto profileDto = new ProfileDto();
             profileDto.setEmail(email);
             profileDto.setIsCompany(true);
@@ -66,7 +56,7 @@ public class UserServiceImpl implements UserService {
             return profileDto;
         } else {
             try {
-                Organization organization = organizationRepository.findById(email).orElseThrow(() -> new Exception("member not found"));
+                Organization organization = organizationRepository.findById(email).orElseThrow(() -> new Exception("organization not found"));
                 ProfileDto profileDto = new ProfileDto();
                 profileDto.setEmail(email);
                 profileDto.setIsCompany(false);
@@ -122,5 +112,63 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public Boolean selectProposal(ProposalSelectDto proposalSelectDto) throws Exception {
+        Proposal proposal = proposalRepository.findById(proposalSelectDto.getProposalId()).orElseThrow(() -> new Exception("proposal not found"));
+        if(proposalSelectDto.getSelect()) {
+            proposal.setIsApproved(true);
+            proposalRepository.save(proposal);
+            return true;
+        } else {
+            proposal.setIsApproved(false);
+            proposalRepository.save(proposal);
+            return false;
+        }
+    }
+
+    @Override
+    public List<ProposalProfileDto> sendProposal() throws Exception {
+        List<Proposal> proposals = proposalRepository.findAllByCompanyEmail(SecurityUtil.getCurrentMemberId().getEmail());
+        List<ProposalProfileDto> proposalProfileDtos = new ArrayList<>();
+
+        for(Proposal proposal : proposals) {
+            ProposalProfileDto proposalProfileDto = new ProposalProfileDto();
+            proposalProfileDto.setId(proposal.getId());
+
+            Organization organization = organizationRepository.findByEmail(SecurityUtil.getCurrentMemberId().getEmail()).orElseThrow(() -> new Exception("proposal not found"));
+            proposalProfileDto.setCompanyName(organization.getOrganizationName());
+            proposalProfileDto.setMessage(proposal.getMessage());
+            proposalProfileDto.setPostId(proposal.getPostId());
+            proposalProfileDto.setIsApproved(proposal.getIsApproved());
+            proposalProfileDto.setUpdatedAt(proposal.getUpdatedAt());
+
+            proposalProfileDtos.add(proposalProfileDto);
+        }
+
+        return proposalProfileDtos;
+    }
+
+    @Override
+    public List<ProposalProfileDto> receiveProposal() throws Exception {
+        List<Proposal> proposals = proposalRepository.findAllByOrganizationEmail(SecurityUtil.getCurrentMemberId().getEmail());
+        List<ProposalProfileDto> proposalProfileDtos = new ArrayList<>();
+
+        for(Proposal proposal : proposals) {
+            ProposalProfileDto proposalProfileDto = new ProposalProfileDto();
+            proposalProfileDto.setId(proposal.getId());
+
+            Organization organization = organizationRepository.findByEmail(proposal.getCompanyEmail()).orElseThrow(() -> new Exception("proposal not found"));
+            proposalProfileDto.setCompanyName(organization.getOrganizationName());
+            proposalProfileDto.setMessage(proposal.getMessage());
+            proposalProfileDto.setPostId(proposal.getPostId());
+            proposalProfileDto.setIsApproved(proposal.getIsApproved());
+            proposalProfileDto.setUpdatedAt(proposal.getUpdatedAt());
+
+            proposalProfileDtos.add(proposalProfileDto);
+        }
+
+        return proposalProfileDtos;
     }
 }

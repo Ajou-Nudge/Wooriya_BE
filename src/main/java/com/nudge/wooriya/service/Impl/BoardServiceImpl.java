@@ -137,6 +137,9 @@ public class BoardServiceImpl implements BoardService {
         proposal.setCompanyEmail(SecurityUtil.getCurrentMemberId().getEmail());
         proposal.setMessage(proposalRequestDto.getMessage());
         proposal.setPostId(proposalRequestDto.getPostId());
+
+        String organizationEmail = proposalPostRepository.findById(proposalRequestDto.getPostId()).get().getAuthor();
+        proposal.setOrganizationEmail(organizationEmail);
         proposal.setCreatedAt(LocalDateTime.now());
         proposal.setUpdatedAt(LocalDateTime.now());
         Long proposalId = proposalRepository.save(proposal).getId();
@@ -147,7 +150,7 @@ public class BoardServiceImpl implements BoardService {
         Notification notification = new Notification();
         notification.setProposalId(proposalId);
         notification.setReceiver(proposalPost.getAuthor());
-        notification.setMessage("제안 도착 어쩌고 확인 어쩌고");
+        notification.setMessage(proposalRequestDto.getMessage());
         notification.setIsRead(false);
         notificationRepository.save(notification);
 
