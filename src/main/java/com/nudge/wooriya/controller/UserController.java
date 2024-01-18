@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/profile/{email}")
-    public ResponseEntity<ProfileDto> login(@PathVariable String email) throws Exception {
+    public ResponseEntity<ProfileDto> profile(@PathVariable String email) throws Exception {
         ProfileDto profileDto = userService.profile(email);
         return ResponseEntity.status(HttpStatus.OK).body(profileDto);
     }
@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @PostMapping("/notification/read/{id}")
-    public ResponseEntity<Boolean> readNotification(@PathVariable Long notificationId) throws Exception {
-        Boolean result = userService.readNotification(notificationId);
+    public ResponseEntity<Boolean> readNotification(@PathVariable Long id) throws Exception {
+        Boolean result = userService.readNotification(id);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

@@ -4,10 +4,7 @@ import com.nudge.wooriya.config.security.JwtTokenProvider;
 import com.nudge.wooriya.config.security.SecurityUtil;
 import com.nudge.wooriya.data.dto.ConfirmCodeDto;
 import com.nudge.wooriya.data.dto.ProposalRequestDto;
-import com.nudge.wooriya.data.entity.Company;
-import com.nudge.wooriya.data.entity.EmailConfirm;
-import com.nudge.wooriya.data.entity.Organization;
-import com.nudge.wooriya.data.entity.ProposalPost;
+import com.nudge.wooriya.data.entity.*;
 import com.nudge.wooriya.data.repository.CompanyRepository;
 import com.nudge.wooriya.data.repository.EmailConfirmRepository;
 import com.nudge.wooriya.data.repository.OrganizationRepository;
@@ -112,6 +109,28 @@ public class MailServiceImpl implements MailService {
         helper.setFrom("Wooriya <test@wooriya.com>");
         helper.setTo(proposalPost.getAuthor());
         helper.setSubject("[Wooriya] 제휴 제안");
+        helper.setText(processedHtmlContent, true);
+
+        mailSender.send(mimeMessage);
+
+        return true;
+    }
+
+    @Override
+    public Boolean sendProposalResultMail(Proposal proposal) throws Exception {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
+
+        String htmlContent = readHtmlTemplate("src/main/resources/static/proposalResultMail.html");
+
+        String processedHtmlContent = htmlContent
+                .replace("{organizationName}", proposal.getOrganizationEmail())
+                .replace("{companyName}", proposal.getCompanyEmail())
+                .replace("{result}", proposal.getIsApproved() ? "승인" : "거절");
+
+        helper.setFrom("Wooriya <test@wooriya.com>");
+        helper.setTo(proposal.getCompanyEmail());
+        helper.setSubject("[Wooriya] 제휴 제안 결과");
         helper.setText(processedHtmlContent, true);
 
         mailSender.send(mimeMessage);

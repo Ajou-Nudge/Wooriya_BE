@@ -4,6 +4,7 @@ import com.nudge.wooriya.config.security.SecurityUtil;
 import com.nudge.wooriya.data.dto.*;
 import com.nudge.wooriya.data.entity.*;
 import com.nudge.wooriya.data.repository.*;
+import com.nudge.wooriya.service.MailService;
 import com.nudge.wooriya.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,18 +19,17 @@ public class UserServiceImpl implements UserService {
     private final OrganizationRepository organizationRepository;
     private final ProposalRepository proposalRepository;
     private final NotificationRepository notificationRepository;
-    private final ProposalPostRepository proposalPostRepository;
+    private final MailService mailService;
 
     @Autowired
     public UserServiceImpl(CompanyRepository companyRepository, OrganizationRepository organizationRepository,
                            ProposalRepository proposalRepository,
-                           NotificationRepository notificationRepository,
-                           ProposalPostRepository proposalPostRepository) {
+                           NotificationRepository notificationRepository, MailService mailService) {
         this.companyRepository = companyRepository;
         this.organizationRepository = organizationRepository;
         this.proposalRepository = proposalRepository;
         this.notificationRepository = notificationRepository;
-        this.proposalPostRepository = proposalPostRepository;
+        this.mailService = mailService;
     }
 
     @Override
@@ -120,10 +120,12 @@ public class UserServiceImpl implements UserService {
         if(proposalSelectDto.getSelect()) {
             proposal.setIsApproved(true);
             proposalRepository.save(proposal);
+            mailService.sendProposalResultMail(proposal);
             return true;
         } else {
             proposal.setIsApproved(false);
             proposalRepository.save(proposal);
+            mailService.sendProposalResultMail(proposal);
             return false;
         }
     }
