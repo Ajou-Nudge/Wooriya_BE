@@ -123,9 +123,12 @@ public class MailServiceImpl implements MailService {
 
         String htmlContent = readHtmlTemplate("src/main/resources/static/proposalResultMail.html");
 
+        String organizationName = organizationRepository.findById(proposal.getOrganizationEmail()).get().getOrganizationName();
+        String companyName = organizationRepository.findById(proposal.getCompanyEmail()).get().getOrganizationName();
+
         String processedHtmlContent = htmlContent
-                .replace("{organizationName}", proposal.getOrganizationEmail())
-                .replace("{companyName}", proposal.getCompanyEmail())
+                .replace("{organizationName}", organizationName)
+                .replace("{companyName}", companyName)
                 .replace("{result}", proposal.getIsApproved() ? "승인" : "거절");
 
         helper.setFrom("Wooriya <test@wooriya.com>");
