@@ -139,8 +139,8 @@ public class UserServiceImpl implements UserService {
             ProposalProfileDto proposalProfileDto = new ProposalProfileDto();
             proposalProfileDto.setId(proposal.getId());
 
-            Organization organization = organizationRepository.findByEmail(SecurityUtil.getCurrentMemberId().getEmail()).orElseThrow(() -> new Exception("proposal not found"));
-            proposalProfileDto.setCompanyName(organization.getOrganizationName());
+            String companyName = companyRepository.findByEmail(SecurityUtil.getCurrentMemberId().getEmail()).orElseThrow(() -> new Exception("proposal not found")).getCompanyName();
+            proposalProfileDto.setCompanyName(companyName);
             proposalProfileDto.setMessage(proposal.getMessage());
             proposalProfileDto.setPostId(proposal.getPostId());
             proposalProfileDto.setIsApproved(proposal.getIsApproved());
@@ -161,8 +161,8 @@ public class UserServiceImpl implements UserService {
             ProposalProfileDto proposalProfileDto = new ProposalProfileDto();
             proposalProfileDto.setId(proposal.getId());
 
-            Organization organization = organizationRepository.findByEmail(proposal.getCompanyEmail()).orElseThrow(() -> new Exception("proposal not found"));
-            proposalProfileDto.setCompanyName(organization.getOrganizationName());
+            String companyName = companyRepository.findByEmail(proposal.getCompanyEmail()).orElseThrow(() -> new Exception("company not found")).getCompanyName();
+            proposalProfileDto.setCompanyName(companyName);
             proposalProfileDto.setMessage(proposal.getMessage());
             proposalProfileDto.setPostId(proposal.getPostId());
             proposalProfileDto.setIsApproved(proposal.getIsApproved());

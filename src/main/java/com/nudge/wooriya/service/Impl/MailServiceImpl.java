@@ -96,14 +96,14 @@ public class MailServiceImpl implements MailService {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
 
         ProposalPost proposalPost = proposalPostRepository.findById(proposalRequestDto.getPostId()).orElseThrow(() -> new Exception("post not found"));
-//        Company company = companyRepository.findById(SecurityUtil.getCurrentMemberId().getEmail()).orElseThrow(() -> new Exception("company not found"));
+        String companyName = companyRepository.findById(SecurityUtil.getCurrentMemberId().getEmail()).orElseThrow(() -> new Exception("company not found")).getCompanyName();
         String organizationName = organizationRepository.findById(proposalPost.getAuthor()).get().getOrganizationName();
 
         String htmlContent = readHtmlTemplate("src/main/resources/static/proposalMail.html");
 
         String processedHtmlContent = htmlContent
                 .replace("{organizationName}",organizationName)
-                .replace("{companyName}", SecurityUtil.getCurrentMemberId().getEmail())
+                .replace("{companyName}", companyName)
                 .replace("{message}", proposalRequestDto.getMessage());
 
         helper.setFrom("Wooriya <test@wooriya.com>");
@@ -124,7 +124,7 @@ public class MailServiceImpl implements MailService {
         String htmlContent = readHtmlTemplate("src/main/resources/static/proposalResultMail.html");
 
         String organizationName = organizationRepository.findById(proposal.getOrganizationEmail()).get().getOrganizationName();
-        String companyName = organizationRepository.findById(proposal.getCompanyEmail()).get().getOrganizationName();
+        String companyName = companyRepository.findById(proposal.getCompanyEmail()).get().getCompanyName();
 
         String processedHtmlContent = htmlContent
                 .replace("{organizationName}", organizationName)
