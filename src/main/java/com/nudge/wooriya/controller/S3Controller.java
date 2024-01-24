@@ -1,8 +1,10 @@
 package com.nudge.wooriya.controller;
 
 import com.nudge.wooriya.service.MetadataService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name="AWS S3", description = "AWS S3 관련 API")
 @RestController
 public class S3Controller {
     private final MetadataService metadataService;

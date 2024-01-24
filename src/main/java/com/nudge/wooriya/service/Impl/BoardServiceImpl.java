@@ -132,19 +132,19 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Boolean sendProposal(ProposalRequestDto proposalRequestDto) throws Exception {
+    public Boolean sendProposal(Long postId, ProposalRequestDto proposalRequestDto) throws Exception {
         Proposal proposal = new Proposal();
         proposal.setCompanyEmail(SecurityUtil.getCurrentMemberId().getEmail());
         proposal.setMessage(proposalRequestDto.getMessage());
-        proposal.setPostId(proposalRequestDto.getPostId());
+        proposal.setPostId(postId);
 
-        String organizationEmail = proposalPostRepository.findById(proposalRequestDto.getPostId()).get().getAuthor();
+        String organizationEmail = proposalPostRepository.findById(postId).get().getAuthor();
         proposal.setOrganizationEmail(organizationEmail);
         proposal.setCreatedAt(LocalDateTime.now());
         proposal.setUpdatedAt(LocalDateTime.now());
         Long proposalId = proposalRepository.save(proposal).getId();
 
-        ProposalPost proposalPost = proposalPostRepository.findById(proposalRequestDto.getPostId())
+        ProposalPost proposalPost = proposalPostRepository.findById(postId)
                 .orElseThrow(() -> new Exception("post not found"));
 
         Notification notification = new Notification();
@@ -154,7 +154,7 @@ public class BoardServiceImpl implements BoardService {
         notification.setIsRead(false);
         notificationRepository.save(notification);
 
-        mailService.sendProposalMail(proposalRequestDto);
+        mailService.sendProposalMail(postId, proposalRequestDto);
         return true;
     }
 }

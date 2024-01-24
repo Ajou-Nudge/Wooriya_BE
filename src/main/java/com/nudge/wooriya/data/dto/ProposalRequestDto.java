@@ -14,6 +14,5 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class ProposalRequestDto {
-    private Long postId;
     private String message;
 }

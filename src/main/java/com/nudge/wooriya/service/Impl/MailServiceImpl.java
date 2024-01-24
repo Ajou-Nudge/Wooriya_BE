@@ -91,11 +91,11 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public Boolean sendProposalMail(ProposalRequestDto proposalRequestDto) throws Exception {
+    public Boolean sendProposalMail(Long postId, ProposalRequestDto proposalRequestDto) throws Exception {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
 
-        ProposalPost proposalPost = proposalPostRepository.findById(proposalRequestDto.getPostId()).orElseThrow(() -> new Exception("post not found"));
+        ProposalPost proposalPost = proposalPostRepository.findById(postId).orElseThrow(() -> new Exception("post not found"));
         String companyName = companyRepository.findById(SecurityUtil.getCurrentMemberId().getEmail()).orElseThrow(() -> new Exception("company not found")).getCompanyName();
         String organizationName = organizationRepository.findById(proposalPost.getAuthor()).get().getOrganizationName();
 

@@ -12,7 +12,7 @@ public interface MailService {
 
     Boolean sendConfirmCode(ConfirmCodeDto confirmcodeDto);
 
-    Boolean sendProposalMail(ProposalRequestDto proposalRequestDto) throws Exception;
+    Boolean sendProposalMail(Long postId, ProposalRequestDto proposalRequestDto) throws Exception;
 
     Boolean sendProposalResultMail(Proposal proposal) throws Exception;
 

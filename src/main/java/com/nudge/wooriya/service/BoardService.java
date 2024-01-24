@@ -20,5 +20,5 @@ public interface BoardService {
 
     Long updateProposalPost(ProposalPostRequestDto proposalPostRequestDto, Long id) throws Exception;
 
-    Boolean sendProposal(ProposalRequestDto proposalRequestDto) throws Exception;
+    Boolean sendProposal(Long postId, ProposalRequestDto proposalRequestDto) throws Exception;
 }
