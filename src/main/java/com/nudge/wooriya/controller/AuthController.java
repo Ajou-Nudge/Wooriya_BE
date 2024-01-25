@@ -1,5 +1,6 @@
 package com.nudge.wooriya.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nudge.wooriya.config.security.TokenInfo;
 import com.nudge.wooriya.data.dto.*;
 import com.nudge.wooriya.service.AuthService;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Tag(name="Auth", description = "인증/권한 관련 API")
 @Slf4j
@@ -32,9 +34,9 @@ public class AuthController {
     }
 
     @GetMapping("/login-oauth/google")
-    public ResponseEntity<Boolean> oauthLogin(@RequestBody OAuth2UserRequest oAuth2UserRequest) {
-        oAuth2Service.loadUser(oAuth2UserRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(true);
+    public TokenInfo oauthLogin(@RequestParam("code") String code) throws Exception {
+        TokenInfo tokenInfo = oAuth2Service.oAuthLogin(code);
+        return tokenInfo;
     }
 
     @Operation(summary = "companyJoin", description = "[Token X] 기업 회원가입")

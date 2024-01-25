@@ -42,8 +42,6 @@ public class MailServiceImpl implements MailService {
     private CompanyRepository companyRepository;
     @Autowired
     private JavaMailSender mailSender;
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     public String sendMail(String mailAddress) {

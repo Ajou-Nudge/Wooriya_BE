@@ -14,4 +14,6 @@ public interface OrganizationRepository extends JpaRepository<Organization, Stri
     boolean existsByEmail(String email);
 
     Optional<Organization> findByOrganizationName(String organizationName);
+
+    Optional<Organization> findByEmailAndProvider(String email, String provider);
 }

@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
                 organizationProfileDto.setRepresentativeNum(organization.getRepresentativeNum());
                 organizationProfileDto.setKind(organization.getKind());
                 organizationProfileDto.setHistory(organization.getHistory());
-                organizationProfileDto.setOrganizationEmail(organization.getOrganizationEmail());
+                organizationProfileDto.setRepresentativeEmail(organization.getRepresentativeEmail());
                 organizationProfileDto.setGreetings(organization.getGreetings());
 
                 profileDto.setOrganizationProfileDto(organizationProfileDto);

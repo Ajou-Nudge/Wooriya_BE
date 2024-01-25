@@ -18,6 +18,6 @@ public class OrganizationProfileDto {
     private String representativeNum;
     private OrganizationKind kind;
     private OrganizationHistory history;
-    private String organizationEmail;
+    private String representativeEmail;
     private String greetings;
 }

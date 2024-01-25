@@ -13,20 +13,12 @@ import lombok.Setter;
 @Setter
 public class OrganizationJoinDto {
     private String email;
-
     private String password;
-
     private String organizationName;
-
     private String representativeName;
-
     private String representativeNum;
-
-    private String organizationEmail;
-
+    private String representativeEmail;
     private OrganizationKind kind;
-
     private OrganizationHistory history;
-
     private String greetings;
 }

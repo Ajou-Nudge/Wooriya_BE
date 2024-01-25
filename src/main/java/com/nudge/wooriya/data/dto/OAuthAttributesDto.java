@@ -19,8 +19,8 @@ public class OAuthAttributesDto {
     private String picture;
 
     public static OAuthAttributesDto of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
-        if ("kakao".equals(registrationId)) {
-        }
+//        if ("kakao".equals(registrationId)) {
+//        }
 
         return ofGoogle(userNameAttributeName, attributes);
     }

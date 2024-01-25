@@ -112,7 +112,7 @@ public class AuthServiceImpl implements AuthService {
             organization.setOrganizationName(organizationJoinDto.getOrganizationName());
             organization.setRepresentativeName(organizationJoinDto.getRepresentativeName());
             organization.setRepresentativeNum(organizationJoinDto.getRepresentativeNum());
-            organization.setOrganizationEmail(organizationJoinDto.getOrganizationEmail());
+            organization.setRepresentativeEmail(organizationJoinDto.getRepresentativeEmail());
             organization.setKind(organizationJoinDto.getKind());
             organization.setHistory(organizationJoinDto.getHistory());
             organization.setGreetings(organizationJoinDto.getGreetings());

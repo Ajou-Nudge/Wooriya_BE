@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 
 @Builder
 @NoArgsConstructor
@@ -27,25 +28,25 @@ public class Organization implements UserDetails {
     @Column(updatable = false, unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String organizationName;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String representativeName;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String representativeNum;
 
-    @Column(nullable = false)
-    private String organizationEmail;
+    @Column(nullable = true)
+    private String representativeEmail;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private OrganizationKind kind;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private OrganizationHistory history;
 
     @Column(nullable = true)
@@ -92,5 +93,20 @@ public class Organization implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public Organization updateOrganizationByOAuth(String organizationName, String email) {
+        this.setOrganizationName(organizationName);
+        this.setEmail(email);
+        return this;
+    }
+
+    public static Organization createOrganizationByOAuth(String organizationName, String email, String provider, String providerId) {
+        Organization organization = new Organization();
+        organization.setOrganizationName(organizationName);
+        organization.setEmail(email);
+        organization.setProvider(provider);
+        organization.setProviderId(providerId);
+        return organization;
     }
 }
