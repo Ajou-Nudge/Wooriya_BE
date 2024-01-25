@@ -1,5 +1,6 @@
 package com.nudge.wooriya.config.security;
 
+import com.nudge.wooriya.service.OAuth2Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,8 @@ import java.nio.charset.StandardCharsets;
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final OAuth2Service oAuth2Service;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -30,11 +33,15 @@ public class SecurityConfig {
                 .csrf().disable()
                 .cors()
                 .and()
+                .formLogin().disable()
                     .authorizeHttpRequests()
                     .requestMatchers("/proposal-post/post", "/proposal-post/update/{id}", "/proposal-post/delete/{id}").hasRole("ORG")
                     .anyRequest().permitAll()
                 .and()
-                    .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(oAuth2Service);
         return http.build();
     }
 

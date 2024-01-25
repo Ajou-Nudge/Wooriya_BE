@@ -5,11 +5,13 @@ import com.nudge.wooriya.data.dto.*;
 import com.nudge.wooriya.service.AuthService;
 import com.nudge.wooriya.service.MailService;
 //import com.nudge.wooriya.service.OAuthService;
+import com.nudge.wooriya.service.OAuth2Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Auth", description = "인증/권한 관련 API")
@@ -19,8 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
+    private final OAuth2Service oAuth2Service;
     private final MailService mailService;
-//    private final OAuthService oAuthService;
 
     @Operation(summary = "login", description = "[Token X] 로그인")
     @PostMapping("/login")
@@ -29,11 +31,11 @@ public class AuthController {
         return tokenInfo;
     }
 
-//    @GetMapping("/login/oauth2/code/google")
-//    public ResponseEntity<Boolean> getAccessToken(@RequestParam("code") String code) {
-//        oAuthService.login(code);
-//        return ResponseEntity.status(HttpStatus.OK).body(true);
-//    }
+    @GetMapping("/login-oauth/google")
+    public ResponseEntity<Boolean> oauthLogin(@RequestBody OAuth2UserRequest oAuth2UserRequest) {
+        oAuth2Service.loadUser(oAuth2UserRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(true);
+    }
 
     @Operation(summary = "companyJoin", description = "[Token X] 기업 회원가입")
     @PostMapping("/join/company")

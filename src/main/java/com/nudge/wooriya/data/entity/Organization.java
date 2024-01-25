@@ -51,6 +51,12 @@ public class Organization implements UserDetails {
     @Column(nullable = true)
     private String greetings;
 
+    @Column(nullable = true)
+    private String provider;
+
+    @Column(nullable = true)
+    private String providerId;
+
     public String getRole() {
         return "ROLE_ORG";
     }
