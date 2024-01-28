@@ -34,8 +34,9 @@ public class AuthController {
     }
 
     @GetMapping("/login-oauth/google")
-    public TokenInfo oauthLogin(@RequestParam("code") String code) throws Exception {
+    public TokenInfo oauthLogin(@RequestParam("code") String code) {
         TokenInfo tokenInfo = oAuth2Service.oAuthLogin(code);
+        System.out.println(tokenInfo);
         return tokenInfo;
     }
 

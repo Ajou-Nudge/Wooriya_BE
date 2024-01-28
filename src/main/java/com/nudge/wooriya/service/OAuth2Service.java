@@ -8,14 +8,13 @@ import com.nudge.wooriya.data.entity.Organization;
 import com.nudge.wooriya.data.entity.SessionUser;
 import com.nudge.wooriya.data.repository.OrganizationRepository;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,7 +22,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -34,7 +32,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor
 @Service
 public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
@@ -48,6 +45,13 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
     private String clientSecret;
     @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
     private String redirectUri;
+
+    @Autowired
+    public OAuth2Service(OrganizationRepository organizationRepository, HttpSession httpSession, JwtTokenProvider jwtTokenProvider) {
+        this.organizationRepository = organizationRepository;
+        this.httpSession = httpSession;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
@@ -82,14 +86,13 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
                 .map(o -> o.updateOrganizationByOAuth(oAuthAttributesDto.getName(), oAuthAttributesDto.getEmail()))
                 .orElse(Organization.createOrganizationByOAuth(oAuthAttributesDto.getName(), oAuthAttributesDto.getEmail(), registrationId, registrationId));
 
-        System.out.println(newOrganization);
         return organizationRepository.save(newOrganization);
     }
 
-    public TokenInfo oAuthLogin(String code) throws Exception {
+    public TokenInfo oAuthLogin(String code) {
 
         String GOOGLE_TOKEN_REQUEST_URL = "https://oauth2.googleapis.com/token";
-        RestTemplate restTemplate=new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
         Map<String, Object> params = new HashMap<>();
         params.put("code", code);
         params.put("client_id", cliendId);
@@ -97,18 +100,12 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
         params.put("redirect_uri", redirectUri);
         params.put("grant_type", "authorization_code");
         ResponseEntity<String> accessToken = restTemplate.postForEntity(GOOGLE_TOKEN_REQUEST_URL, params, String.class);
+        System.out.println(accessToken);
+        JSONObject googleOAuthToken = new JSONObject(accessToken.getBody());
 
-        GoogleOAuthToken googleOAuthToken = new GoogleOAuthToken();
-        JSONObject jsonObject = new JSONObject(accessToken.getBody());
-        googleOAuthToken.setAccess_token(jsonObject.getString("access_token"));
-        googleOAuthToken.setExpires_in(jsonObject.getInt("expires_in"));
-        googleOAuthToken.setScope(jsonObject.getString("scope"));
-        googleOAuthToken.setToken_type(jsonObject.getString("token_type"));
-        googleOAuthToken.setId_token(jsonObject.getString("id_token"));
-
-        String GOOGLE_USERINFO_REQUEST_URL= "https://www.googleapis.com/oauth2/v2/userinfo";
+        String GOOGLE_USERINFO_REQUEST_URL = "https://www.googleapis.com/oauth2/v2/userinfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization","Bearer "+googleOAuthToken.getAccess_token());
+        headers.add("Authorization","Bearer "+googleOAuthToken.getString("access_token"));
         HttpEntity<MultiValueMap<String,String>> request = new HttpEntity<>(headers);
         ResponseEntity<String> userInfoResponse = restTemplate.exchange(GOOGLE_USERINFO_REQUEST_URL, HttpMethod.GET, request, String.class);
 
