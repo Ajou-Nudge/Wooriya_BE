@@ -100,7 +100,6 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
         params.put("redirect_uri", redirectUri);
         params.put("grant_type", "authorization_code");
         ResponseEntity<String> accessToken = restTemplate.postForEntity(GOOGLE_TOKEN_REQUEST_URL, params, String.class);
-        System.out.println(accessToken);
         JSONObject googleOAuthToken = new JSONObject(accessToken.getBody());
 
         String GOOGLE_USERINFO_REQUEST_URL = "https://www.googleapis.com/oauth2/v2/userinfo";
@@ -109,12 +108,8 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
         HttpEntity<MultiValueMap<String,String>> request = new HttpEntity<>(headers);
         ResponseEntity<String> userInfoResponse = restTemplate.exchange(GOOGLE_USERINFO_REQUEST_URL, HttpMethod.GET, request, String.class);
 
-        JSONObject googleUser = new JSONObject(userInfoResponse.getBody());
-        System.out.println(googleUser);
-
-        Organization organization = organizationRepository
-                .findByEmail(googleUser.getString("email"))
-                .orElseThrow(() -> new UsernameNotFoundException("organization not found"));
+        OAuthAttributesDto oAuthAttributesDto = new OAuthAttributesDto().parse(userInfoResponse.getBody());
+        Organization organization = saveOrUpdate(oAuthAttributesDto, "google");
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(organization.getUsername(), organization.getPassword(), organization.getAuthorities());
         TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
