@@ -33,6 +33,7 @@ public class AuthController {
         return tokenInfo;
     }
 
+    @Operation(summary = "oAuthLogin", description = "[Token X] OAuth 로그인")
     @GetMapping("/login-oauth/google")
     public TokenInfo oauthLogin(@RequestParam("code") String code) {
         TokenInfo tokenInfo = oAuth2Service.oAuthLogin(code);

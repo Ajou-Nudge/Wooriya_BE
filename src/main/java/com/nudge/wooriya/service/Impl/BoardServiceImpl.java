@@ -22,20 +22,14 @@ import java.util.List;
 
 @Service
 public class BoardServiceImpl implements BoardService {
-    private final MetadataServiceImpl metadataService;
-    private final PostImageMetaRepository postImageMetaRepository;
     private final ProposalPostRepository proposalPostRepository;
     private final ProposalRepository proposalRepository;
     private final MailService mailService;
     private final NotificationRepository notificationRepository;
 
     @Autowired
-    public BoardServiceImpl(MetadataServiceImpl metadataService, PostImageMetaRepository postImageMetaRepository, ProposalPostRepository proposalPostRepository,
-                            ProposalRepository proposalRepository, MailService mailService,
-                            NotificationRepository notificationRepository) {
+    public BoardServiceImpl(ProposalPostRepository proposalPostRepository, ProposalRepository proposalRepository, MailService mailService, NotificationRepository notificationRepository) {
         this.proposalPostRepository = proposalPostRepository;
-        this.metadataService = metadataService;
-        this.postImageMetaRepository = postImageMetaRepository;
         this.proposalRepository = proposalRepository;
         this.mailService = mailService;
         this.notificationRepository = notificationRepository;

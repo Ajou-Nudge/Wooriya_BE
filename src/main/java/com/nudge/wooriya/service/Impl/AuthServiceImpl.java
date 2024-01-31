@@ -87,7 +87,7 @@ public class AuthServiceImpl implements AuthService {
             company.setEmail(companyJoinDto.getEmail());
             company.setPassword(passwordEncoder.encode(companyJoinDto.getPassword()));
             company.setCompanyName(companyJoinDto.getCompanyName());
-            company.setCompanyNum(companyJoinDto.getCompanyNum());
+            company.setCompanyAddress(companyJoinDto.getCompanyAddress());
             company.setRepresentativeName(companyJoinDto.getRepresentativeName());
             company.setRepresentativeNum(companyJoinDto.getRepresentativeNum());
             company.setKind(companyJoinDto.getKind());

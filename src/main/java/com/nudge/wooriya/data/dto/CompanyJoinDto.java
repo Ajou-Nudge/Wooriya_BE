@@ -11,20 +11,12 @@ import lombok.Setter;
 @Setter
 public class CompanyJoinDto {
     private String email;
-
     private String password;
-
     private String companyName;
-
-    private String companyNum;
-
+    private String companyAddress;
     private String representativeName;
-
     private String representativeNum;
-
     private CompanyKind kind;
-
     private CompanyHistory history;
-
     private String greetings;
 }

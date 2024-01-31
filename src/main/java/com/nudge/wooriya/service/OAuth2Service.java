@@ -90,7 +90,6 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
     }
 
     public TokenInfo oAuthLogin(String code) {
-
         String GOOGLE_TOKEN_REQUEST_URL = "https://oauth2.googleapis.com/token";
         RestTemplate restTemplate = new RestTemplate();
         Map<String, Object> params = new HashMap<>();

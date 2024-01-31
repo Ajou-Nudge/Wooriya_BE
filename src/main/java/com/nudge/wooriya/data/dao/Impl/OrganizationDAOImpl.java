@@ -1,12 +1,9 @@
 package com.nudge.wooriya.data.dao.Impl;
 
 import com.nudge.wooriya.config.security.SecurityUtil;
-import com.nudge.wooriya.data.dao.CompanyDAO;
 import com.nudge.wooriya.data.dao.OrganizationDAO;
 import com.nudge.wooriya.data.dto.UserInfoDto;
-import com.nudge.wooriya.data.entity.Company;
 import com.nudge.wooriya.data.entity.Organization;
-import com.nudge.wooriya.data.repository.CompanyRepository;
 import com.nudge.wooriya.data.repository.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -32,7 +32,7 @@ public class Company implements UserDetails, OAuth2User {
     private String companyName;
 
     @Column(nullable = false)
-    private String companyNum;
+    private String companyAddress;
 
     @Column(nullable = false)
     private String representativeName;
