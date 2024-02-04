@@ -37,22 +37,35 @@ public class AuthController {
     @GetMapping("/login-oauth/google")
     public TokenInfo oauthLogin(@RequestParam("code") String code) {
         TokenInfo tokenInfo = oAuth2Service.oAuthLogin(code);
-        System.out.println(tokenInfo);
         return tokenInfo;
+    }
+
+    @Operation(summary = "oAuthJoin", description = "[Token O] OAuth 추가 가입 정보")
+    @PostMapping("/join-oauth/google")
+    public ResponseEntity<Boolean> oauthJoin(OAuthJoinDto oAuthJoinDto) {
+        authService.oAuthJoin(oAuthJoinDto);
+        return ResponseEntity.status(HttpStatus.OK).body(true);
     }
 
     @Operation(summary = "companyJoin", description = "[Token X] 기업 회원가입")
     @PostMapping("/join/company")
     public ResponseEntity<Boolean> companyJoin(@RequestBody CompanyJoinDto companyJoinDto) throws Exception {
-        authService.companyJoin(companyJoinDto);
-        return ResponseEntity.status(HttpStatus.OK).body(true);
+        Boolean result = authService.companyJoin(companyJoinDto);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @Operation(summary = "organizationJoin", description = "[Token X] 단체 회원가입")
     @PostMapping("/join/organization")
     public ResponseEntity<Boolean> organizationJoin(@RequestBody OrganizationJoinDto organizationJoinDto) throws Exception {
-        authService.organizationJoin(organizationJoinDto);
-        return ResponseEntity.status(HttpStatus.OK).body(true);
+        Boolean result = authService.organizationJoin(organizationJoinDto);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @Operation(summary = "individualJoin", description = "[Token X] 개인 회원가입")
+    @PostMapping("/join/individual")
+    public ResponseEntity<Boolean> individualJoin(@RequestBody IndividualJoinDto individualJoinDto) throws Exception {
+        Boolean result = authService.individualJoin(individualJoinDto);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @Operation(summary = "confirmCode", description = "[Token X] 이메일로 인증번호 전송")

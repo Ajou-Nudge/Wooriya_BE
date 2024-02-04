@@ -1,22 +1,18 @@
 package com.nudge.wooriya.data.entity;
 
 import com.nudge.wooriya.data.dto.OAuthAttributesDto;
-import com.nudge.wooriya.enums.CompanyHistory;
-import com.nudge.wooriya.enums.CompanyKind;
+import com.nudge.wooriya.enums.AffiliateKind;
 import com.nudge.wooriya.enums.OrganizationHistory;
 import com.nudge.wooriya.enums.OrganizationKind;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
+import java.util.Set;
 
 @Builder
 @NoArgsConstructor
@@ -24,7 +20,7 @@ import java.util.Map;
 @Entity
 @Setter
 @Getter
-public class Organization implements UserDetails {
+public class Individual implements UserDetails {
     @Id
     @Column(updatable = false, unique = true, nullable = false)
     private String email;
@@ -33,25 +29,21 @@ public class Organization implements UserDetails {
     private String password;
 
     @Column(nullable = true)
-    private String organizationName;
+    private String name;
 
     @Column(nullable = true)
-    private String representativeName;
+    private String phoneNum;
 
     @Column(nullable = true)
-    private String representativeNum;
+    private String userId;
 
     @Column(nullable = true)
-    private String representativeEmail;
+    private AffiliateKind kind;
 
-    @Column(nullable = true)
-    private OrganizationKind kind;
-
-    @Column(nullable = true)
-    private OrganizationHistory history;
-
-    @Column(nullable = true)
-    private String greetings;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "individual_pr_link", joinColumns = @JoinColumn(name = "id"))
+    @Enumerated(EnumType.STRING)
+    private Set<String> links;
 
     @Column(nullable = true)
     private String provider;
@@ -96,15 +88,15 @@ public class Organization implements UserDetails {
         return false;
     }
 
-    public Organization updateOrganizationByOAuth(OAuthAttributesDto oAuthAttributesDto) {
-        this.setOrganizationName(oAuthAttributesDto.getName());
+    public Individual updateIndividualByOAuth(OAuthAttributesDto oAuthAttributesDto) {
+        this.setName(oAuthAttributesDto.getName());
         this.setEmail(oAuthAttributesDto.getEmail());
         return this;
     }
 
-    public static Organization createOrganizationByOAuth(OAuthAttributesDto oAuthAttributesDto, String provider, String providerId) {
-        Organization organization = new Organization();
-        organization.setOrganizationName(oAuthAttributesDto.getName());
+    public static Individual createIndividualByOAuth(OAuthAttributesDto oAuthAttributesDto, String provider, String providerId) {
+        Individual organization = new Individual();
+        organization.setName(oAuthAttributesDto.getName());
         organization.setEmail(oAuthAttributesDto.getEmail());
         organization.setProvider(provider);
         organization.setProviderId(providerId);

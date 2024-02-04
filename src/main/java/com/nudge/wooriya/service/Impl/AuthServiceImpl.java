@@ -4,16 +4,16 @@ import com.nudge.wooriya.config.security.JwtTokenProvider;
 import com.nudge.wooriya.config.security.SecurityUtil;
 import com.nudge.wooriya.config.security.TokenInfo;
 import com.nudge.wooriya.data.dao.CompanyDAO;
+import com.nudge.wooriya.data.dao.IndividualDAO;
 import com.nudge.wooriya.data.dao.OrganizationDAO;
-import com.nudge.wooriya.data.dto.CompanyJoinDto;
-import com.nudge.wooriya.data.dto.LoginDto;
-import com.nudge.wooriya.data.dto.OrganizationJoinDto;
-import com.nudge.wooriya.data.dto.UserInfoDto;
+import com.nudge.wooriya.data.dto.*;
 import com.nudge.wooriya.data.entity.Company;
 import com.nudge.wooriya.data.entity.EmailConfirm;
+import com.nudge.wooriya.data.entity.Individual;
 import com.nudge.wooriya.data.entity.Organization;
 import com.nudge.wooriya.data.repository.CompanyRepository;
 import com.nudge.wooriya.data.repository.EmailConfirmRepository;
+import com.nudge.wooriya.data.repository.IndividualRepository;
 import com.nudge.wooriya.data.repository.OrganizationRepository;
 import com.nudge.wooriya.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,23 +30,28 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final CompanyDAO companyDAO;
+    private final IndividualDAO individualDAO;
     private final OrganizationDAO organizationDAO;
     private final CompanyRepository companyRepository;
     private final OrganizationRepository organizationRepository;
     private final EmailConfirmRepository emailConfirmRepository;
+    private final IndividualRepository individualRepository;
 
     @Autowired
-    public AuthServiceImpl(PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider, CompanyDAO companyDAO, OrganizationDAO organizationDAO,
+    public AuthServiceImpl(PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider, CompanyDAO companyDAO, IndividualDAO individualDAO, OrganizationDAO organizationDAO,
                            CompanyRepository companyRepository,
                            OrganizationRepository organizationRepository,
-                           EmailConfirmRepository emailConfirmRepository) {
+                           EmailConfirmRepository emailConfirmRepository,
+                           IndividualRepository individualRepository) {
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
         this.companyDAO = companyDAO;
+        this.individualDAO = individualDAO;
         this.organizationDAO = organizationDAO;
         this.companyRepository = companyRepository;
         this.organizationRepository = organizationRepository;
         this.emailConfirmRepository = emailConfirmRepository;
+        this.individualRepository = individualRepository;
     }
 
     @Override
@@ -80,9 +85,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Exception companyJoin(CompanyJoinDto companyJoinDto) throws Exception {
+    public Boolean companyJoin(CompanyJoinDto companyJoinDto) throws Exception {
+        Boolean isExists = isExistsMember(companyJoinDto.getEmail());
         EmailConfirm emailConfirm = emailConfirmRepository.findById(companyJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
-        if(emailConfirm != null) {
+        if(emailConfirm != null && !isExists) {
             Company company = new Company();
             company.setEmail(companyJoinDto.getEmail());
             company.setPassword(passwordEncoder.encode(companyJoinDto.getPassword()));
@@ -95,17 +101,16 @@ public class AuthServiceImpl implements AuthService {
             company.setGreetings(companyJoinDto.getGreetings());
             companyDAO.join(company);
             emailConfirmRepository.deleteById(companyJoinDto.getEmail());
-            return new Exception("회원가입 완료");
+            return true;
         }
-        else {
-            return new Exception("이메일 인증을 진행해주세요");
-        }
+        return false;
     }
 
     @Override
-    public Exception organizationJoin(OrganizationJoinDto organizationJoinDto) throws Exception {
+    public Boolean organizationJoin(OrganizationJoinDto organizationJoinDto) throws Exception {
+        Boolean isExists = isExistsMember(organizationJoinDto.getEmail());
         EmailConfirm emailConfirm = emailConfirmRepository.findById(organizationJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
-        if(emailConfirm != null) {
+        if(emailConfirm != null && !isExists) {
             Organization organization = new Organization();
             organization.setEmail(organizationJoinDto.getEmail());
             organization.setPassword(passwordEncoder.encode(organizationJoinDto.getPassword()));
@@ -118,31 +123,42 @@ public class AuthServiceImpl implements AuthService {
             organization.setGreetings(organizationJoinDto.getGreetings());
             organizationDAO.join(organization);
             emailConfirmRepository.deleteById(organizationJoinDto.getEmail());
-            return new Exception("회원가입 완료");
+            return true;
         }
-        else {
-            return new Exception("이메일 인증을 진행해주세요");
+        return false;
+    }
+
+    @Override
+    public Boolean individualJoin(IndividualJoinDto individualJoinDto) throws Exception {
+        Boolean isExists = isExistsMember(individualJoinDto.getEmail());
+        EmailConfirm emailConfirm = emailConfirmRepository.findById(individualJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
+        if(emailConfirm != null && !isExists) {
+            Individual individual = new Individual();
+            individual.setEmail(individualJoinDto.getEmail());
+            individual.setPassword(passwordEncoder.encode(individualJoinDto.getPassword()));
+            individual.setKind(individualJoinDto.getKind());
+            individual.setName(individualJoinDto.getName());
+            individual.setPhoneNum(individualJoinDto.getPhoneNum());
+            individual.setUserId(individualJoinDto.getUserId());
+
+            individualDAO.join(individual);
+            emailConfirmRepository.deleteById(individualJoinDto.getEmail());
+            return true;
         }
+        return false;
+    }
+
+    private Boolean isExistsMember(String email) {
+        return companyRepository.existsByEmail(email) || organizationRepository.existsByEmail(email) || individualRepository.existsByEmail(email);
     }
 
     @Override
     public UserInfoDto info() {
-         UserInfoDto userInfoDto = SecurityUtil.getCurrentMemberId();
-        return userInfoDto;
+        return SecurityUtil.getCurrentMemberId();
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        return userRepository.findByEmail(email)
-//                .map(this::createUserDetails)
-//                .orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
-//    }
-//
-//    private UserDetails createUserDetails(Member member) {
-//        return User.builder()
-//                .username(member.getUsername())
-//                .password(passwordEncoder.encode(member.getPassword()))
-//                .roles(member.getRole())
-//                .build();
-//    }
+    @Override
+    public void oAuthJoin(OAuthJoinDto oAuthJoinDto) {
+
+    }
 }
