@@ -8,7 +8,6 @@ import com.nudge.wooriya.data.entity.Notification;
 import com.nudge.wooriya.data.entity.Proposal;
 import com.nudge.wooriya.data.entity.ProposalPost;
 import com.nudge.wooriya.data.repository.NotificationRepository;
-import com.nudge.wooriya.data.repository.PostImageMetaRepository;
 import com.nudge.wooriya.data.repository.ProposalPostRepository;
 import com.nudge.wooriya.data.repository.ProposalRepository;
 import com.nudge.wooriya.service.BoardService;
@@ -76,7 +75,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Long saveProposalPost(ProposalPostRequestDto proposalPostRequestDto) throws Exception {
+    public Long saveProposalPost(ProposalPostRequestDto proposalPostRequestDto) {
         ProposalPost proposalPost = new ProposalPost();
         proposalPost.setTitle(proposalPostRequestDto.getTitle());
         proposalPost.setAuthor(SecurityUtil.getCurrentMemberId().getEmail());
