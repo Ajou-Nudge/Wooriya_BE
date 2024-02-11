@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 public class ChatResponseDto {
     private String senderEmail;
-    private Long sessionId;
+    private String sessionId;
     private String message;
     private Date timestamp;
 }

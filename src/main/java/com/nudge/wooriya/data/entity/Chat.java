@@ -10,14 +10,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-@Document(collection = "mydata")
+@Document
 @Getter
 @Setter
 public class Chat {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private Long sessionId;
+    private String id;
+    private String sessionId;
     private String senderEmail;
     private String message;
     @CreatedDate

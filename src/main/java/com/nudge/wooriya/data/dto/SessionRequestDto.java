@@ -7,8 +7,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class ChatRequestDto {
-    private String message;
+public class SessionRequestDto {
     private String sessionId;
-    private String receiverEmail;
+    private String email;
 }

@@ -28,17 +28,10 @@ public class ChatController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @Operation(summary = "getChatsBySessionId", description = "[Token O] sessionId로 대화 목록 조회")
-    @GetMapping("/session/{sessionId}")
-    public ResponseEntity<List<ChatResponseDto>> getChatsBySessionId(@PathVariable Long sessionId) {
-        List<ChatResponseDto> result = chatService.getChatsBySessionId(sessionId);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
-
-    @Operation(summary = "getChatsByEmail", description = "[Token O] 상대 이메일로 대화 목록 조회")
-    @GetMapping("/{email}")
-    public ResponseEntity<List<ChatResponseDto>> getChatsByEmail(@PathVariable String email) {
-        List<ChatResponseDto> result = chatService.getChatsByEmail(email);
+    @Operation(summary = "getChats", description = "[Token O] 이메일 or sessionId로 대화 목록 조회")
+    @PostMapping("/get")
+    public ResponseEntity<List<ChatResponseDto>> getChats(@RequestBody SessionRequestDto sessionRequestDto) {
+        List<ChatResponseDto> result = chatService.getChats(sessionRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

@@ -10,8 +10,5 @@ public interface ChatService {
 
     List<Session> getSessions();
 
-    List<ChatResponseDto> getChatsByEmail(String email);
-
-    List<ChatResponseDto> getChatsBySessionId(Long SessionId);
-
+    List<ChatResponseDto> getChats(SessionRequestDto sessionRequestDto);
 }

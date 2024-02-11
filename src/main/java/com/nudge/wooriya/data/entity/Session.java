@@ -11,12 +11,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 import java.util.List;
 
-@Document(collection = "mydata")
+@Document
 @Getter
 @Setter
 public class Session {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
     private List<String> members;
 }
