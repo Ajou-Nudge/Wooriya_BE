@@ -20,3 +20,4 @@ public class CompanyJoinDto {
     private CompanyHistory history;
     private String greetings;
 }
+
