@@ -24,5 +24,6 @@ public class CafeDetailsDto {
     private String contactHours;
     private String holidays;
     private Set<CafePreviewDto> keywordRelatedPreviews;
+    private String email;
 }
 

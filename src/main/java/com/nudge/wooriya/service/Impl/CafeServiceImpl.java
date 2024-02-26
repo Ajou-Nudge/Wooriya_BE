@@ -120,6 +120,7 @@ public class CafeServiceImpl implements CafeService {
             cafeDetailsDto.setRelatedSNSLinks(cafe.getRelatedSNSLinks());
             cafeDetailsDto.setContactHours(cafe.getContactHours());
             cafeDetailsDto.setHolidays(cafe.getHolidays());
+            cafeDetailsDto.setEmail(cafe.getEmail());
 
             Set<CafePreviewDto> relatedPreviews = cafeRepository.findByCafeAtmospheresContaining(new ArrayList<>(cafe.getCafeAtmospheres()))
                     .stream()
@@ -136,9 +137,9 @@ public class CafeServiceImpl implements CafeService {
     }
 
     @Override
-    public CafeProfileDto getCafeProfile(String cafeId) throws Exception {
+    public CafeProfileDto getCafeProfile(String email) throws Exception {
         // cafeId를 이용하여 카페 정보 조회
-        Optional<Cafe> cafeOptional = cafeRepository.findByCafeId(cafeId);
+        Optional<Cafe> cafeOptional = cafeRepository.findByCafeId(email);
 
         if (cafeOptional.isPresent()) {
             Cafe cafe = cafeOptional.get();
@@ -156,7 +157,7 @@ public class CafeServiceImpl implements CafeService {
 
             return cafeProfileDto;
         } else {
-            throw new Exception("not Found " + cafeId);
+            throw new Exception("not Found " + email);
         }
     }
 

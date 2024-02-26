@@ -11,5 +11,7 @@ import java.util.Optional;
 @Repository
 public interface CafeRepository extends MongoRepository<Cafe, String> {
     Optional<Cafe> findByCafeId(String cafeId);
+
     Optional<Cafe> findByCafeAtmospheresContaining(List<CafeAtmosphere> cafeAtmospheres);
+
 }

@@ -37,9 +37,9 @@ public class CafeController {
     }
 
     @Operation(summary = "카페 프로필", description = "[Token X] 카페 프로필 가져오기")
-    @GetMapping("/profile/{id}")
-    public ResponseEntity<CafeProfileDto> cafeProfile(@PathVariable String id) throws Exception {
-        CafeProfileDto cafeProfileDto = cafeService.getCafeProfile(id);
+    @GetMapping("/profile/{email}")
+    public ResponseEntity<CafeProfileDto> cafeProfile(@PathVariable String email) throws Exception {
+        CafeProfileDto cafeProfileDto = cafeService.getCafeProfile(email);
         return ResponseEntity.status(HttpStatus.OK).body(cafeProfileDto);
     }
 
