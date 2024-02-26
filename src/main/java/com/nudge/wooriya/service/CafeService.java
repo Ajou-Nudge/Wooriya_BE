@@ -6,7 +6,6 @@ import com.nudge.wooriya.data.dto.cafe.CafeProfileDto;
 import com.nudge.wooriya.data.entity.Cafe;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CafeService {
     Cafe saveCafe(Cafe cafe);
@@ -16,5 +15,5 @@ public interface CafeService {
     void deleteCafe(String cafeId);
     List<CafePreviewDto> getVerifiedCafePreviews();
     CafeDetailsDto getCafeDetails(String cafeId) throws Exception;
-    CafeProfileDto getCafeProfile(String cafeId) throws Exception;
+    CafeProfileDto getCafeProfile(String email) throws Exception;
 }
