@@ -5,7 +5,6 @@ public enum CafeAtmosphere {
     CASUAL,
     NATURAL,
     VINTAGE,
-    INDUSTRIAL,
     ANTIQUE,
     RETRO
 }

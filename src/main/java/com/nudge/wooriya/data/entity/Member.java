@@ -20,14 +20,20 @@ import java.util.Set;
 @Getter
 @Setter
 public class Member implements UserDetails, OAuth2User {
-        private String phoneNumber;
-        private String email;
-        private String password;
-        private String introduction;
-        private String profilePhoto;
-        private String name;
-        private Set<String> relatedLink;
-        private Role role;
+        // 수정 불가
+        private String phoneNumber; // 전화번호
+        private String email; // 이메일
+        private String name; // 이름
+
+        // 수정 가능
+        private String introduction; // 소개, 회원가입 시 빈칸
+        private String profilePhoto; // 프로필사진, 회원가입 시 빈칸
+        private Set<String> relatedLink; // 관련 링크
+        private String activityName; // 활동명, 회원가입 시 이름과 동일
+
+        // 그 외
+        private String password; // 비밀번호
+        private Role role; // 역할
 
         @Override
         public Map<String, Object> getAttributes() {

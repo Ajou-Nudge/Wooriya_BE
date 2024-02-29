@@ -16,6 +16,6 @@ public class MemberProfileDto {
     private String introduction;
     private String profilePhoto;
     private String name;
+    private String activityName;
     private Set<String> relatedLink;
-    private Role role;
 }

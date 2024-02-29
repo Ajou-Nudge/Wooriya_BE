@@ -14,4 +14,5 @@ public interface CafeRepository extends MongoRepository<Cafe, String> {
 
     Optional<Cafe> findByCafeAtmospheresContaining(List<CafeAtmosphere> cafeAtmospheres);
 
+    List<Cafe> findByIsVerifiedFalse(); // 추가된 메서드
 }

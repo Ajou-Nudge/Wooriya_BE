@@ -1,4 +1,4 @@
-package com.nudge.wooriya.data.entity;
+package com.nudge.wooriya.data.entity.Collaboration;
 
 import com.nudge.wooriya.enums.CafeAtmosphere;
 import com.nudge.wooriya.enums.CollaborationPolicy;
@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 public class Collaboration {
     @Id
-    private String CollaborationId;
+    private String collaborationId;
 
     private String author;
     private String email;

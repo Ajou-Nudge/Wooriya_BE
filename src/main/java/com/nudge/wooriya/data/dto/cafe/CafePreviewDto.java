@@ -13,12 +13,11 @@ import java.util.Set;
 @Getter
 @Setter
 public class CafePreviewDto {
-    private List<String> mainPhoto;
-    private boolean verificationStatus;
-    private Set<CafeAtmosphere> cafeAtmospheres;
-    private String name;
-    private String address;
-    private Integer maximumOccupancy;
-    private String yearsInBusiness;
-    private Set<CollaborationPolicy> collaborationPolicy;
+    private String mainPhoto; // 미리보기 사진
+    private Set<CafeAtmosphere> cafeAtmospheres; // 카페 분위기
+    private String cafeName; // 카페이름
+    private String address; // 주소
+    private Integer maximumOccupancy; // 최대 수용 인원
+    private String yearsInBusiness; // 업력
+    private Set<CollaborationPolicy> collaborationPolicy; // 원하는 협업 방식
 }
