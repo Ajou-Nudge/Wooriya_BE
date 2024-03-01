@@ -38,7 +38,7 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = memberOptional.get();
 
-        member.setName(updateMemberProfileDto.getName());
+        member.setName(updateMemberProfileDto.getActivityName());
         member.setIntroduction(updateMemberProfileDto.getIntroduction());
         member.setRelatedLink(updateMemberProfileDto.getRelatedLink());
         member.setProfilePhoto(updateMemberProfileDto.getProfilePhoto());
@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 업데이트된 회원 정보로 UpdateMemberProfileDto 생성 및 반환
         UpdateMemberProfileDto updatedProfileDto = new UpdateMemberProfileDto();
-        updatedProfileDto.setName(updatedMember.getName());
+        updatedProfileDto.setActivityName(updatedMember.getName());
         updatedProfileDto.setIntroduction(updatedMember.getIntroduction());
         updatedProfileDto.setRelatedLink(updatedMember.getRelatedLink());
         updatedProfileDto.setProfilePhoto(updatedMember.getProfilePhoto());
@@ -64,9 +64,13 @@ public class MemberServiceImpl implements MemberService {
         memberProfileDto.setIntroduction(member.getIntroduction());
         memberProfileDto.setPhoneNumber(member.getPhoneNumber());
         memberProfileDto.setProfilePhoto(member.getProfilePhoto());
-        memberProfileDto.setRole(member.getRole());
         return memberProfileDto;
     }
 
+    @Override
+    public String addMemberProfile(Member member)  {
+        memberRepository.save(member);
+        return "success";
+    }
 
 }

@@ -3,6 +3,7 @@ package com.nudge.wooriya.controller;
 import com.nudge.wooriya.data.dto.cafe.CafeDetailsDto;
 import com.nudge.wooriya.data.dto.cafe.CafePreviewDto;
 import com.nudge.wooriya.data.dto.cafe.CafeProfileDto;
+import com.nudge.wooriya.data.dto.cafe.CafeUpdateDto;
 import com.nudge.wooriya.data.entity.Cafe;
 import com.nudge.wooriya.service.CafeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,13 +36,13 @@ public class CafeController {
         List<CafePreviewDto> cafePreviews = cafeService.getVerifiedCafePreviews();
         return ResponseEntity.ok(cafePreviews);
     }
-
-    @Operation(summary = "카페 프로필", description = "[Token X] 카페 프로필 가져오기")
-    @GetMapping("/profile/{email}")
-    public ResponseEntity<CafeProfileDto> cafeProfile(@PathVariable String email) throws Exception {
-        CafeProfileDto cafeProfileDto = cafeService.getCafeProfile(email);
-        return ResponseEntity.status(HttpStatus.OK).body(cafeProfileDto);
-    }
+//
+//    @Operation(summary = "카페 프로필", description = "[Token X] 카페 프로필 가져오기")
+//    @GetMapping("/profile/{email}")
+//    public ResponseEntity<CafeProfileDto> cafeProfile(@PathVariable String email) throws Exception {
+//        CafeProfileDto cafeProfileDto = cafeService.getCafeProfile(email);
+//        return ResponseEntity.status(HttpStatus.OK).body(cafeProfileDto);
+//    }
 
     @Operation(summary = "카페 정보 추가", description = "[Token X] 새로운 카페 정보를 추가합니다.")
     @PostMapping("/admin")
@@ -69,4 +70,19 @@ public class CafeController {
         cafeService.deleteCafe(id);
         return ResponseEntity.ok("Cafe deleted successfully");
     }
+    @Operation(summary = "카페 디테일 정보 추가", description = "[Token X] 카페 디테일 정보를 추가함")
+    @PostMapping("/admin/Detail/{id}")
+    public ResponseEntity<CafeUpdateDto> updateAdditionalCafeData(@PathVariable String id, @RequestBody CafeUpdateDto cafeUpdateDetail) throws Exception{
+        CafeUpdateDto cafeUpdateDto = cafeService.updateAdditionalCafeData(id, cafeUpdateDetail);
+        return ResponseEntity.status(HttpStatus.OK).body(cafeUpdateDto);
+    }
+
+    @Operation(summary = "승인이 안된 카페 정보 출력", description = "[Token X] 승인이 안된 카페정보 출력")
+    @GetMapping("/admin/NotVerify")
+    public ResponseEntity<List<Cafe>> getNotVerifiedCafe() throws Exception {
+        List<Cafe> cafes = cafeService.getNotVerifiedCafe();
+        return ResponseEntity.status(HttpStatus.OK).body(cafes);
+    }
+
+
 }

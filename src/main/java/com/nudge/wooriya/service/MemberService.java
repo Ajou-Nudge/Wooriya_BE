@@ -9,4 +9,5 @@ import java.util.List;
 public interface MemberService {
     MemberProfileDto getMemberByEmail(String email) throws Exception;
     UpdateMemberProfileDto updateMemberProfileByEmail(String email, UpdateMemberProfileDto updateMemberProfileDto) throws Exception;
+    String addMemberProfile(Member member);
 }

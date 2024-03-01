@@ -1,6 +1,6 @@
 package com.nudge.wooriya.data.repository;
 
-import com.nudge.wooriya.data.entity.Collaboration;
+import com.nudge.wooriya.data.entity.Collaboration.Collaboration;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

@@ -12,6 +12,6 @@ import java.util.Set;
 public class UpdateMemberProfileDto {
     private String introduction;
     private String profilePhoto;
-    private String name;
+    private String activityName;
     private Set<String> relatedLink;
 }
