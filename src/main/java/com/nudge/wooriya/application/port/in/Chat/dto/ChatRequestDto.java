@@ -1,0 +1,14 @@
+package com.nudge.wooriya.application.port.in.Chat.dto;
+
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+@Data
+@Getter
+@Setter
+public class ChatRequestDto {
+    private String message;
+    private String sessionId;
+    private String receiverEmail;
+}
