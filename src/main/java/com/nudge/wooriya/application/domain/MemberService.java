@@ -4,18 +4,18 @@ import com.nudge.wooriya.application.port.in.Member.dto.MemberProfileDto;
 import com.nudge.wooriya.application.port.in.Member.dto.UpdateMemberProfileDto;
 import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Member;
 import com.nudge.wooriya.adapter.out.persistence.Repo.MemberRepository;
-import com.nudge.wooriya.application.port.in.Member.MemberService;
+import com.nudge.wooriya.application.port.in.Member.MemberUsecase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class MemberServiceImpl implements MemberService {
+public class MemberService implements MemberUsecase {
     private final MemberRepository memberRepository;
 
     @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
 

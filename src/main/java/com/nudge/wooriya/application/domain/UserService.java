@@ -10,8 +10,8 @@ import com.nudge.wooriya.adapter.out.persistence.Repo.OrganizationRepository;
 import com.nudge.wooriya.adapter.out.persistence.Repo.ProposalRepository;
 import com.nudge.wooriya.common.config.security.SecurityUtil;
 import com.nudge.wooriya.application.port.in.User.dto.*;
-import com.nudge.wooriya.application.port.in.Mail.MailService;
-import com.nudge.wooriya.application.port.in.User.UserService;
+import com.nudge.wooriya.application.port.in.Mail.MailUsecase;
+import com.nudge.wooriya.application.port.in.User.UserUsecase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,23 +19,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserService implements UserUsecase {
 
     private final CompanyRepository companyRepository;
     private final OrganizationRepository organizationRepository;
     private final ProposalRepository proposalRepository;
     private final NotificationRepository notificationRepository;
-    private final MailService mailService;
+    private final MailUsecase mailUsecase;
 
     @Autowired
-    public UserServiceImpl(CompanyRepository companyRepository, OrganizationRepository organizationRepository,
-                           ProposalRepository proposalRepository,
-                           NotificationRepository notificationRepository, MailService mailService) {
+    public UserService(CompanyRepository companyRepository, OrganizationRepository organizationRepository,
+                       ProposalRepository proposalRepository,
+                       NotificationRepository notificationRepository, MailUsecase mailUsecase) {
         this.companyRepository = companyRepository;
         this.organizationRepository = organizationRepository;
         this.proposalRepository = proposalRepository;
         this.notificationRepository = notificationRepository;
-        this.mailService = mailService;
+        this.mailUsecase = mailUsecase;
     }
 
     @Override
@@ -126,12 +126,12 @@ public class UserServiceImpl implements UserService {
         if(proposalSelectDto.getSelect()) {
             proposal.setIsApproved(true);
             proposalRepository.save(proposal);
-            mailService.sendProposalResultMail(proposal);
+            mailUsecase.sendProposalResultMail(proposal);
             return true;
         } else {
             proposal.setIsApproved(false);
             proposalRepository.save(proposal);
-            mailService.sendProposalResultMail(proposal);
+            mailUsecase.sendProposalResultMail(proposal);
             return false;
         }
     }

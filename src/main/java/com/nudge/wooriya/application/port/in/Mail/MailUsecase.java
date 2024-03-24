@@ -3,7 +3,7 @@ package com.nudge.wooriya.application.port.in.Mail;
 import com.nudge.wooriya.application.port.in.Mail.dto.*;
 import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Proposal;
 
-public interface MailService {
+public interface MailUsecase {
     String sendMail(String mailAddress);
 
     Boolean sendConfirmCode(MailConfirmCodeDto confirmcodeDtoMail);

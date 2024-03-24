@@ -1,6 +1,6 @@
 package com.nudge.wooriya.adapter.in.web;
 
-import com.nudge.wooriya.data.dto.*;
+import com.nudge.wooriya.application.port.in.Chat.dto.*;
 import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Session;
 import com.nudge.wooriya.application.port.in.Chat.ChatUsecase;
 import io.swagger.v3.oas.annotations.Operation;

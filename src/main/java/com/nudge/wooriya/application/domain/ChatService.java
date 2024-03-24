@@ -14,11 +14,11 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class ChatServiceImpl implements ChatUsecase {
+public class ChatService implements ChatUsecase {
     private final ChatRepository chatRepository;
     private final SessionRepository sessionRepository;
 
-    public ChatServiceImpl(ChatRepository chatRepository, SessionRepository sessionRepository) {
+    public ChatService(ChatRepository chatRepository, SessionRepository sessionRepository) {
         this.chatRepository = chatRepository;
         this.sessionRepository = sessionRepository;
     }

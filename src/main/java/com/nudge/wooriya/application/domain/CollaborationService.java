@@ -14,12 +14,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CollaborationServiceImpl implements CollaborationUsecase {
+public class CollaborationService implements CollaborationUsecase {
     private final CollaborationRepository collaborationRepository;
     private final ProposalRequestRepository proposalRequestRepository;
 
     @Autowired
-    public CollaborationServiceImpl(CollaborationRepository collaborationRepository, ProposalRequestRepository proposalRequestRepository){
+    public CollaborationService(CollaborationRepository collaborationRepository, ProposalRequestRepository proposalRequestRepository){
         this.collaborationRepository = collaborationRepository;
         this.proposalRequestRepository = proposalRequestRepository;
     }

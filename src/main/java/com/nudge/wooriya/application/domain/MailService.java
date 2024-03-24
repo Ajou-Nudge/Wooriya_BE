@@ -9,7 +9,7 @@ import com.nudge.wooriya.adapter.out.persistence.Repo.CompanyRepository;
 import com.nudge.wooriya.adapter.out.persistence.Repo.EmailConfirmRepository;
 import com.nudge.wooriya.adapter.out.persistence.Repo.OrganizationRepository;
 import com.nudge.wooriya.adapter.out.persistence.Repo.ProposalPostRepository;
-import com.nudge.wooriya.application.port.in.Mail.MailService;
+import com.nudge.wooriya.application.port.in.Mail.MailUsecase;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import java.util.Random;
 
 @Service
 @Slf4j
-public class MailServiceImpl implements MailService {
+public class MailService implements MailUsecase {
     @Autowired
     private ProposalPostRepository proposalPostRepository;
     @Autowired

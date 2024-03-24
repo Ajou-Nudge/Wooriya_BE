@@ -8,9 +8,7 @@ import com.nudge.wooriya.adapter.out.persistence.MongoEntity.ProposalPost;
 import com.nudge.wooriya.adapter.out.persistence.Repo.NotificationRepository;
 import com.nudge.wooriya.adapter.out.persistence.Repo.ProposalPostRepository;
 import com.nudge.wooriya.adapter.out.persistence.Repo.ProposalRepository;
-import com.nudge.wooriya.application.port.in.Prorposal.BoardService;
-import com.nudge.wooriya.application.port.in.Mail.MailService;
-import com.nudge.wooriya.application.port.in.Mail.dto.MailProposalDto;
+import com.nudge.wooriya.application.port.in.Mail.MailUsecase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class BoardServiceImpl implements BoardService {
+public class BoardUsecase implements com.nudge.wooriya.application.port.in.Prorposal.BoardUsecase {
     private final ProposalPostRepository proposalPostRepository;
     private final ProposalRepository proposalRepository;
-    private final MailService mailService;
+    private final MailUsecase mailUsecase;
     private final NotificationRepository notificationRepository;
 
     @Autowired
-    public BoardServiceImpl(ProposalPostRepository proposalPostRepository, ProposalRepository proposalRepository, MailService mailService, NotificationRepository notificationRepository) {
+    public BoardUsecase(ProposalPostRepository proposalPostRepository, ProposalRepository proposalRepository, MailUsecase mailUsecase, NotificationRepository notificationRepository) {
         this.proposalPostRepository = proposalPostRepository;
         this.proposalRepository = proposalRepository;
-        this.mailService = mailService;
+        this.mailUsecase = mailUsecase;
         this.notificationRepository = notificationRepository;
     }
 
@@ -147,7 +145,7 @@ public class BoardServiceImpl implements BoardService {
         notificationRepository.save(notification);
 
         // ProposalRequestDto to MailRequestDto 만들기
-        mailService.sendProposalMail(postId, proposalRequestDto);
+        mailUsecase.sendProposalMail(postId, proposalRequestDto);
         return true;
     }
 }

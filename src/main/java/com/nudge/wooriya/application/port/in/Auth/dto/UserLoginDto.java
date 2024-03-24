@@ -7,7 +7,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class LoginDto {
+public class UserLoginDto {
     private String email;
     private String password;
     private Boolean isCompany;

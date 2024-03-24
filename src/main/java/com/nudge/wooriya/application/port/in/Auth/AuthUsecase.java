@@ -7,7 +7,7 @@ import com.nudge.wooriya.common.config.security.TokenInfo;
 
 public interface AuthUsecase {
 
-    TokenInfo login(LoginDto loginDto);
+    TokenInfo Userlogin(UserLoginDto userLoginDto);
 
     Boolean companyJoin(CompanyJoinDto companyJoinDto) throws Exception;
 
@@ -15,7 +15,7 @@ public interface AuthUsecase {
 
     Boolean individualJoin(IndividualJoinDto individualJoinDto) throws Exception;
 
-    UserInfoDto info();
+    UserInfoDto Userinfo();
 
     void oAuthJoin(OAuthJoinDto oAuthJoinDto);
 

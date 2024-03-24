@@ -13,12 +13,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class CafeServiceImpl implements CafeUsecase {
+public class CafeService implements CafeUsecase {
 
     private final CafeRepository cafeRepository;
 
     @Autowired
-    public CafeServiceImpl(CafeRepository cafeRepository) {
+    public CafeService(CafeRepository cafeRepository) {
         this.cafeRepository = cafeRepository;
     }
 

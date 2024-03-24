@@ -26,7 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthServiceImpl implements AuthUsecase {
+public class AuthService implements AuthUsecase {
 
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -39,11 +39,11 @@ public class AuthServiceImpl implements AuthUsecase {
     private final IndividualRepository individualRepository;
 
     @Autowired
-    public AuthServiceImpl(PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider, CompanyDAO companyDAO, IndividualDAO individualDAO, OrganizationDAO organizationDAO,
-                           CompanyRepository companyRepository,
-                           OrganizationRepository organizationRepository,
-                           EmailConfirmRepository emailConfirmRepository,
-                           IndividualRepository individualRepository) {
+    public AuthService(PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider, CompanyDAO companyDAO, IndividualDAO individualDAO, OrganizationDAO organizationDAO,
+                       CompanyRepository companyRepository,
+                       OrganizationRepository organizationRepository,
+                       EmailConfirmRepository emailConfirmRepository,
+                       IndividualRepository individualRepository) {
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
         this.companyDAO = companyDAO;
@@ -56,12 +56,12 @@ public class AuthServiceImpl implements AuthUsecase {
     }
 
     @Override
-    public TokenInfo login(LoginDto loginDto) {
-        if(!loginDto.getIsCompany()) {
+    public TokenInfo Userlogin(UserLoginDto userLoginDto) {
+        if(!userLoginDto.getIsCompany()) {
             Organization organization = organizationRepository
-                    .findByEmail(loginDto.getEmail())
+                    .findByEmail(userLoginDto.getEmail())
                     .orElseThrow(() -> new UsernameNotFoundException("아이디 혹은 비밀번호를 확인하세요."));
-            Boolean matches = passwordEncoder.matches(loginDto.getPassword(), organization.getPassword());
+            Boolean matches = passwordEncoder.matches(userLoginDto.getPassword(), organization.getPassword());
             if (!matches) throw new BadCredentialsException("아이디 혹은 비밀번호를 확인하세요.");
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(organization.getUsername(), organization.getPassword(), organization.getAuthorities());
@@ -72,9 +72,9 @@ public class AuthServiceImpl implements AuthUsecase {
         }
         else {
             Company company = companyRepository
-                    .findByEmail(loginDto.getEmail())
+                    .findByEmail(userLoginDto.getEmail())
                     .orElseThrow(() -> new UsernameNotFoundException("아이디 혹은 비밀번호를 확인하세요."));
-            Boolean matches = passwordEncoder.matches(loginDto.getPassword(), company.getPassword());
+            Boolean matches = passwordEncoder.matches(userLoginDto.getPassword(), company.getPassword());
             if (!matches) throw new BadCredentialsException("아이디 혹은 비밀번호를 확인하세요.");
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(company.getUsername(), company.getPassword(), company.getAuthorities());
@@ -154,7 +154,7 @@ public class AuthServiceImpl implements AuthUsecase {
     }
 
     @Override
-    public UserInfoDto info() {
+    public UserInfoDto Userinfo() {
        return SecurityUtil.getCurrentMemberId();
     }
 

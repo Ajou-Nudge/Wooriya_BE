@@ -4,7 +4,7 @@ import com.nudge.wooriya.application.port.in.Prorposal.dto.*;
 
 import java.util.List;
 
-public interface BoardService {
+public interface BoardUsecase {
 
     ProposalPostResponseDto getProposalPost(Long id) throws Exception;
 

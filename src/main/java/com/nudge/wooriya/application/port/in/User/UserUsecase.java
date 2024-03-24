@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface UserService {
+public interface UserUsecase {
     ProfileDto profile(String email) throws Exception;
 
     List<NotificationResponseDto> getAllNotification() throws Exception;
