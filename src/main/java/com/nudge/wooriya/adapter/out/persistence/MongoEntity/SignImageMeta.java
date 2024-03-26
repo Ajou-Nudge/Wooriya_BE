@@ -1,30 +1,25 @@
 package com.nudge.wooriya.adapter.out.persistence.MongoEntity;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
 @NoArgsConstructor
-@Entity
-@Table(name = "SignImage_META")
+@Document
 @Getter
 @Setter
 public class SignImageMeta {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "MEMBER_EMAIL")
     private Long memberEmail;
 
-    @Column(name = "S3_URL")
     private String s3Url;
 
-    @Column(name = "TIMESTAMP")
     private Date timestamp;
 
-    @Column(name = "AUTHOR")
     private String author;
 
     public SignImageMeta(String s3Url, Date timestamp, String author) {

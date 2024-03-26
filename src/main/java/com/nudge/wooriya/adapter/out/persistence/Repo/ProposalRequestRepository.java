@@ -1,6 +1,6 @@
 package com.nudge.wooriya.adapter.out.persistence.Repo;
 
-import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Collaboration.ProposalRequest;
+import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Collabo.ProposalRequest;
 import com.nudge.wooriya.common.enums.ProposalStatus;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

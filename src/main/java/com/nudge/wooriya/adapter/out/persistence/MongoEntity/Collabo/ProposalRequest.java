@@ -1,4 +1,4 @@
-package com.nudge.wooriya.adapter.out.persistence.MongoEntity.Collaboration;
+package com.nudge.wooriya.adapter.out.persistence.MongoEntity.Collabo;
 
 import com.nudge.wooriya.common.enums.CollaborationPolicy;
 import com.nudge.wooriya.common.enums.ProposalStatus;

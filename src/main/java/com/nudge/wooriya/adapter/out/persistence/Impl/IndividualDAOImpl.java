@@ -2,7 +2,7 @@ package com.nudge.wooriya.adapter.out.persistence.Impl;
 
 import com.nudge.wooriya.common.config.security.SecurityUtil;
 import com.nudge.wooriya.application.port.out.IndividualDAO;
-import com.nudge.wooriya.data.dto.UserInfoDto;
+import com.nudge.wooriya.application.port.in.Auth.dto.UserInfoDto;
 import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Individual;
 import com.nudge.wooriya.adapter.out.persistence.Repo.IndividualRepository;
 import org.springframework.stereotype.Component;

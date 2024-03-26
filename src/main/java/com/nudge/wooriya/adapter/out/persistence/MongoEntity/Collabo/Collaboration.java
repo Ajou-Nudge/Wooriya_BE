@@ -1,4 +1,4 @@
-package com.nudge.wooriya.adapter.out.persistence.MongoEntity.Collaboration;
+package com.nudge.wooriya.adapter.out.persistence.MongoEntity.Collabo;
 
 import com.nudge.wooriya.common.enums.CafeAtmosphere;
 import com.nudge.wooriya.common.enums.CollaborationPolicy;

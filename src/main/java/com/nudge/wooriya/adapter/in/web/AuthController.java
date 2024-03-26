@@ -29,7 +29,7 @@ public class AuthController {
     @Operation(summary = "login", description = "[Token X] 로그인")
     @PostMapping("/login")
     public TokenInfo login(@RequestBody UserLoginDto userLoginDto) {
-        TokenInfo tokenInfo = authUsecase.login(userLoginDto);
+        TokenInfo tokenInfo = authUsecase.Userlogin(userLoginDto);
         return tokenInfo;
     }
 
@@ -85,7 +85,7 @@ public class AuthController {
     @Operation(summary = "info", description = "[Token O] AccessToken으로 유저 정보 확인")
     @GetMapping("/info")
     public UserInfoDto info() {
-        UserInfoDto userInfoDto = authUsecase.info();
+        UserInfoDto userInfoDto = authUsecase.Userinfo();
         return userInfoDto;
     }
 }

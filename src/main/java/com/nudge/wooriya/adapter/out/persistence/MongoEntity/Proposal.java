@@ -1,34 +1,29 @@
 package com.nudge.wooriya.adapter.out.persistence.MongoEntity;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Document
 @Getter
 @Setter
 public class Proposal {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String companyEmail;
 
-    @Column(nullable = false)
     private Long postId;
 
-    @Column(nullable = true)
     private String message;
 
-    @Column(nullable = true)
     private Boolean isApproved;
 
-    @Column(nullable = false)
     private String organizationEmail;
 
     private LocalDateTime createdAt;

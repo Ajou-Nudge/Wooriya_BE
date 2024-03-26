@@ -1,6 +1,6 @@
 package com.nudge.wooriya.common.config.security;
 
-import com.nudge.wooriya.application.port.in.User.dto.UserInfoDto;
+import com.nudge.wooriya.application.port.in.Auth.dto.UserInfoDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

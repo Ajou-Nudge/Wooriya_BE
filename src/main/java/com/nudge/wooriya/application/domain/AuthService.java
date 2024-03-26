@@ -15,8 +15,10 @@ import com.nudge.wooriya.adapter.out.persistence.Repo.CompanyRepository;
 import com.nudge.wooriya.adapter.out.persistence.Repo.EmailConfirmRepository;
 import com.nudge.wooriya.adapter.out.persistence.Repo.IndividualRepository;
 import com.nudge.wooriya.adapter.out.persistence.Repo.OrganizationRepository;
-import com.nudge.wooriya.application.port.in.Auth.*;
+
+import com.nudge.wooriya.application.port.in.Auth.AuthUsecase;
 import com.nudge.wooriya.application.port.in.Auth.dto.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

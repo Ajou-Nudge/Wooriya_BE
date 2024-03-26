@@ -3,7 +3,7 @@ package com.nudge.wooriya.adapter.in.web;
 import com.nudge.wooriya.application.port.in.Collabo.dto.ProposalApproveDto;
 import com.nudge.wooriya.application.port.in.Collabo.dto.ProposalNotificationDto;
 import com.nudge.wooriya.application.port.in.Collabo.dto.ProposalRequestNotificationDto;
-import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Collaboration.ProposalRequest;
+import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Collabo.ProposalRequest;
 import com.nudge.wooriya.application.port.in.Collabo.CollaborationUsecase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

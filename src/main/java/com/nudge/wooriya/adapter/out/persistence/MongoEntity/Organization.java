@@ -1,12 +1,11 @@
 package com.nudge.wooriya.adapter.out.persistence.MongoEntity;
 
-import com.nudge.wooriya.data.dto.OAuthAttributesDto;
+import com.nudge.wooriya.common.OAuth.dto.*;
 import com.nudge.wooriya.common.enums.OrganizationHistory;
 import com.nudge.wooriya.common.enums.OrganizationKind;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,42 +16,39 @@ import java.util.Collection;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Document
 @Setter
 @Getter
 public class Organization implements UserDetails {
     @Id
-    @Column(updatable = false, unique = true, nullable = false)
+
     private String email;
 
-    @Column(nullable = true)
+
     private String password;
 
-    @Column(nullable = true)
     private String organizationName;
 
-    @Column(nullable = true)
     private String representativeName;
 
-    @Column(nullable = true)
     private String representativeNum;
 
-    @Column(nullable = true)
+
     private String representativeEmail;
 
-    @Column(nullable = true)
+
     private OrganizationKind kind;
 
-    @Column(nullable = true)
+
     private OrganizationHistory history;
 
-    @Column(nullable = true)
+
     private String greetings;
 
-    @Column(nullable = true)
+
     private String provider;
 
-    @Column(nullable = true)
+
     private String providerId;
 
     public String getRole() {

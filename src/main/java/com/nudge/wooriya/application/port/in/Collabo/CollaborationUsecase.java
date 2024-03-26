@@ -1,8 +1,8 @@
 package com.nudge.wooriya.application.port.in.Collabo;
 
 import com.nudge.wooriya.application.port.in.Collabo.dto.*;
-import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Collaboration.Collaboration;
-import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Collaboration.ProposalRequest;
+import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Collabo.Collaboration;
+import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Collabo.ProposalRequest;
 
 import java.util.List;
 

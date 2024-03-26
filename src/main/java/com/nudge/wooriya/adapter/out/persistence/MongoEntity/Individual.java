@@ -1,12 +1,13 @@
 package com.nudge.wooriya.adapter.out.persistence.MongoEntity;
 
-import com.nudge.wooriya.data.dto.OAuthAttributesDto;
 import com.nudge.wooriya.common.enums.AffiliateKind;
-import jakarta.persistence.*;
-import lombok.*;
+import com.nudge.wooriya.common.OAuth.dto.OAuthAttributesDto;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import lombok.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,38 +16,27 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Setter
+@Document(collection = "individuals") // MongoDB 컬렉션 지정
 @Getter
+@Setter
 public class Individual implements UserDetails {
     @Id
-    @Column(updatable = false, unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = true)
     private String password;
 
-    @Column(nullable = true)
     private String name;
 
-    @Column(nullable = true)
     private String phoneNum;
 
-    @Column(nullable = true)
     private String userId;
 
-    @Column(nullable = true)
     private AffiliateKind kind;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "individual_pr_link", joinColumns = @JoinColumn(name = "id"))
-    @Enumerated(EnumType.STRING)
-    private Set<String> links;
+    private Set<String> links; // MongoDB에서는 직접적으로 Set을 사용할 수 있습니다.
 
-    @Column(nullable = true)
     private String provider;
 
-    @Column(nullable = true)
     private String providerId;
 
     public String getRole() {
@@ -66,38 +56,39 @@ public class Individual implements UserDetails {
         return email;
     }
 
+    // UserDetails 인터페이스 구현은 boolean 값들을 실제 비즈니스 로직에 맞게 조정해야 합니다.
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
     public Individual updateIndividualByOAuth(OAuthAttributesDto oAuthAttributesDto) {
-        this.setName(oAuthAttributesDto.getName());
-        this.setEmail(oAuthAttributesDto.getEmail());
+        this.name = oAuthAttributesDto.getName();
+        this.email = oAuthAttributesDto.getEmail();
         return this;
     }
 
     public static Individual createIndividualByOAuth(OAuthAttributesDto oAuthAttributesDto, String provider, String providerId) {
-        Individual organization = new Individual();
-        organization.setName(oAuthAttributesDto.getName());
-        organization.setEmail(oAuthAttributesDto.getEmail());
-        organization.setProvider(provider);
-        organization.setProviderId(providerId);
-        return organization;
+        return Individual.builder()
+                .name(oAuthAttributesDto.getName())
+                .email(oAuthAttributesDto.getEmail())
+                .provider(provider)
+                .providerId(providerId)
+                .build();
     }
 }

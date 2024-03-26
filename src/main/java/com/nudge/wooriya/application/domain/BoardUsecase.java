@@ -1,5 +1,6 @@
 package com.nudge.wooriya.application.domain;
 
+import com.nudge.wooriya.application.port.in.Mail.dto.MailProposalDto;
 import com.nudge.wooriya.common.config.security.SecurityUtil;
 import com.nudge.wooriya.application.port.in.Prorposal.dto.*;
 import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Notification;
@@ -11,6 +12,9 @@ import com.nudge.wooriya.adapter.out.persistence.Repo.ProposalRepository;
 import com.nudge.wooriya.application.port.in.Mail.MailUsecase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.nudge.wooriya.application.port.in.Prorposal.dto.ProposalPostRequestDto;
+import com.nudge.wooriya.application.port.in.Prorposal.dto.ProposalRequestDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -145,7 +149,10 @@ public class BoardUsecase implements com.nudge.wooriya.application.port.in.Prorp
         notificationRepository.save(notification);
 
         // ProposalRequestDto to MailRequestDto 만들기
-        mailUsecase.sendProposalMail(postId, proposalRequestDto);
+        MailProposalDto mailProposalDto = new MailProposalDto();
+        mailProposalDto.setMessage(notification.getMessage());
+
+        mailUsecase.sendProposalMail(postId, mailProposalDto);
         return true;
     }
 }
