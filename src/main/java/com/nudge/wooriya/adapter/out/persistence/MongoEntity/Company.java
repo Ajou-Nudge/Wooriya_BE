@@ -23,14 +23,13 @@ import java.util.Map;
 @Setter
 public class Company implements UserDetails, OAuth2User {
     @Id
-    private String email;
+    private String id;
 
+    private String email;
 
     private String password;
 
-
     private String companyName;
-
 
     private String companyAddress;
 

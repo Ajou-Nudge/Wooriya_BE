@@ -2,7 +2,11 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.2'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id "jacoco"
+	id "org.sonarqube" version "4.4.1.3373"
 }
+
+def customJacocoReportDir = 'jacoco/reports'
 
 group = 'com.nudge'
 version = '0.0.1-SNAPSHOT'
@@ -11,6 +15,45 @@ sourceCompatibility = '17'
 repositories {
 	mavenCentral()
 }
+
+jacoco {
+	toolVersion = '0.8.11'
+}
+
+jacocoTestReport {
+	reports {
+		html.required.set(true)
+		html.outputLocation.set(layout.buildDirectory.dir("$customJacocoReportDir/html"))
+
+		xml.required.set(true)
+		xml.outputLocation.set(layout.buildDirectory.file("$customJacocoReportDir/xml/jacoco.xml"))
+
+		csv.required.set(true)
+		csv.outputLocation.set(layout.buildDirectory.file("$customJacocoReportDir/csv/jacoco.csv"))
+	}
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.7
+			}
+		}
+	}
+}
+
+sonar {
+	properties {
+		property "sonar.projectKey", "Wooriya_BE"
+		property "sonar.projectName", "Wooriya_BE"
+		property "sonar.modules", subprojects.collect { it.name }.join(',')
+		subprojects.forEach { subproject ->
+			property "sonar.${subproject.name}.coverage.jacoco.xmlReportPaths", "${subproject.layout.buildDirectory.get()}/$customJacocoReportDir/xml/jacoco.xml"
+		}
+	}
+}
+
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'

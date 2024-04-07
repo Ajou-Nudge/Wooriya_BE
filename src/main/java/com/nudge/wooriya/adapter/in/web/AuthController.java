@@ -47,7 +47,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(true);
     }
 
-    @Operation(summary = "companyJoin", description = "[Token X] 기업 회원가입")
+    @Operation(summary = "CafeJoinDto", description = "[Token X] 기업 회원가입")
     @PostMapping("/join/company")
     public ResponseEntity<Boolean> companyJoin(@RequestBody CompanyJoinDto companyJoinDto) throws Exception {
         Boolean result = authUsecase.companyJoin(companyJoinDto);

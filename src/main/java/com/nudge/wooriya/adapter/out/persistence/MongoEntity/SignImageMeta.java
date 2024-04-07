@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 public class SignImageMeta {
     @Id
-    private int id;
+    private String id;
 
     private Long memberEmail;
 

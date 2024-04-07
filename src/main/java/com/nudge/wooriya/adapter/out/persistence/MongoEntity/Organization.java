@@ -21,6 +21,7 @@ import java.util.Collection;
 @Getter
 public class Organization implements UserDetails {
     @Id
+    private String id;
 
     private String email;
 

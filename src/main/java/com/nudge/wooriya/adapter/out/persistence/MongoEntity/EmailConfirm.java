@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Document
 @Getter
 @Setter
-public class EmailConfirm {
+public class EmailConfirm { // 이거 왜 따로 document로 관리하는 지 확인
     @Id
     private String email;
 

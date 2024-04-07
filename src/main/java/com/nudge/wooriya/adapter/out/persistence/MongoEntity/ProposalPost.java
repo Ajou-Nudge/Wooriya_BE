@@ -16,7 +16,7 @@ import java.util.Set;
 @Document
 @Getter
 @Setter
-public class ProposalPost {
+public class ProposalPost { // 로직 확인, 따로 저장할 필요성이 있는가?
     @Id
     private Long id;
 

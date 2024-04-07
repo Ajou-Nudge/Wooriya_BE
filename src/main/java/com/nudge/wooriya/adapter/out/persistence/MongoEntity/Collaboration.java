@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 public class Collaboration {
     @Id
-    private String CollaborationId;
+    private String id;
 
     private String author;
     private String email;

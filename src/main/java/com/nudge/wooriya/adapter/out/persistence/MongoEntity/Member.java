@@ -4,6 +4,7 @@ import com.nudge.wooriya.common.enums.Role;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +21,8 @@ import java.util.Set;
 @Getter
 @Setter
 public class Member implements UserDetails, OAuth2User {
+        @Id
+        private String id;
         // 수정 불가
         private String phoneNumber; // 전화번호
         private String email; // 이메일

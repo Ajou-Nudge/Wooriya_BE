@@ -21,6 +21,8 @@ import java.util.Set;
 @Setter
 public class Individual implements UserDetails {
     @Id
+    private String id;
+
     private String email;
 
     private String password;
