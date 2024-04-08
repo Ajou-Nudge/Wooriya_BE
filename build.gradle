@@ -3,7 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.0.2'
 	id 'io.spring.dependency-management' version '1.1.0'
 	id "jacoco"
-	id "org.sonarqube" version "4.4.1.3373"
+	id "org.sonarqube" version "3.4.0.2513"
 }
 
 def customJacocoReportDir = 'jacoco/reports'
@@ -42,8 +42,7 @@ jacocoTestCoverageVerification {
 		}
 	}
 }
-
-sonar {
+sonarqube {
 	properties {
 		property "sonar.projectKey", "Wooriya_BE"
 		property "sonar.projectName", "Wooriya_BE"
@@ -77,6 +76,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.json:json:20210307'
 }
+
+test {
+//	dependsOn loadDotEnvFile
+	finalizedBy jacocoTestReport, jacocoTestCoverageVerification
+	useJUnitPlatform()
+//	systemProperties System.getProperties()
+}
+
 
 tasks.named('test') {
 	useJUnitPlatform()
