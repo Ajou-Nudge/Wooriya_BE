@@ -18,7 +18,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: dlckswn334/Witt_BE
+          images: ${{ secrets.DOCKERHUB_URL }}
           tag-semver: |
             {{version}}
             {{major}}.{{minor}}
@@ -40,4 +40,4 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            dlckswn334/witt_be:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_URL }}:${{ github.sha }}
