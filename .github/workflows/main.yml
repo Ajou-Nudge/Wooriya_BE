@@ -19,8 +19,9 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v1
         with:
           images: dlckswn334/Witt_BE
-          tag-custom: |
-            {{sha}}
+          tag-semver: |
+            {{version}}
+            {{major}}.{{minor}}
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -38,5 +39,7 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ steps.docker_meta.outputs.tags }}
+          tags: |
+            ***/witt_be:dev
+            ***/witt_be:${{ github.sha }}
           labels: ${{ steps.docker_meta.outputs.labels }}
