@@ -19,7 +19,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: teichae/node
+          images: dlckswn334/Woriya_BE
           tag-semver: |
             {{version}}
             {{major}}.{{minor}}
