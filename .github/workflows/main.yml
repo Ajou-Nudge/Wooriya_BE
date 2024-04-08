@@ -39,7 +39,5 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags: |
-            ***/witt_be:dev
-            ***/witt_be:${{ github.sha }}
+          tags: ${{ github.sha }}
           labels: ${{ steps.docker_meta.outputs.labels }}
