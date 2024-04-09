@@ -52,7 +52,7 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: success()
   deploy:
-    needs: deploy-dev
+    needs: build
     runs-on: ubuntu-latest
     environment: production
     steps:
