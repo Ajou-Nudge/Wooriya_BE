@@ -1,23 +1,24 @@
-# 빌드 스테이지
-FROM ubuntu:latest as builder
+# 베이스 스테이지: 필수 OS 및 도구 설치
+FROM ubuntu:latest as base
 WORKDIR /app
 
-# 필수 도구 설치
 RUN apt-get update && \
     apt-get install -y openjdk-17-jdk-headless gradle && \
     apt-get clean
 
-# 소스 코드와 Gradle wrapper를 컨테이너로 복사
+FROM base as dependencies
 COPY gradlew .
 COPY gradle gradle
 COPY build.gradle .
 COPY settings.gradle .
+
+RUN chmod +x ./gradlew && ./gradlew --no-daemon dependencies
+
+FROM dependencies as builder
 COPY src src
 
-# 권한 수정 및 애플리케이션 빌드
-RUN chmod +x ./gradlew && ./gradlew build
+RUN ./gradlew --no-daemon build
 
-# 실행 스테이지
 FROM openjdk:17
 WORKDIR /app
 
