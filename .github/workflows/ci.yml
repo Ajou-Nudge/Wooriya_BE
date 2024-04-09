@@ -56,10 +56,15 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Clone the private repository
-        run: |
-          git clone https://x-access-token:${{ secrets.MY_PAT }}@${{ secrets.MANIFEST_REPO }}
-
+#      - name: Clone the private repository
+#        run: |
+#          git clone https://x-access-token:${{ secrets.MY_PAT }}@${{ secrets.MANIFEST_REPO }}
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+        with:
+          repository: 'dlckswn334/capston-test
+          ref: 'main' # 혹은 사용하는 브랜치명
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Modify files
         run: |
           cd ${{ secrets.MANIFEST_FLODER_URL }}
