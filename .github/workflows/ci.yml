@@ -69,7 +69,6 @@ jobs:
 
       - name: Modify files
         run: |
-          ls -al
           cd ${{ secrets.MANIFEST_FLODER_URL }}
           echo "Some changes" >> file.txt # 파일 수정 예시
 
