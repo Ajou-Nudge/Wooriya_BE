@@ -73,6 +73,8 @@ jobs:
           echo "Some changes" >> file.txt
 
       - name: Commit and Push
+        with:
+          github_token: ${{ secrets.MY_PAT }}
         run: |
           git add .
           git commit -m "Automated changes"
