@@ -70,6 +70,7 @@ jobs:
           git config user.email "dlckswn334@naver.com"
           git config user.name "jalju0804"
           cd ${{ secrets.MANIFEST_FLODER_URL }}
+          ls -al
           git add .
           git commit -m "Automated changes"
           git push origin main
