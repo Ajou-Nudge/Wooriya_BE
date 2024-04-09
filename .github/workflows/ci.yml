@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: production
     steps:
       -
         name: Checkout
@@ -42,15 +41,42 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_URL }}:${{ github.sha }}
-          
+      -
+        name: Notify Slack
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: 테스트
+          SLACK_COLOR: '#000000' # 메시지 색상
+          SLACK_MESSAGE: ${{ steps.get_commit_message.outputs.message }}
+          SLACK_TITLE: 'Commit Message'
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: success()
+  deploy:
+    needs: deploy-dev
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Setup Git
+        run: |
+          git config --global user.name 'jalju0804'
+          git config --global user.email 'dlckswn334@naver.com'
 
-#      -
-#        name: Notify Slack
-#        uses: rtCamp/action-slack-notify@v2
-#        env:
-#          SLACK_CHANNEL: 테스트
-#          SLACK_COLOR: '#000000' # 메시지 색상
-#          SLACK_MESSAGE: ${{ steps.get_commit_message.outputs.message }}
-#          SLACK_TITLE: 'Commit Message'
-#          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-#        if: success()
+      - name: Clone the private repository
+        run: |
+          git clone https://${{ secrets.MY_PAT }}@${{ secrets.MANIFEST_REPO }}
+        env:
+          MY_PAT: ${{ secrets.MY_PAT }}
+
+      - name: Modify files
+        run: |
+          cd ${{ secrets.MANIFEST_FLODER_URL }}
+          echo "Some changes" >> file.txt # 파일 수정 예시
+
+      - name: Push changes
+        run: |
+          cd ${{ secrets.MANIFEST_FLODER_URL }}
+          git add .
+          git commit -m "Automated changes"
+          git push
+        env:
+          MY_PAT: ${{ secrets.MY_PAT }}
