@@ -41,15 +41,15 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_URL }}:${{ github.sha }}
-      -
-        name: Notify Slack
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: 테스트 # Slack 채널 이름
-          SLACK_COLOR: '#000000' # 메시지 색상
-          SLACK_ICON: https://www.google.com/imgres?q=%EB%B4%87&imgurl=https%3A%2F%2Fcdn-icons-png.flaticon.com%2F512%2F4711%2F4711987.png&imgrefurl=https%3A%2F%2Fwww.flaticon.com%2Fkr%2Ffree-icon%2Fbot_4711987&docid=JXOA5WMQcQC2hM&tbnid=3h-aaYkRSYCF5M&vet=12ahUKEwjKteOsvbSFAxXDm68BHVYGBRgQM3oECFsQAA..i&w=512&h=512&hcb=2&ved=2ahUKEwjKteOsvbSFAxXDm68BHVYGBRgQM3oECFsQAA # 메시지와 함께 표시할 아이콘 URL
-          SLACK_MESSAGE: ${{ steps.get_commit_message.outputs.message }} # 전송할 메시지
-          SLACK_TITLE: '커밋 메시지' # 메시지 타이틀
-          SLACK_USERNAME: Build Bot # Slack에 표시될 사용자 이름
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }} # GitHub Secrets에서 가져온 Slack 웹훅 URL
-        if: success() # 작업이 성공적으로 완료된 경우에만 실행
+          environment: production
+
+#      -
+#        name: Notify Slack
+#        uses: rtCamp/action-slack-notify@v2
+#        env:
+#          SLACK_CHANNEL: 테스트
+#          SLACK_COLOR: '#000000' # 메시지 색상
+#          SLACK_MESSAGE: ${{ steps.get_commit_message.outputs.message }}
+#          SLACK_TITLE: 'Commit Message'
+#          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+#        if: success()
