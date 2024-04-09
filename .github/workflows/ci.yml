@@ -56,11 +56,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Setup Git
-        run: |
-          git config --global user.name 'jalju0804'
-          git config --global user.email 'dlckswn334@naver.com'
-
       - name: Clone the private repository
         run: |
           git clone https://x-access-token:${{ secrets.MY_PAT }}@${{ secrets.MANIFEST_REPO }}
@@ -72,6 +67,8 @@ jobs:
 
       - name: Push changes
         run: |
+          git config user.email "dlckswn334@naver.com"
+          git config user.name "jalju0804"
           cd ${{ secrets.MANIFEST_FLODER_URL }}
           git add .
           git commit -m "Automated changes"
