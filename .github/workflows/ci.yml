@@ -55,7 +55,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write # We generate static HTML, JS, CSS so we need write access to the repo
+      pages: write
+      id-token: write
     environment: production
     steps:
 #      - name: Clone the private repository
