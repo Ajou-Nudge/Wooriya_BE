@@ -70,7 +70,6 @@ jobs:
 
       - name: Configure git
         run: |
-          cd ${{ secrets.MANIFEST_FOLDER_URL }}
           git config user.email "dlckswn334@naver.com"
           git config user.name "jalju0804"
 
@@ -82,4 +81,4 @@ jobs:
         run: |
           git add .
           git commit -m "Automated changes"
-          git -c http.extraheader="AUTHORIZATION: bearer ${{ secrets.MY_PAT }}" push origin main
+          git push
