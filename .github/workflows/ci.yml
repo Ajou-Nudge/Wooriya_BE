@@ -56,9 +56,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-#      - name: Clone the private repository
-#        run: |
-#          git clone https://x-access-token:${{ secrets.MY_PAT }}@${{ secrets.MANIFEST_REPO }}
       - name: Checkout the repository
         uses: actions/checkout@v2
         with:
