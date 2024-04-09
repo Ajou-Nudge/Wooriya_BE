@@ -68,6 +68,7 @@ jobs:
 
       - name: Configure git
         run: |
+          cd ${{ secrets.MANIFEST_FOLDER_URL }}
           git config user.email "dlckswn334@naver.com"
           git config user.name "jalju0804"
 
