@@ -83,5 +83,4 @@ jobs:
         run: |
           git add .
           git commit -m "Automated changes"
-          git remote set-url origin https://${{ secrets.MY_PAT }}@${{ secrets.MANIFEST_REPO }}
-          git push origin main
+          git push 
