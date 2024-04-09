@@ -64,7 +64,7 @@ jobs:
         with:
           repository: 'jalju0804/capston-test'
           ref: 'main' # 혹은 사용하는 브랜치명
-          token: ${{ secrets.MY_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure git
         run: |
@@ -79,4 +79,4 @@ jobs:
         run: |
           git add .
           git commit -m "Automated changes"
-          git -c http.extraheader="AUTHORIZATION: bearer ${{ secrets.MY_PAT }}" push origin main
+           git -c http.extraheader="AUTHORIZATION: bearer ${{ secrets.MY_PAT }}" push origin main
