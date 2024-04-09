@@ -41,3 +41,15 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_URL }}:${{ github.sha }}
+      -
+        name: Notify Slack
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: your-channel-name # Slack 채널 이름
+          SLACK_COLOR: '#00FF00' # 메시지 색상
+          SLACK_ICON: https://example.com/icon.png # 메시지와 함께 표시할 아이콘 URL
+          SLACK_MESSAGE: 'test' # 전송할 메시지
+          SLACK_TITLE: 'test' # 메시지 타이틀
+          SLACK_USERNAME: Build Bot # Slack에 표시될 사용자 이름
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }} # GitHub Secrets에서 가져온 Slack 웹훅 URL
+        if: success() # 작업이 성공적으로 완료된 경우에만 실행
