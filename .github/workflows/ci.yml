@@ -63,7 +63,7 @@ jobs:
 
       - name: Clone the private repository
         run: |
-          git clone https://${{ secrets.MY_PAT }}@${{ secrets.MANIFEST_REPO }}
+          git clone https://x-access-token:${{ secrets.MY_PAT }}@${{ secrets.MANIFEST_REPO }}
         env:
           MY_PAT: ${{ secrets.MY_PAT }}
 
