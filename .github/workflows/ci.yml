@@ -65,17 +65,18 @@ jobs:
           repository: 'jalju0804/capston-test'
           ref: 'main' # 혹은 사용하는 브랜치명
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Modify files
-        run: |
-          cd ${{ secrets.MANIFEST_FLODER_URL }}
-          echo "Some changes" >> file.txt # 파일 수정 예시
 
-      - name: Push changes
+      - name: Configure git
         run: |
           git config user.email "dlckswn334@naver.com"
           git config user.name "jalju0804"
-          cd ${{ secrets.MANIFEST_FLODER_URL }}
-          ls -al
+
+      - name: Make changes
+        run: |
+          echo "Some changes" >> file.txt
+
+      - name: Commit and Push
+        run: |
           git add .
           git commit -m "Automated changes"
           git push origin main
