@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       -
         name: Checkout
@@ -41,7 +42,7 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_URL }}:${{ github.sha }}
-          environment: production
+          
 
 #      -
 #        name: Notify Slack
