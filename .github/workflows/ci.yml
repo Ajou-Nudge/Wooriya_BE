@@ -75,4 +75,4 @@ jobs:
           cd ${{ secrets.MANIFEST_FLODER_URL }}
           git add .
           git commit -m "Automated changes"
-          git push https://${{ secrets.MY_PAT }}@${{ secrets.MANIFEST_REPO }}
+          git push https://x-access-token:${{ secrets.MY_PAT }}@${{ secrets.MANIFEST_REPO }}
