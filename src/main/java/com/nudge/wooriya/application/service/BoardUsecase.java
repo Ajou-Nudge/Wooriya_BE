@@ -1,4 +1,4 @@
-package com.nudge.wooriya.application.domain;
+package com.nudge.wooriya.application.service;
 
 import com.nudge.wooriya.application.port.in.Mail.dto.MailProposalDto;
 import com.nudge.wooriya.common.config.security.SecurityUtil;

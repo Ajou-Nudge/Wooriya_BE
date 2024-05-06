@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .and()
                 .formLogin().disable()
                     .authorizeHttpRequests()
-                    .requestMatchers("/proposal-post/post", "/proposal-post/update/{id}", "/proposal-post/delete/{id}").hasRole("ORG")
+                    .requestMatchers("/proposal-post/post", "/proposal-post/update/{id}", "/proposal-post/delete/{id}").authenticated()
                     .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)

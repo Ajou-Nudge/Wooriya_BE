@@ -47,20 +47,6 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(true);
     }
 
-    @Operation(summary = "CafeJoinDto", description = "[Token X] 기업 회원가입")
-    @PostMapping("/join/company")
-    public ResponseEntity<Boolean> companyJoin(@RequestBody CompanyJoinDto companyJoinDto) throws Exception {
-        Boolean result = authUsecase.companyJoin(companyJoinDto);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
-
-    @Operation(summary = "organizationJoin", description = "[Token X] 단체 회원가입")
-    @PostMapping("/join/organization")
-    public ResponseEntity<Boolean> organizationJoin(@RequestBody OrganizationJoinDto organizationJoinDto) throws Exception {
-        Boolean result = authUsecase.organizationJoin(organizationJoinDto);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
-
     @Operation(summary = "individualJoin", description = "[Token X] 개인 회원가입")
     @PostMapping("/join/individual")
     public ResponseEntity<Boolean> individualJoin(@RequestBody IndividualJoinDto individualJoinDto) throws Exception {

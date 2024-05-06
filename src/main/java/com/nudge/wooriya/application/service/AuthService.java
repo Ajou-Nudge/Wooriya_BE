@@ -1,12 +1,10 @@
-package com.nudge.wooriya.application.domain;
+package com.nudge.wooriya.application.service;
 
 import com.nudge.wooriya.common.OAuth.dto.OAuthJoinDto;
 import com.nudge.wooriya.common.config.security.JwtTokenProvider;
 import com.nudge.wooriya.common.config.security.SecurityUtil;
 import com.nudge.wooriya.common.config.security.TokenInfo;
-import com.nudge.wooriya.application.port.out.CompanyDAO;
 import com.nudge.wooriya.application.port.out.IndividualDAO;
-import com.nudge.wooriya.application.port.out.OrganizationDAO;
 import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Company;
 import com.nudge.wooriya.adapter.out.persistence.MongoEntity.EmailConfirm;
 import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Individual;
@@ -32,25 +30,21 @@ public class AuthService implements AuthUsecase {
 
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final CompanyDAO companyDAO;
     private final IndividualDAO individualDAO;
-    private final OrganizationDAO organizationDAO;
     private final CompanyRepository companyRepository;
     private final OrganizationRepository organizationRepository;
     private final EmailConfirmRepository emailConfirmRepository;
     private final IndividualRepository individualRepository;
 
     @Autowired
-    public AuthService(PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider, CompanyDAO companyDAO, IndividualDAO individualDAO, OrganizationDAO organizationDAO,
+    public AuthService(PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider, IndividualDAO individualDAO,
                        CompanyRepository companyRepository,
                        OrganizationRepository organizationRepository,
                        EmailConfirmRepository emailConfirmRepository,
                        IndividualRepository individualRepository) {
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.companyDAO = companyDAO;
         this.individualDAO = individualDAO;
-        this.organizationDAO = organizationDAO;
         this.companyRepository = companyRepository;
         this.organizationRepository = organizationRepository;
         this.emailConfirmRepository = emailConfirmRepository;
@@ -85,50 +79,6 @@ public class AuthService implements AuthUsecase {
             tokenInfo.setMemberRole(company.getRole());
             return tokenInfo;
         }
-    }
-
-    @Override
-    public Boolean companyJoin(CompanyJoinDto companyJoinDto) throws Exception {
-        Boolean isExists = isExistsMember(companyJoinDto.getEmail());
-        EmailConfirm emailConfirm = emailConfirmRepository.findById(companyJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
-        if(emailConfirm != null && !isExists) {
-            Company company = new Company();
-            company.setEmail(companyJoinDto.getEmail());
-            company.setPassword(passwordEncoder.encode(companyJoinDto.getPassword()));
-            company.setCompanyName(companyJoinDto.getCompanyName());
-            company.setCompanyAddress(companyJoinDto.getCompanyAddress());
-            company.setRepresentativeName(companyJoinDto.getRepresentativeName());
-            company.setRepresentativeNum(companyJoinDto.getRepresentativeNum());
-            company.setKind(companyJoinDto.getKind());
-            company.setHistory(companyJoinDto.getHistory());
-            company.setGreetings(companyJoinDto.getGreetings());
-            companyDAO.join(company);
-            emailConfirmRepository.deleteById(companyJoinDto.getEmail());
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public Boolean organizationJoin(OrganizationJoinDto organizationJoinDto) throws Exception {
-        Boolean isExists = isExistsMember(organizationJoinDto.getEmail());
-        EmailConfirm emailConfirm = emailConfirmRepository.findById(organizationJoinDto.getEmail()).orElseThrow(() -> new Exception("이메일 인증을 진행해주세요"));
-        if(emailConfirm != null && !isExists) {
-            Organization organization = new Organization();
-            organization.setEmail(organizationJoinDto.getEmail());
-            organization.setPassword(passwordEncoder.encode(organizationJoinDto.getPassword()));
-            organization.setOrganizationName(organizationJoinDto.getOrganizationName());
-            organization.setRepresentativeName(organizationJoinDto.getRepresentativeName());
-            organization.setRepresentativeNum(organizationJoinDto.getRepresentativeNum());
-            organization.setRepresentativeEmail(organizationJoinDto.getRepresentativeEmail());
-            organization.setKind(organizationJoinDto.getKind());
-            organization.setHistory(organizationJoinDto.getHistory());
-            organization.setGreetings(organizationJoinDto.getGreetings());
-            organizationDAO.join(organization);
-            emailConfirmRepository.deleteById(organizationJoinDto.getEmail());
-            return true;
-        }
-        return false;
     }
 
     @Override

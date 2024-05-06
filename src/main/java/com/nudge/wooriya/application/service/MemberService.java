@@ -1,4 +1,4 @@
-package com.nudge.wooriya.application.domain;
+package com.nudge.wooriya.application.service;
 
 import com.nudge.wooriya.application.port.in.Member.dto.MemberProfileDto;
 import com.nudge.wooriya.application.port.in.Member.dto.UpdateMemberProfileDto;

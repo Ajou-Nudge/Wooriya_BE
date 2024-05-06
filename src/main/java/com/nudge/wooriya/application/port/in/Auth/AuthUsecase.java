@@ -9,10 +9,6 @@ public interface AuthUsecase {
 
     TokenInfo Userlogin(UserLoginDto userLoginDto);
 
-    Boolean companyJoin(CompanyJoinDto companyJoinDto) throws Exception;
-
-    Boolean organizationJoin(OrganizationJoinDto organizationJoinDto) throws Exception;
-
     Boolean individualJoin(IndividualJoinDto individualJoinDto) throws Exception;
 
     UserInfoDto Userinfo();

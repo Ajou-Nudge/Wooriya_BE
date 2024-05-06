@@ -1,4 +1,4 @@
-package com.nudge.wooriya.application.domain;
+package com.nudge.wooriya.application.service;
 
 import com.nudge.wooriya.adapter.out.persistence.MongoEntity.EmailConfirm;
 import com.nudge.wooriya.adapter.out.persistence.MongoEntity.Proposal;

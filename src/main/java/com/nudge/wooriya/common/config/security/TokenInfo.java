@@ -13,5 +13,6 @@ public class TokenInfo {
     private String refreshToken;
     private String email;
     private String memberRole;
+    private String id;
     private Boolean isOAuthRegister;
 }
