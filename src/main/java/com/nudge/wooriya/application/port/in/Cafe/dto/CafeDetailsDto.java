@@ -13,7 +13,10 @@ import java.util.Set;
 @Getter
 @Setter
 public class CafeDetailsDto {
-    private String size; // 규모
+    private String cafeId;
+    private double size; // 규모
+    private long viewCount; // 조회수
+
     private String cafeOneLineIntroduction; // 카페 한줄소개
     private String introduction; // 메인 소개글
     private String purposeAnswer; // 목적 관련 사장님 답변, A
@@ -23,8 +26,8 @@ public class CafeDetailsDto {
     private Set<CafeAtmosphere> cafeAtmospheres; // 카페 분위기
     private String address; // 주소
     private Set<CollaborationPolicy> collaborationPolicy; // 원하는 콜라보 형태
-    private Integer maximumOccupancy; // 최대 가용 인원수
-    private String yearsInBusiness; // 업력
+    private int maximumOccupancy; // 최대 가용 인원수
+    private int yearsInBusiness; // 업력
     private List<String> photos; // 사진
     private String contactHours; // 연락 가능 시간
     private String holidays; // 휴일
