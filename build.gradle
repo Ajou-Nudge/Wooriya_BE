@@ -77,6 +77,8 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.json:json:20210307'
+
+	implementation 'io.sentry:sentry-spring-boot-starter-jakarta:7.9.0'
 }
 
 test {

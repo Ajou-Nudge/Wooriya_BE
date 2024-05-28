@@ -1,26 +1,7 @@
-FROM ubuntu:latest as base
+FROM openjdk:17-slim
+
 WORKDIR /app
 
-RUN apt-get update && \
-    apt-get install -y openjdk-17-jdk-headless gradle && \
-    apt-get clean
+COPY build/libs/*.jar app.jar
 
-FROM base as dependencies
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle .
-COPY settings.gradle .
-
-RUN chmod +x ./gradlew && ./gradlew --no-daemon dependencies
-
-FROM dependencies as builder
-COPY src src
-
-RUN ./gradlew --no-daemon build
-
-FROM openjdk:17
-WORKDIR /app
-# Copy the built jar file
-COPY --from=builder /app/build/libs/*.jar app.jar
-
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

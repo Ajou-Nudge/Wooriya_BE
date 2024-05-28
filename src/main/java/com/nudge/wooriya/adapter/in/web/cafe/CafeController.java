@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.sentry.Sentry;
 import java.util.List;
 import java.util.Set;
 
@@ -53,7 +54,16 @@ public class CafeController {
         List<CafePreviewDto> cafes = cafeUsecase.getCafesByDynamicFilters(policies, cafeSpot, placeSize, yearsInBusiness, cafeAtmosphere, pageable);
         return ResponseEntity.ok(cafes);
     }
-
+    @GetMapping("/throw-exception")
+    public ResponseEntity<String> throwException() {
+        try {
+            throw new RuntimeException("This is a test exception for monitoring purposes.");
+        } catch (RuntimeException e) {
+            Sentry.captureException(e);
+            log.error("An exception occurred: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error occurred.");
+        }
+    }
 //    @Operation(summary = "카페 프로필", description = "[Token X] 카페 프로필 가져오기")
 //    @GetMapping("/profile/{email}")
 //    public ResponseEntity<CafeProfileDto> cafeProfile(@PathVariable String email) throws Exception {
